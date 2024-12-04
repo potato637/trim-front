@@ -20,6 +20,7 @@ const HeaderWrapper = styled.header`
   padding: 5px 0;
   max-height: 30px;
   border-bottom: 0.5px solid #ddd;
+  background-color: white;
 `;
 
 const Logo = styled.div`

@@ -39,6 +39,10 @@ const GlobalStyle = createGlobalStyle`
   menu, ol, ul {
     list-style: none;
   }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
   blockquote, q {
     quotes: none;
   }
@@ -82,9 +86,11 @@ const ContentWrapper = styled.div`
 `;
 const MainWrapper = styled.main`
   flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: stretch;
 `;
 
 function Root() {

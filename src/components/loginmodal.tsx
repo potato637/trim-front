@@ -6,7 +6,6 @@ import {
   userState,
 } from "../recoil/userState";
 import { useRef } from "react";
-import { KakaoLoginButton } from "./sociallogins";
 
 const ModalOverLay = styled.div`
   position: fixed;
@@ -60,10 +59,15 @@ export default function LoginModal() {
   return (
     <ModalOverLay onClick={handleCloseModal}>
       <ModalContent ref={modalRef}>
-        <h2>Social Login</h2>
-        <KakaoLoginButton />
-        <SocialButton>Login with naver</SocialButton>
-        <button onClick={() => setLoginModalOpen(false)}>Close</button>
+        <SocialButton>
+          <a href="/oauth2/authorizatioin/naver">Login with kakao</a>
+        </SocialButton>
+        <SocialButton>
+          <a href="/oauth2/authorization/kakao">Login with naver</a>
+        </SocialButton>
+        <SocialButton>
+          <a href="/oauth2/authorization/google">Login with google</a>
+        </SocialButton>
       </ModalContent>
     </ModalOverLay>
   );
