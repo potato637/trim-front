@@ -75,6 +75,14 @@ const ContentContainer = styled.div`
   width: 100%;
   margin: 0 5px 5px 5px;
 `;
+const Tab = styled.div`
+  border-bottom: 1px solid #855;
+`;
+const Content = styled.div``;
+const Writings = styled.div``;
+const Side = styled.div``;
+const About = styled.div``;
+const Survey = styled.div``;
 const Text = styled.p``;
 
 export default function Home() {
@@ -98,11 +106,21 @@ export default function Home() {
             <Text>
               <FaComments size={10} /> 300 <FaThumbsUp size={10} /> 73{" "}
               <PiEyesFill size={10} /> 1.6k
+              {/* 👀 */}
             </Text>
           </BannerActivity>
         </Banner>
       </BannerContainer>
-      <ContentContainer></ContentContainer>
+      <ContentContainer>
+        <Tab></Tab>
+        <Content>
+          <Writings></Writings>
+          <Side>
+            <About></About>
+            <Survey></Survey>
+          </Side>
+        </Content>
+      </ContentContainer>
     </Container>
   );
 }

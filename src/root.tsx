@@ -2,8 +2,8 @@ import styled, { createGlobalStyle } from "styled-components";
 import Header from "./layouts/header";
 import { Outlet } from "react-router-dom";
 import Footer from "./layouts/footer";
-import { useRecoilValue } from "recoil";
-import { userState } from "./recoil/userState";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -93,19 +93,24 @@ const MainWrapper = styled.main`
   align-items: stretch;
 `;
 
+const queryClient = new QueryClient();
+
 function Root() {
   return (
     <>
       <GlobalStyle />
-      <AppWrapper>
-        <ContentWrapper>
-          <Header />
-          <MainWrapper>
-            <Outlet />
-          </MainWrapper>
-          <Footer />
-        </ContentWrapper>
-      </AppWrapper>
+      <QueryClientProvider client={queryClient}>
+        <AppWrapper>
+          <ContentWrapper>
+            <Header />
+            <MainWrapper>
+              <Outlet />
+            </MainWrapper>
+            <Footer />
+          </ContentWrapper>
+        </AppWrapper>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   );
 }

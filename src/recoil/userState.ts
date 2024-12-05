@@ -5,12 +5,12 @@ interface UserI {
   email: string | null;
   nickname: string | null;
   provider: string | null;
-  hasProvideAdditionalData: boolean; // 이것도 필요없는거 같은데 kakao에서 닉네임 가져오는 거면
+  hasProvideAdditionalData: boolean;
 }
 
 export const userState = atom<UserI | null>({
-  key: "userState", // Unique ID for the atom
-  default: null, // null = not logged in
+  key: "userState",
+  default: null,
 });
 
 export const loginModalState = atom({
