@@ -7,18 +7,17 @@ interface UserI {
   provider: string | null;
   hasProvideAdditionalData: boolean;
 }
-
 export const userState = atom<UserI | null>({
   key: "userState",
   default: null,
 });
 
-export const loginModalState = atom({
+export const loginModalState = atom<boolean>({
   key: "loginModalState",
   default: false,
 });
 
-export const additionalDataModalState = atom({
+export const additionalDataModalState = atom<boolean>({
   key: "additionalDataModaltSate",
   default: false,
 });
