@@ -17,6 +17,7 @@ const Logo = styled.div`
   font-size: 1rem;
   font-weight: bold;
   color: #5c37ff;
+  margin-bottom: 5px;
 `;
 const Contact = styled.div`
   font-size: 0.35rem;

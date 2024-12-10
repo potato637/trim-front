@@ -44,11 +44,3 @@ export const getData = selectorFamily({
             .sort((a, b) => +a.createDate - +b.createDate);
     },
 });
-
-// if (category === "all") {
-//   return iterableData?.sort((a, b) => +a.createDate - +b.createDate);
-// }
-
-// return iterableData
-//   ?.filter((item) => item.category === category)
-//   .sort((a, b) => +a.createDate - +b.createDate);

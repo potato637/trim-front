@@ -20,7 +20,7 @@ const StyledSwiper = styled(Swiper)`
     font-size: 1rem;
     width: 80%;
     padding: 0;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .swiper-button-next,

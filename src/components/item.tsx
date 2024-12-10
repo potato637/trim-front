@@ -12,6 +12,7 @@ const Container = styled.div`
   text-align: center;
   background-color: #e4dfff;
   border-radius: 5px;
+  margin: 0;
 `;
 const Info = styled.div`
   span {
