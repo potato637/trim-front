@@ -140,9 +140,12 @@ const Content = styled.div`
 `;
 const Writings = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
   background-color: #f5f3ff;
   border-radius: 5px;
   width: 78%;
+  overflow: hidden;
 `;
 
 const Side = styled.div`
@@ -176,7 +179,7 @@ export default function Home() {
     // API 요청 응답 시간을 1초 정도라 생각했을 때
     setTimeout(() => {
       setHomeData(faker);
-    }, 1000);
+    }, 500);
   }, []);
 
   function handleTabClick(e: CategoryStateI) {
@@ -249,9 +252,7 @@ export default function Home() {
           </Ranking>
         </TabBar>
         <Content>
-          <Writings>
-            <HomeSwiper data={faker} />
-          </Writings>
+          <Writings>{data && <HomeSwiper data={data} />}</Writings>
           <Side>
             <AboutR></AboutR>
             <Survey></Survey>

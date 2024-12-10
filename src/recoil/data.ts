@@ -31,10 +31,24 @@ export const getData = selectorFamily({
     ({ get }) => {
       const data = get(homeDataState);
 
-      if (category === "all") {
-        return data;
+      if (!Array.isArray(data)) {
+        return [];
       }
 
-      return data?.filter((item) => item.category === category);
+      return category === "all"
+        ? [...(data as HomeDataStateI[])].sort(
+            (a, b) => +a.createDate - +b.createDate
+          )
+        : [...(data as HomeDataStateI[])]
+            .filter((item) => item.category === category)
+            .sort((a, b) => +a.createDate - +b.createDate);
     },
 });
+
+// if (category === "all") {
+//   return iterableData?.sort((a, b) => +a.createDate - +b.createDate);
+// }
+
+// return iterableData
+//   ?.filter((item) => item.category === category)
+//   .sort((a, b) => +a.createDate - +b.createDate);

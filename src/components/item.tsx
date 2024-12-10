@@ -2,22 +2,21 @@ import styled from "styled-components";
 import { HomeDataStateI } from "../recoil/data";
 
 const Container = styled.div`
-  width: 130px;
-  height: 70px;
+  width: 80%;
+  max-width: 150px;
+  height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 10px;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  width: 90%;
+  background-color: #e4dfff;
+  border-radius: 5px;
 `;
 const Info = styled.div`
   span {
     font-size: 0.4rem;
+    display: block;
   }
 `;
 const Title = styled.div`
