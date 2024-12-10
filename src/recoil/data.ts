@@ -1,6 +1,6 @@
 import { atom, selector, selectorFamily } from "recoil";
 
-interface HomeDataStateI {
+export interface HomeDataStateI {
   category: string;
   title: string;
   content: string;
@@ -38,6 +38,3 @@ export const getData = selectorFamily({
       return data?.filter((item) => item.category === category);
     },
 });
-
-// selector function 추가하기
-// tab의 상태를 관리하는 atom을 만들어서 tab들을 클릭 했을 때 atom을 바꿔주고 atom의 상태에 따라 컨텐츠를 나열해 주면 될 듯?

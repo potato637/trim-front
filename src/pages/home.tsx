@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { FaComments, FaThumbsUp, FaChessQueen } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
 import { useEffect } from "react";
-import { fakeData } from "../fakedata";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   homeDataState,
@@ -10,6 +9,8 @@ import {
   CategoryStateI,
   getData,
 } from "../recoil/data";
+import { faker } from "../faker";
+import HomeSwiper from "../components/homeswiper";
 
 const Container = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const BannerContainer = styled.div`
   display: flex;
   flex: 3.5;
   width: 100%;
-  margin: 5px;
+  margin: 5px 5px 0 5px;
   border-radius: 5px;
   background: linear-gradient(90deg, #855ff3, #9ce2cf);
   justify-content: center;
@@ -80,19 +81,20 @@ const BannerActivity = styled.div`
 `;
 const ContentContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 7;
   width: 100%;
   margin: 0 5px 5px 5px;
 `;
 const TabBar = styled.div`
-  border-bottom: 1px solid #855;
   display: flex;
   flex: 1;
   justify-content: space-between;
+  align-items: center;
   div {
     color: black;
-    font-size: 0.5rem;
-    font-weight: 500;
+    font-size: 0.45rem;
+    font-weight: 400;
   }
 `;
 const Tab = styled.div`
@@ -113,20 +115,56 @@ const TabSpan = styled.span`
 const Ranking = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 const RankinigTitle = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   span {
     color: #855ff3;
   }
+  padding-right: 5px;
 `;
-const RankingSpan = styled.span``;
+const RankingSpan = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+`;
 const Rank = styled.div``;
-const Content = styled.div``;
-const Writings = styled.div``;
-const Side = styled.div``;
-const About = styled.div``;
-const Survey = styled.div``;
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex: 15;
+`;
+const Writings = styled.div`
+  position: relative;
+  background-color: #f5f3ff;
+  border-radius: 5px;
+  width: 78%;
+`;
+
+const Side = styled.div`
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const AboutR = styled.div`
+  position: relative;
+  display: flex;
+  flex: 5.5;
+  background-color: #f5f3ff;
+  border-radius: 5px;
+`;
+const AboutA = styled.div`
+  position: absolute;
+`;
+const Survey = styled.div`
+  display: flex;
+  flex: 5;
+`;
 const Text = styled.p``;
 
 export default function Home() {
@@ -137,7 +175,7 @@ export default function Home() {
   useEffect(() => {
     // API 요청 응답 시간을 1초 정도라 생각했을 때
     setTimeout(() => {
-      setHomeData(fakeData);
+      setHomeData(faker);
     }, 1000);
   }, []);
 
@@ -202,7 +240,7 @@ export default function Home() {
           <Ranking>
             <RankinigTitle>
               <RankingSpan>
-                이달의 랭킹 <FaChessQueen size={10} color="#855ff3" />
+                이달의 랭킹 <FaChessQueen size={8} color="#855ff3" />
               </RankingSpan>
             </RankinigTitle>
             <Rank>
@@ -211,9 +249,11 @@ export default function Home() {
           </Ranking>
         </TabBar>
         <Content>
-          <Writings></Writings>
+          <Writings>
+            <HomeSwiper data={faker} />
+          </Writings>
           <Side>
-            <About></About>
+            <AboutR></AboutR>
             <Survey></Survey>
           </Side>
         </Content>

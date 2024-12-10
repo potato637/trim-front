@@ -8,10 +8,23 @@ const FooterWrapper = styled.footer`
   font-size: 0.9rem;
 `;
 
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Logo = styled.div`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #5c37ff;
+`;
+const Contact = styled.div`
+  font-size: 0.35rem;
+  font-weight: 500;
+`;
+const Copyrights = styled.div`
+  font-size: 0.35rem;
+  font-weight: 500;
 `;
 
 const FooterLinks = styled.div`
@@ -35,7 +48,11 @@ const FooterLinks = styled.div`
 export default function Footer() {
   return (
     <FooterWrapper>
-      <Logo>TRIM</Logo>
+      <Info>
+        <Logo>TRIM</Logo>
+        <Contact>Contact: trimvelo@gmail.com</Contact>
+        <Copyrights>all rights reserved.</Copyrights>
+      </Info>
       <FooterLinks>
         <a href="/terms">이용 약관 및 정책</a>
         <a href="/privacy">개인정보 처리방침</a>
