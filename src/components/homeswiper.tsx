@@ -36,16 +36,18 @@ export default function HomeSwiper({ data }: HomeSwiperI) {
   return (
     <StyledSwiper
       modules={[Navigation]}
-      slidesPerView={3}
+      slidesPerView={6}
       spaceBetween={30}
       navigation
-      loop={true}
-      onSlideChange={() => console.log("Slide changed")}
-      onSwiper={(swiper: any) => console.log(swiper)}
+      loop={false}
     >
-      {data.map((item, idx) => (
-        <Item item={item} />
-      ))}
+      {data.map((item, idx) => {
+        return (
+          <SwiperSlide key={idx}>
+            <Item {...item} />
+          </SwiperSlide>
+        );
+      })}
     </StyledSwiper>
   );
 }
