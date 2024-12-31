@@ -142,10 +142,10 @@ const Writings = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: #f5f3ff;
   border-radius: 5px;
   width: 78%;
-  overflow: hidden;
 `;
 
 const Side = styled.div`
@@ -215,23 +215,18 @@ export default function Home() {
         <TabBar>
           <Tab>
             <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("all")}>
-                <TabSpan>전체</TabSpan>
-              </TabAnchor>
-            </TabDiv>
-            <TabDiv>
               <TabAnchor onClick={() => handleTabClick("question")}>
                 <TabSpan>질문</TabSpan>
               </TabAnchor>
             </TabDiv>
             <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("community")}>
-                <TabSpan>커뮤니티</TabSpan>
+              <TabAnchor onClick={() => handleTabClick("share")}>
+                <TabSpan>지식공유</TabSpan>
               </TabAnchor>
             </TabDiv>
             <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("share")}>
-                <TabSpan>지식공유</TabSpan>
+              <TabAnchor onClick={() => handleTabClick("community")}>
+                <TabSpan>커뮤니티</TabSpan>
               </TabAnchor>
             </TabDiv>
             <TabDiv>

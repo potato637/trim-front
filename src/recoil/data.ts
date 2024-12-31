@@ -1,4 +1,4 @@
-import { atom, selector, selectorFamily } from "recoil";
+import { atom, selectorFamily } from "recoil";
 
 export interface HomeDataStateI {
   category: string;
@@ -14,15 +14,10 @@ export const homeDataState = atom<HomeDataStateI[] | null>({
   default: null,
 });
 
-export type CategoryStateI =
-  | "all"
-  | "question"
-  | "community"
-  | "share"
-  | "survey";
+export type CategoryStateI = "question" | "community" | "share" | "survey";
 export const categoryState = atom<CategoryStateI>({
   key: "category",
-  default: "all",
+  default: "question",
 });
 export const getData = selectorFamily({
   key: "getData",
@@ -35,12 +30,8 @@ export const getData = selectorFamily({
         return [];
       }
 
-      return category === "all"
-        ? [...(data as HomeDataStateI[])].sort(
-            (a, b) => +a.createDate - +b.createDate
-          )
-        : [...(data as HomeDataStateI[])]
-            .filter((item) => item.category === category)
-            .sort((a, b) => +a.createDate - +b.createDate);
+      return [...(data as HomeDataStateI[])]
+        .filter((item) => item.category === category)
+        .sort((a, b) => +a.createDate - +b.createDate);
     },
 });

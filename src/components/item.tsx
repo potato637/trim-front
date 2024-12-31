@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { HomeDataStateI } from "../recoil/data";
 
 const Container = styled.div`
-  width: 80%;
-  max-width: 150px;
+  width: 100%;
   height: 80px;
   display: flex;
   flex-direction: column;

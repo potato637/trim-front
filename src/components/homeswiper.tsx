@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Grid, Pagination } from "swiper/modules";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -8,30 +9,26 @@ import "swiper/css/navigation";
 import "swiper/css/grid";
 import { HomeDataStateI } from "../recoil/data";
 import Item from "./item";
+import { useRef } from "react";
 
-const StyledSwiper = styled(Swiper)`
+const SwiperContainer = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const StyledSwiper = styled(Swiper)`
+  width: 90%;
+  height: 80%;
 
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1rem;
-    width: 80%;
-    padding: 0;
     margin: 0;
-  }
-
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: #855ff3;
-    width: 2px;
-
-    &::after {
-      font-size: 0.7rem;
-    }
   }
 
   .swiper-pagination-progressbar {
@@ -51,30 +48,70 @@ const StyledSwiper = styled(Swiper)`
     transition: transform 0.3s ease; /* Smooth transition for progress */
   }
 `;
+const Pagebutton = styled.button`
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  font-size: 0.6rem;
+
+  &.prev {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &.next {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  background: none;
+  border: none;
+  color: #855ff3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function HomeSwiper({ data }: { data: HomeDataStateI[] }) {
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+
   return (
-    <StyledSwiper
-      modules={[Navigation, Grid, Pagination]}
-      slidesPerView={3}
-      slidesPerGroup={3}
-      navigation
-      pagination={{
-        type: "progressbar",
-      }}
-      grid={{
-        fill: "row",
-        rows: 2,
-      }}
-      loop={false}
-    >
-      {data.map((item, idx) => {
-        return (
-          <SwiperSlide key={idx}>
-            <Item {...item} />
-          </SwiperSlide>
-        );
-      })}
-    </StyledSwiper>
+    <SwiperContainer>
+      <Pagebutton ref={prevRef} className="prev">
+        <GrFormPrevious />
+      </Pagebutton>
+      <Pagebutton ref={nextRef} className="next">
+        <GrFormNext />
+      </Pagebutton>
+
+      <StyledSwiper
+        modules={[Navigation, Grid, Pagination]}
+        slidesPerView={3}
+        slidesPerGroup={3}
+        navigation={{
+          prevEl: prevRef.current,
+          nextEl: nextRef.current,
+        }}
+        spaceBetween={3}
+        pagination={{
+          type: "progressbar",
+        }}
+        grid={{
+          fill: "row",
+          rows: 2,
+        }}
+        loop={false}
+      >
+        {data.map((item, idx) => {
+          return (
+            <SwiperSlide key={idx}>
+              <Item {...item} />
+            </SwiperSlide>
+          );
+        })}
+      </StyledSwiper>
+    </SwiperContainer>
   );
 }
