@@ -51,6 +51,7 @@ const HotContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+  padding-top: 10px;
 `;
 const HotHeaderWrapper = styled.div`
   display: flex;
