@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FaArrowUp, FaArrowLeft } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const ControllerContainer = styled.div`
   position: fixed;
@@ -54,6 +54,7 @@ const WriteContainer = styled.div`
 `;
 
 export default function Controller() {
+  const location = useLocation();
   const navigate = useNavigate();
   const scrollToTop = () => {
     window.scrollTo({
@@ -77,7 +78,11 @@ export default function Controller() {
           <span>BACK</span>
         </BackContainer>
       </PageContainer>
-      <WriteContainer>
+      <WriteContainer
+        onClick={() => {
+          navigate(`/${location.pathname.split("/").filter(Boolean)[0]}/new`);
+        }}
+      >
         <HiPencil color="white" />
       </WriteContainer>
     </ControllerContainer>

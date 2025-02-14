@@ -11,6 +11,10 @@ import Question from "./pages/question";
 import Share from "./pages/share";
 import Community from "./pages/community";
 import Survey from "./pages/survey";
+import Questionnew from "./pages/questionnew";
+import Sharenew from "./pages/sharenew";
+import Communitynew from "./pages/communitynew";
+import Surveynew from "./pages/surveynew";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +24,16 @@ const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "question", element: <Questiontab /> },
       { path: "question/:itemId", element: <Question /> },
+      { path: "question/new", element: <Questionnew /> },
       { path: "share", element: <Sharetab /> },
       { path: "share/:itemId", element: <Share /> },
+      { path: "share/new", element: <Sharenew /> },
       { path: "community", element: <Communitytab /> },
       { path: "community/:itemId", element: <Community /> },
+      { path: "community/new", element: <Communitynew /> },
       { path: "survey", element: <Surveytab /> },
       { path: "survey/:itemId", element: <Survey /> },
+      { path: "survey/new", element: <Surveynew /> },
       { path: "mypage", element: <Mypage /> },
     ],
     errorElement: <Error />,
