@@ -12,20 +12,14 @@ import {
 import { faker } from "../faker";
 import HomeSwiper from "../components/homeswiper";
 
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 const BannerContainer = styled.div`
   display: flex;
   flex: 3.5;
   width: 100%;
+  min-height: 140px;
   margin: 5px 5px 0 5px;
-  border-radius: 5px;
-  background: linear-gradient(90deg, #855ff3, #9ce2cf);
+  border-radius: 6px;
+  background: linear-gradient(90deg, #6129e9 0%, #9ce3cf 100%);
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -145,11 +139,11 @@ const Writings = styled.div`
   align-items: center;
   background-color: #f5f3ff;
   border-radius: 5px;
-  width: 78%;
+  width: 72%;
 `;
 
 const Side = styled.div`
-  width: 20%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -159,16 +153,55 @@ const AboutR = styled.div`
   display: flex;
   flex: 5.5;
   background-color: #f5f3ff;
+  border: 0.5px solid #d9c3ff;
   border-radius: 5px;
 `;
 const AboutA = styled.div`
   position: absolute;
 `;
-const Survey = styled.div`
+const SurveyContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 5;
 `;
+const Surveys = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: #f5f3ff;
+  border-top: 1px solid #acacac;
+  border-bottom: 1px solid #acacac;
+`;
+const Survey = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+const SurveyTitle = styled.div`
+  font-size: 0.5rem;
+  color: #585858;
+  font-weight: 600;
+`;
+const SurveyEndDate = styled.div`
+  font-size: 0.4rem;
+  color: #585858;
+  font-weight: 400;
+`;
+const SurveyText = styled.p`
+  color: #585858;
+  font-size: 0.6rem;
+  font-weight: 500;
+  padding: 5px 0px;
+`;
 const Text = styled.p``;
+
+const surveysData = [
+  { title: "디자인 인식 조사", endDate: "11.03" },
+  { title: "디자인 인식 조사", endDate: "11.03" },
+  { title: "디자인 인식 조사", endDate: "11.03" },
+  { title: "디자인 인식 조사", endDate: "11.03" },
+];
 
 export default function Home() {
   const setHomeData = useSetRecoilState(homeDataState);
@@ -187,7 +220,7 @@ export default function Home() {
   }
 
   return (
-    <Container>
+    <>
       <BannerContainer>
         <Banner>
           <BannerDescription>
@@ -250,10 +283,21 @@ export default function Home() {
           <Writings>{data && <HomeSwiper data={data} />}</Writings>
           <Side>
             <AboutR></AboutR>
-            <Survey></Survey>
+            <SurveyContainer>
+              <SurveyText>지금 진행 중인 설문조사</SurveyText>
+              <Surveys>
+                {surveysData &&
+                  surveysData.slice(0, 4).map((item) => (
+                    <Survey>
+                      <SurveyTitle>{item.title}</SurveyTitle>
+                      <SurveyEndDate>~{item.endDate}</SurveyEndDate>
+                    </Survey>
+                  ))}
+              </Surveys>
+            </SurveyContainer>
           </Side>
         </Content>
       </ContentContainer>
-    </Container>
+    </>
   );
 }

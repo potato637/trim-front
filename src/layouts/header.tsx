@@ -8,15 +8,16 @@ import {
 import LoginModal from "../components/loginmodal";
 import AdditionalDataModal from "../components/additionaldatamodal";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const HeaderWrapper = styled.header`
-  font-size: inherit;
   width: 100%;
   position: sticky;
   top: 0;
+  left: 0;
   z-index: 1000;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 5px 0;
   max-height: 30px;
@@ -27,22 +28,19 @@ const Logotabwrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
 `;
 const Logo = styled.div`
   font-size: 1.3rem;
   font-weight: bold;
   color: #5c37ff;
-  margin-left: 10px;
   cursor: pointer;
 `;
 
 // 나중에 화면 사이즈에 따라 일부 요소 보여주지 않는게 더 깔끔할 거 같다.
 // 일단은 이 정도로 마무리
 const NavBtnContainer = styled.div`
-  padding: 0 20px;
   display: flex;
-  gap: 15px;
 
   button {
     outline: none;
@@ -78,9 +76,10 @@ const Span = styled.span<{ isActive: boolean }>`
 const Input = styled.input`
   width: 250px;
   font-size: 0.5rem;
-  padding: 5px 10px;
+  padding: 3px 7px;
   border-radius: 10px;
   border: 0.5px solid #757575;
+  margin-left: 10px;
 
   &:focus {
     outline: none;
@@ -96,6 +95,7 @@ export default function Header() {
   const setLoginModalOpen = useSetRecoilState(loginModalState);
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeTab, setActiveTab] = useState<string | null>(null);
 
   const pathname = {
     "/question": "질문게시판",
@@ -109,8 +109,15 @@ export default function Header() {
   }
 
   function isTabActive(path: string) {
-    return location.pathname === path;
+    return location.pathname.startsWith(path);
   }
+
+  useEffect(() => {
+    const activePath = Object.keys(pathname).find((path) =>
+      location.pathname.startsWith(path)
+    );
+    setActiveTab(activePath || null);
+  }, [location.pathname]);
 
   return (
     <HeaderWrapper>
@@ -131,15 +138,21 @@ export default function Header() {
           </Tab>
         </Tabs>
       </Logotabwrapper>
-      <form>
+      <form
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Input
           placeholder={`${
-            pathname[location.pathname as keyof typeof pathname] || "Trim"
+            pathname[activeTab as keyof typeof pathname] || "Trim"
           }에서 검색하기`}
         ></Input>
       </form>
       <NavBtnContainer>
-        <button>마이페이지</button>
+        <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
         <button onClick={() => setLoginModalOpen(true)}>
           {user ? user.nickname : "로그인"}
         </button>

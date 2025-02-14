@@ -6,6 +6,11 @@ import Questiontab from "./pages/questiontab";
 import Sharetab from "./pages/sharetab";
 import Communitytab from "./pages/communitytab";
 import Surveytab from "./pages/surveytab";
+import Mypage from "./pages/mypage";
+import Question from "./pages/question";
+import Share from "./pages/share";
+import Community from "./pages/community";
+import Survey from "./pages/survey";
 
 const router = createBrowserRouter([
   {
@@ -14,9 +19,14 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <Home /> },
       { path: "question", element: <Questiontab /> },
+      { path: "question/:itemId", element: <Question /> },
       { path: "share", element: <Sharetab /> },
+      { path: "share/:itemId", element: <Share /> },
       { path: "community", element: <Communitytab /> },
+      { path: "community/:itemId", element: <Community /> },
       { path: "survey", element: <Surveytab /> },
+      { path: "survey/:itemId", element: <Survey /> },
+      { path: "mypage", element: <Mypage /> },
     ],
     errorElement: <Error />,
   },

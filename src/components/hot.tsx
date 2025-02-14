@@ -31,7 +31,7 @@ const ButtonContainer = styled.div`
   gap: 1px;
 `;
 const Pagebutton = styled.button`
-  font-size: 0.7rem;
+  font-size: 0.5rem;
   background: none;
   border: 0.3px solid #8b8b8b;
   display: flex;
@@ -57,7 +57,7 @@ const HotHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 80%;
+  width: 100%;
 `;
 const HotHeaderTitle = styled.text`
   font-size: 0.55rem;
@@ -66,7 +66,7 @@ const HotHeaderTitle = styled.text`
   letter-spacing: -0.5px;
 `;
 const HotBodyWrapper = styled.div`
-  width: 80%;
+  width: 100%;
 `;
 
 export default function Hot() {

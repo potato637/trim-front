@@ -1,3 +1,11 @@
+import CommunitySwiper from "../components/communityswiper";
+import Hot from "../components/hot";
+
 export default function Communitytab() {
-  return <h2>community</h2>;
+  return (
+    <>
+      <Hot />
+      <CommunitySwiper itemsPerPage={10} />
+    </>
+  );
 }

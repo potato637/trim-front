@@ -1,4 +1,5 @@
 import Hot from "../components/hot";
+import QuestionSwiper from "../components/questionswiper";
 import Searchwithtag from "../components/searchwithtag";
 
 export default function Questiontab() {
@@ -6,6 +7,7 @@ export default function Questiontab() {
     <>
       <Hot />
       <Searchwithtag />
+      <QuestionSwiper itemsPerPage={10} />
     </>
   );
 }

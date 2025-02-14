@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Grid, Pagination } from "swiper/modules";
+import { Navigation, Grid } from "swiper/modules";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/grid";
 import { HomeDataStateI } from "../recoil/data";
@@ -21,7 +20,7 @@ const SwiperContainer = styled.div`
 `;
 const StyledSwiper = styled(Swiper)`
   width: 90%;
-  height: 80%;
+  height: 90%;
 
   .swiper-slide {
     display: flex;
@@ -29,23 +28,6 @@ const StyledSwiper = styled(Swiper)`
     align-items: center;
     font-size: 1rem;
     margin: 0;
-  }
-
-  .swiper-pagination-progressbar {
-    left: 50%;
-    transform: translateX(-50%); /* Adjust for the left offset */
-    height: 2px; /* Thickness of the progress bar */
-    background: #e0e0e0; /* Background for the progress bar (inactive part) */
-    border-radius: 1px; /* Smooth edges for the bar */
-    overflow: hidden; /* Ensure progress is contained within rounded corners */
-    width: 100%;
-  }
-
-  .swiper-pagination-progressbar-fill {
-    background: linear-gradient(90deg, #6a5acd, #855ff3); /* Gradient fill */
-    border-radius: 1px; /* Smooth edges for the fill */
-    height: 100%; /* Ensure the fill covers the height */
-    transition: transform 0.3s ease; /* Smooth transition for progress */
   }
 `;
 const Pagebutton = styled.button`
@@ -87,17 +69,14 @@ export default function HomeSwiper({ data }: { data: HomeDataStateI[] }) {
       </Pagebutton>
 
       <StyledSwiper
-        modules={[Navigation, Grid, Pagination]}
+        modules={[Navigation, Grid]}
         slidesPerView={3}
         slidesPerGroup={3}
         navigation={{
           prevEl: prevRef.current,
           nextEl: nextRef.current,
         }}
-        spaceBetween={3}
-        pagination={{
-          type: "progressbar",
-        }}
+        spaceBetween={10}
         grid={{
           fill: "row",
           rows: 2,
