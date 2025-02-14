@@ -65,6 +65,10 @@ export default function Controller() {
   const goBack = () => {
     navigate(-1);
   };
+  const handleWriteBtnClick = () => {
+    const to = location.pathname.split("/").filter(Boolean)[0] || "question";
+    navigate(`/${to}/new`);
+  };
 
   return (
     <ControllerContainer>
@@ -78,11 +82,7 @@ export default function Controller() {
           <span>BACK</span>
         </BackContainer>
       </PageContainer>
-      <WriteContainer
-        onClick={() => {
-          navigate(`/${location.pathname.split("/").filter(Boolean)[0]}/new`);
-        }}
-      >
+      <WriteContainer onClick={handleWriteBtnClick}>
         <HiPencil color="white" />
       </WriteContainer>
     </ControllerContainer>
