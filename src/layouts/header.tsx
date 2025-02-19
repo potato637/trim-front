@@ -20,7 +20,7 @@ const HeaderWrapper = styled.header`
   justify-content: center;
   align-items: center;
   padding: 5px 0;
-  max-height: 30px;
+  min-height: 30px;
   border-bottom: 0.5px solid #ddd;
   background-color: white;
 `;
@@ -67,6 +67,7 @@ const Tab = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  min-width: 25px;
 `;
 const Span = styled.span<{ isActive: boolean }>`
   font-size: 0.5rem;
