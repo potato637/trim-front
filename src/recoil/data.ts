@@ -14,7 +14,12 @@ export const homeDataState = atom<HomeDataStateI[] | null>({
   default: null,
 });
 
-export type CategoryStateI = "question" | "community" | "share" | "survey";
+export type CategoryStateI =
+  | "all"
+  | "question"
+  | "community"
+  | "share"
+  | "survey";
 export const categoryState = atom<CategoryStateI>({
   key: "category",
   default: "question",

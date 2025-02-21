@@ -1,9 +1,10 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   additionalDataModalState,
   loginModalState,
   userState,
+  isLoggedIn,
 } from "../recoil/userState";
 import LoginModal from "../components/loginmodal";
 import AdditionalDataModal from "../components/additionaldatamodal";
@@ -19,48 +20,34 @@ const HeaderWrapper = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 0;
-  min-height: 30px;
-  border-bottom: 0.5px solid #ddd;
-  background-color: white;
+  height: 60px;
+  border-bottom: 0.5px solid var(--color-border);
+  background-color: var(--color-white);
+  overflow: hidden;
 `;
-const Logotabwrapper = styled.div`
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const LogoWrapper = styled.div`
+  width: 200px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
 `;
 const Logo = styled.div`
-  font-size: 1.3rem;
+  font-size: var(--font-size-logo);
   font-weight: bold;
-  color: #5c37ff;
+  color: var(--color-purple);
   cursor: pointer;
 `;
-
-// 나중에 화면 사이즈에 따라 일부 요소 보여주지 않는게 더 깔끔할 거 같다.
-// 일단은 이 정도로 마무리
-const NavBtnContainer = styled.div`
-  display: flex;
-
-  button {
-    outline: none;
-    border: none;
-    background-color: white;
-    text-decoration: none;
-    font-size: 0.55rem;
-    font-weight: 600;
-    text-overflow: hidden;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: hidden;
-    cursor: pointer;
-  }
-`;
 const Tabs = styled.div`
+  width: 350px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 30px;
 `;
 const Tab = styled.div`
   display: flex;
@@ -70,15 +57,20 @@ const Tab = styled.div`
   min-width: 25px;
 `;
 const Span = styled.span<{ isActive: boolean }>`
-  font-size: 0.5rem;
-  font-weight: 600;
+  font-size: var(--font-size-small);
+  font-weight: 400;
   color: ${({ isActive }) => (isActive ? "#5c37ff" : "#000")};
 `;
+const InputContainer = styled.div`
+  width: 400px;
+  display: flex;
+  align-items: center;
+`;
 const Input = styled.input`
-  width: 250px;
-  font-size: 0.5rem;
-  padding: 3px 7px;
-  border-radius: 10px;
+  width: 350px;
+  font-size: var(--font-size-small);
+  padding: 7px 10px;
+  border-radius: 16px;
   border: 0.5px solid #757575;
   margin-left: 10px;
 
@@ -88,12 +80,34 @@ const Input = styled.input`
     border: 0.75px solid #5c37ff;
   }
 `;
+const NavBtnContainer = styled.div`
+  width: 300px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+
+  button {
+    outline: none;
+    border: none;
+    background-color: var(--color-white);
+    text-decoration: none;
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    text-overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: hidden;
+    cursor: pointer;
+  }
+`;
 
 export default function Header() {
   const user = useRecoilValue(userState);
   const isLoginModalOpen = useRecoilValue(loginModalState);
   const isAdditionalDataModalOpen = useRecoilValue(additionalDataModalState);
   const setLoginModalOpen = useSetRecoilState(loginModalState);
+  const [loggedIn, setLoggedIn] = useRecoilState(isLoggedIn);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
@@ -113,6 +127,10 @@ export default function Header() {
     return location.pathname.startsWith(path);
   }
 
+  const handleLogIn = () => {
+    setLoggedIn((prev) => !prev);
+  };
+
   useEffect(() => {
     const activePath = Object.keys(pathname).find((path) =>
       location.pathname.startsWith(path)
@@ -122,8 +140,10 @@ export default function Header() {
 
   return (
     <HeaderWrapper>
-      <Logotabwrapper>
-        <Logo onClick={() => navigate("/")}>TR!M</Logo>
+      <Container>
+        <LogoWrapper>
+          <Logo onClick={() => navigate("/")}>TR!M</Logo>
+        </LogoWrapper>
         <Tabs>
           <Tab onClick={() => onClickHandler("question")}>
             <Span isActive={isTabActive("/question")}>질문</Span>
@@ -138,28 +158,30 @@ export default function Header() {
             <Span isActive={isTabActive("/survey")}>설문</Span>
           </Tab>
         </Tabs>
-      </Logotabwrapper>
-      <form
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Input
-          placeholder={`${
-            pathname[activeTab as keyof typeof pathname] || "Trim"
-          }에서 검색하기`}
-        ></Input>
-      </form>
-      <NavBtnContainer>
-        <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-        <button onClick={() => setLoginModalOpen(true)}>
-          {user ? user.nickname : "로그인"}
-        </button>
-      </NavBtnContainer>
-      {isLoginModalOpen && <LoginModal />}
-      {isAdditionalDataModalOpen && <AdditionalDataModal />}
+        <InputContainer>
+          <form
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Input
+              placeholder={`${
+                pathname[activeTab as keyof typeof pathname] || "Trim"
+              }에서 검색하기`}
+            ></Input>
+          </form>
+        </InputContainer>
+        <NavBtnContainer>
+          <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
+          <button onClick={handleLogIn}>
+            {loggedIn ? "로그인" : "로그아웃"}
+          </button>
+        </NavBtnContainer>
+        {isLoginModalOpen && <LoginModal />}
+        {isAdditionalDataModalOpen && <AdditionalDataModal />}
+      </Container>
     </HeaderWrapper>
   );
 }

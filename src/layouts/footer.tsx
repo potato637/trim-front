@@ -6,27 +6,27 @@ const FooterWrapper = styled.footer`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: var(--font-size-medium);
 `;
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 const Logo = styled.div`
-  font-size: 1rem;
+  font-size: var(--font-size-large);
   font-weight: bold;
-  color: #5c37ff;
+  color: var(--color-purple);
   margin-bottom: 5px;
 `;
 const Contact = styled.div`
-  font-size: 0.35rem;
-  font-weight: 500;
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  margin-bottom: 2px;
 `;
 const Copyrights = styled.div`
-  font-size: 0.35rem;
-  font-weight: 500;
+  font-size: var(--font-size-small);
+  font-weight: 400;
 `;
 
 const FooterLinks = styled.div`
@@ -34,16 +34,13 @@ const FooterLinks = styled.div`
   gap: 15px;
 
   a {
-    font-size: 0.5rem;
-    color: #000;
+    font-size: var(--font-size-small);
+    font-weight: 400;
+    color: var(--color-black);
     text-decoration: none;
     white-space: nowrap;
     text-overflow: hidden;
     overflow: hidden;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 `;
 

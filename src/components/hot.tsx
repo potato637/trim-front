@@ -6,8 +6,8 @@ import { faker } from "../faker";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import Item from "./item";
 import { useRef } from "react";
+import Hotitem from "./hotitem";
 
 const SwiperContainer = styled.div`
   position: relative;
@@ -28,17 +28,17 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1px;
+  gap: 10px;
 `;
 const Pagebutton = styled.button`
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
   background: none;
-  border: 0.3px solid #8b8b8b;
+  border: 0.3px solid var(--color-border);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
-  color: #8b8b8b;
+  color: var(--color-gray);
   border-radius: 50%;
   cursor: pointer;
 `;
@@ -50,8 +50,7 @@ const HotContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  padding-top: 10px;
+  gap: 10px;
 `;
 const HotHeaderWrapper = styled.div`
   display: flex;
@@ -60,8 +59,8 @@ const HotHeaderWrapper = styled.div`
   width: 100%;
 `;
 const HotHeaderTitle = styled.text`
-  font-size: 0.55rem;
-  color: #5c37ff;
+  font-size: var(--font-size-small);
+  color: var(--color-purple);
   font-weight: 600;
   letter-spacing: -0.5px;
 `;
@@ -96,7 +95,7 @@ export default function Hot() {
               prevEl: prevRef.current,
               nextEl: nextRef.current,
             }}
-            spaceBetween={3}
+            spaceBetween={15}
             onBeforeInit={(swiper: SwiperClass) => {
               if (
                 swiper.params.navigation &&
@@ -110,7 +109,7 @@ export default function Hot() {
             {fakeData.map((item, idx) => {
               return (
                 <SwiperSlide key={idx}>
-                  <Item {...item} />
+                  <Hotitem {...item} />
                 </SwiperSlide>
               );
             })}

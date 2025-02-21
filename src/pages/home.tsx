@@ -1,25 +1,22 @@
 import styled from "styled-components";
-import { FaComments, FaThumbsUp, FaChessQueen } from "react-icons/fa6";
+import { FaComments, FaThumbsUp } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  homeDataState,
-  categoryState,
-  CategoryStateI,
-  getData,
-} from "../recoil/data";
+import { homeDataState, categoryState, getData } from "../recoil/data";
 import { faker } from "../faker";
 import HomeSwiper from "../components/homeswiper";
 
 const BannerContainer = styled.div`
   display: flex;
-  flex: 3.5;
   width: 100%;
-  min-height: 140px;
-  margin: 5px 5px 0 5px;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #6129e9 0%, #9ce3cf 100%);
+  min-height: 240px;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-purple) 0%,
+    var(--color-mint-banner) 100%
+  );
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -35,81 +32,77 @@ const Banner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  color: white;
+  color: var(--color-white);
+  gap: 25px;
 `;
 const BannerDescription = styled.div`
   display: flex;
   width: 90%;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 15px;
-  flex: 2;
-  font-size: 0.8rem;
-  font-weight: 550;
+  font-size: var(--font-size-medium);
+  font-weight: 600;
 `;
 const BannerTitle = styled.div`
   display: flex;
   width: 90%;
   justify-content: flex-start;
   align-items: center;
-  flex: 5;
-  font-size: 1.6rem;
+  font-size: var(--font-size-large);
   font-weight: 600;
+  letter-spacing: 1px;
 `;
 const BannerContent = styled.div`
   display: flex;
   width: 90%;
   justify-content: flex-start;
   align-items: center;
-  flex: 3;
-  font-size: 0.7rem;
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  line-height: 1.5;
 `;
 const BannerActivity = styled.div`
   display: flex;
   width: 90%;
   justify-content: flex-start;
   align-items: center;
-  flex: 2;
   margin-bottom: 10px;
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
+  font-weight: 400;
 `;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 7;
-  width: 100%;
-  margin: 0 5px 5px 5px;
+const Text = styled.p`
+  width: 350px;
 `;
 const TabBar = styled.div`
+  padding: 0 3px;
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
-  div {
-    color: black;
-    font-size: 0.45rem;
+  border-bottom: 0.5px solid var(--color-border);
+  & > div {
+    color: var(--color-black);
+    font-size: var(--font-size-small);
     font-weight: 400;
   }
 `;
 const Tab = styled.div`
   display: flex;
-  column-gap: 1.5rem;
+  gap: 1.5rem;
 `;
-const TabDiv = styled.div``;
-const TabAnchor = styled.a`
+const TabAnchor = styled.a<{ isSelected: boolean }>`
+  color: ${(props) =>
+    props.isSelected ? "var(--color-purple)" : "var(--color-black)"};
   padding: 3px;
   &:hover {
     cursor: pointer;
-  }
-`;
-const TabSpan = styled.span`
-  &:hover {
   }
 `;
 const Ranking = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 `;
 const RankinigTitle = styled.div`
   display: flex;
@@ -120,14 +113,12 @@ const RankinigTitle = styled.div`
   }
   padding-right: 5px;
 `;
-const RankingSpan = styled.span`
+const Rank = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+  gap: 10px;
 `;
-const Rank = styled.div``;
 const Content = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   flex: 15;
@@ -137,13 +128,15 @@ const Writings = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f3ff;
+  background-color: var(--color-white-gray);
   border-radius: 5px;
   width: 72%;
+  max-height: 450px;
 `;
 
 const Side = styled.div`
   width: 25%;
+  max-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -164,6 +157,13 @@ const SurveyContainer = styled.div`
   flex-direction: column;
   flex: 5;
 `;
+const SurveyText = styled.p`
+  margin-top: 15px;
+  color: var(--color-black);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  padding: 5px 0px;
+`;
 const Surveys = styled.div`
   display: flex;
   flex-direction: column;
@@ -174,27 +174,18 @@ const Surveys = styled.div`
 `;
 const Survey = styled.div`
   flex: 1;
+  padding: 0 15px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  & > div {
+    font-size: var(--font-size-small);
+    color: var(--color-gray);
+    font-weight: 500;
+  }
 `;
-const SurveyTitle = styled.div`
-  font-size: 0.5rem;
-  color: #585858;
-  font-weight: 600;
-`;
-const SurveyEndDate = styled.div`
-  font-size: 0.4rem;
-  color: #585858;
-  font-weight: 400;
-`;
-const SurveyText = styled.p`
-  color: #585858;
-  font-size: 0.6rem;
-  font-weight: 500;
-  padding: 5px 0px;
-`;
-const Text = styled.p``;
+const SurveyTitle = styled.div``;
+const SurveyEndDate = styled.div``;
 
 const surveysData = [
   { title: "디자인 인식 조사", endDate: "11.03" },
@@ -203,20 +194,33 @@ const surveysData = [
   { title: "디자인 인식 조사", endDate: "11.03" },
 ];
 
+type TabI = "all" | "question" | "share" | "community" | "survey";
+
 export default function Home() {
   const setHomeData = useSetRecoilState(homeDataState);
   const [category, setCategory] = useRecoilState(categoryState);
   const data = useRecoilValue(getData(category));
+  const [selectedTab, setSelectedTab] = useState<TabI>("all");
+
+  const getUser = async () => {
+    try {
+      const data = await (
+        await fetch("http://localhost:8080/api/knowledge")
+      ).json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    // API 요청 응답 시간을 1초 정도라 생각했을 때
-    setTimeout(() => {
-      setHomeData(faker);
-    }, 500);
+    setHomeData(faker);
+    getUser();
   }, []);
 
-  function handleTabClick(e: CategoryStateI) {
+  function handleTabClick(e: TabI) {
     setCategory(e);
+    setSelectedTab(e);
   }
 
   return (
@@ -232,7 +236,7 @@ export default function Home() {
           <BannerContent>
             <Text>
               제가 알아낸 엄청난 사실에 대해 알려드리겠습니다. 그것은 학교를
-              안가도 ..
+              안가도 성적을 잘 받는 방법이 있다는 ...
             </Text>
           </BannerContent>
           <BannerActivity>
@@ -244,60 +248,68 @@ export default function Home() {
           </BannerActivity>
         </Banner>
       </BannerContainer>
-      <ContentContainer>
-        <TabBar>
-          <Tab>
-            <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("question")}>
-                <TabSpan>질문</TabSpan>
-              </TabAnchor>
-            </TabDiv>
-            <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("share")}>
-                <TabSpan>지식공유</TabSpan>
-              </TabAnchor>
-            </TabDiv>
-            <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("community")}>
-                <TabSpan>커뮤니티</TabSpan>
-              </TabAnchor>
-            </TabDiv>
-            <TabDiv>
-              <TabAnchor onClick={() => handleTabClick("survey")}>
-                <TabSpan>설문</TabSpan>
-              </TabAnchor>
-            </TabDiv>
-          </Tab>
-          <Ranking>
-            <RankinigTitle>
-              <RankingSpan>
-                이달의 랭킹 <FaChessQueen size={8} color="#855ff3" />
-              </RankingSpan>
-            </RankinigTitle>
-            <Rank>
-              <RankingSpan>1. 가곽고 2. 나눈넝 3. 다돋두</RankingSpan>
-            </Rank>
-          </Ranking>
-        </TabBar>
-        <Content>
-          <Writings>{data && <HomeSwiper data={data} />}</Writings>
-          <Side>
-            <AboutR></AboutR>
-            <SurveyContainer>
-              <SurveyText>지금 진행 중인 설문조사</SurveyText>
-              <Surveys>
-                {surveysData &&
-                  surveysData.slice(0, 4).map((item) => (
-                    <Survey>
-                      <SurveyTitle>{item.title}</SurveyTitle>
-                      <SurveyEndDate>~{item.endDate}</SurveyEndDate>
-                    </Survey>
-                  ))}
-              </Surveys>
-            </SurveyContainer>
-          </Side>
-        </Content>
-      </ContentContainer>
+      <TabBar>
+        <Tab>
+          <TabAnchor
+            isSelected={selectedTab === "all"}
+            onClick={() => handleTabClick("all")}
+          >
+            <span>전체</span>
+          </TabAnchor>
+          <TabAnchor
+            isSelected={selectedTab === "question"}
+            onClick={() => handleTabClick("question")}
+          >
+            <span>질문</span>
+          </TabAnchor>
+          <TabAnchor
+            isSelected={selectedTab === "share"}
+            onClick={() => handleTabClick("share")}
+          >
+            <span>지식공유</span>
+          </TabAnchor>
+          <TabAnchor
+            isSelected={selectedTab === "community"}
+            onClick={() => handleTabClick("community")}
+          >
+            <span>커뮤니티</span>
+          </TabAnchor>
+          <TabAnchor
+            isSelected={selectedTab === "survey"}
+            onClick={() => handleTabClick("survey")}
+          >
+            <span>설문</span>
+          </TabAnchor>
+        </Tab>
+        <Ranking>
+          <RankinigTitle>
+            <span>이달의 랭킹</span>
+          </RankinigTitle>
+          <Rank>
+            <span>1. 가곽고</span>
+            <span>2. 나눈넝</span>
+            <span>3. 다돋두</span>
+          </Rank>
+        </Ranking>
+      </TabBar>
+      <Content>
+        <Writings>{data && <HomeSwiper data={data} />}</Writings>
+        <Side>
+          <AboutR></AboutR>
+          <SurveyContainer>
+            <SurveyText>지금 진행 중인 설문조사</SurveyText>
+            <Surveys>
+              {surveysData &&
+                surveysData.slice(0, 4).map((item) => (
+                  <Survey>
+                    <SurveyTitle>{item.title}</SurveyTitle>
+                    <SurveyEndDate>~{item.endDate}</SurveyEndDate>
+                  </Survey>
+                ))}
+            </Surveys>
+          </SurveyContainer>
+        </Side>
+      </Content>
     </>
   );
 }

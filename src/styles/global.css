@@ -1,0 +1,17 @@
+:root {
+  --color-light-purple: #f5f3ff;
+  --color-purple: #6129e9;
+  --color-input: #ceb2ff;
+  --color-mint-banner: #9ce3cf;
+  --color-mint-hash: #d6f3eb;
+  --color-blue: #2e40bb;
+  --color-white: #fff;
+  --color-black: #101010;
+  --color-border: #ddd;
+  --color-gray: #49494c;
+  --color-white-gray: #fbfbfb;
+  --font-size-logo: 2.5rem;
+  --font-size-small: 0.8rem;
+  --font-size-medium: 1rem;
+  --font-size-large: 2rem;
+}

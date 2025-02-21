@@ -6,27 +6,28 @@ const DropdownContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 5px;
-  border-right: 0.6px solid #d9d9d9;
+  padding-right: 20px;
+  border-right: 0.5px solid var(--color-border);
 `;
 const DropdownButton = styled.button`
-  width: 60px;
-  height: 16px;
-  background-color: #7d32ff;
-  color: white;
+  width: 100px;
+  height: 30px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
   margin: 0;
   padding: 3px 0;
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
+  box-shadow: 0px 2px 4px 0px rgba(43, 39, 53, 0.15);
 `;
 const DropdownMenu = styled.ul<{ isOpen: boolean }>`
   display: ${(props) => (props.isOpen ? "block" : "none")};
   position: absolute;
   top: 17px;
   left: 0;
-  background-color: #7f37fb;
+  background-color: var(--color-purple);
   border-radius: 3px;
   list-style: none;
   z-index: 10;

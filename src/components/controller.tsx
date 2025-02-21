@@ -15,6 +15,10 @@ const ControllerContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 1470px) {
+    display: none;
+  }
 `;
 const PageContainer = styled.div`
   width: 100%;

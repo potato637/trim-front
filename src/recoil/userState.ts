@@ -21,3 +21,8 @@ export const additionalDataModalState = atom<boolean>({
   key: "additionalDataModaltSate",
   default: false,
 });
+
+export const isLoggedIn = atom<boolean>({
+  key: "isLoggedIn",
+  default: false,
+});

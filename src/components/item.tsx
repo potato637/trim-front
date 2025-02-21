@@ -3,26 +3,26 @@ import { HomeDataStateI } from "../recoil/data";
 
 const Container = styled.div`
   width: 100%;
-  height: 80px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #e4dfff;
+  background-color: var(--color-white);
   border-radius: 5px;
-  margin: 0;
 `;
 const Info = styled.div`
   span {
-    font-size: 0.4rem;
-    display: block;
+    font-size: var(--font-size-small);
   }
 `;
 const Title = styled.div`
   overflow: hidden;
   span {
-    font-size: 0.5rem;
+    font-size: var(--font-size-medium);
+    color: var(--color-black);
+    font-weight: 300;
   }
 `;
 

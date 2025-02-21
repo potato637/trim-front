@@ -5,6 +5,7 @@ import Footer from "./layouts/footer";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Controller from "./components/controller";
+import "../src/styles/global.css";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -58,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
     border-spacing: 0;
   }
   html {
-    font-size: 14px;
+    font-size: 16px;
     overflow-y: scroll;
   }
   body {
@@ -70,24 +71,27 @@ const AppWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-width: 1400px;
+  margin: 0;
 `;
 const ContentWrapper = styled.div`
+  margin: 0;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  min-width: 1400px;
   min-height: 100vh;
 `;
 const MainWrapper = styled.main`
   flex: 1;
-  width: 50%;
-  max-width: 600px;
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-top: 20px;
+  width: 1000px;
 `;
 
 const queryClient = new QueryClient();

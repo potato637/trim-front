@@ -1,13 +1,13 @@
 import Hot from "../components/hot";
-import QuestionSwiper from "../components/questionswiper";
 import Searchwithtag from "../components/searchwithtag";
+import Swipertest from "../components/swipertest";
 
 export default function Questiontab() {
   return (
     <>
       <Hot />
       <Searchwithtag />
-      <QuestionSwiper itemsPerPage={10} />
+      <Swipertest />
     </>
   );
 }

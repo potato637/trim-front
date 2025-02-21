@@ -1,7 +1,18 @@
-import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import Viewsurvey from "../components/viewsurvey";
+
+const SurveyContainer = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  .sv-title-actions {
+    font-size: 0.1rem;
+  }
+`;
 
 export default function Survey() {
-  const { itemId } = useParams();
-
-  return <h2>{itemId}</h2>;
+  return (
+    <SurveyContainer>
+      <Viewsurvey />
+    </SurveyContainer>
+  );
 }

@@ -19,14 +19,13 @@ const SwiperContainer = styled.div`
   align-items: center;
 `;
 const StyledSwiper = styled(Swiper)`
-  width: 90%;
+  width: 95%;
   height: 90%;
 
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
     margin: 0;
   }
 `;
@@ -34,7 +33,7 @@ const Pagebutton = styled.button`
   position: absolute;
   z-index: 10;
   cursor: pointer;
-  font-size: 0.6rem;
+  font-size: var(--font-size-small);
 
   &.prev {
     left: 0;
@@ -49,7 +48,7 @@ const Pagebutton = styled.button`
 
   background: none;
   border: none;
-  color: #855ff3;
+  color: var(--color-purple);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,8 +6,9 @@ import { FaHashtag } from "react-icons/fa6";
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  margin: 20px 0;
 `;
 const SearchContainer = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const SearchContainer = styled.div`
   align-items: center;
 `;
 const SearchHashContainer = styled.div`
+  margin-left: 15px;
   display: flex;
   flex-grow: 1;
 `;
@@ -25,54 +27,49 @@ const SelectedHashtags = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 `;
 const Hashtag = styled.div`
-  font-size: 0.5rem;
-  display: flex;
-  justify-content: center;
+  font-size: var(--font-size-small);
+  display: inline-flex;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #f5f3ff;
-  padding: 5px;
+  background-color: var(--color-mint-hash);
+  padding: 8px 20px;
   min-width: 30px;
-  max-width: 100px;
-  max-height: 17px;
-  border-radius: 45px;
-  color: #2e40bb;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 500;
+  max-width: 200px;
+  height: 30px;
+  border-radius: 50px;
+  color: var(--color-gray);
+  font-weight: 400;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  & > p {
+    overflow: hidden;
+    white-space: nowrap;
+  }
 `;
 const HashInputContainer = styled.div`
-  width: 100%;
-  max-width: 160px;
   position: relative;
   display: flex;
   align-items: center;
 `;
-const HashForm = styled.form`
-  margin: 0;
-  padding: 0;
-  width: 160px;
-`;
+
 const HashInput = styled.input`
-  width: calc(100% - 2rem);
-  height: 16px;
-  border: 0.5px solid #ceb2ff;
-  border-radius: 10px;
-  padding: 0 1rem;
-  font-size: 0.5rem;
-  color: #8045fa;
+  width: 200px;
+  height: 30px;
+  border: 0.5px solid var(--color-input);
+  border-radius: 20px;
+  padding: 0 var(--font-size-large);
+  font-size: var(--font-size-small);
+  color: var(--color-gray);
   &:focus {
     outline: none;
     box-shadow: none;
-    border: 0.7px solid #ceb2ff;
+    border: 0.7px solid var(--color-purple);
   }
   &::placeholder {
-    font-size: 0.5rem;
-    color: #8045fa;
+    color: var(--color-purple);
   }
 `;
 const HashIcon = styled(FaHashtag)`
@@ -80,9 +77,9 @@ const HashIcon = styled(FaHashtag)`
   font-weight: 400;
   top: 50%;
   transform: translateY(-50%);
-  left: 0.5rem;
-  font-size: 0.5rem;
-  color: #8045fa;
+  left: var(--font-size-medium);
+  font-size: var(--font-size-small);
+  color: var(--color-purple);
 `;
 
 export default function Searchwithtag() {
@@ -110,24 +107,23 @@ export default function Searchwithtag() {
         <SearchHashContainer>
           <SelectedHashtags>
             {hashtags?.map((item, index) => (
-              <Hashtag
-                key={index}
-                onClick={() => handleRemoveHashTag(index)}
-              >{`# ${item}`}</Hashtag>
+              <Hashtag key={index} onClick={() => handleRemoveHashTag(index)}>
+                <p>{`# ${item}`}</p>
+              </Hashtag>
             ))}
           </SelectedHashtags>
         </SearchHashContainer>
-        <HashInputContainer>
-          <HashForm onSubmit={(event) => handleSubmit(event)}>
-            <HashIcon />
-            <HashInput
-              value={value}
-              placeholder="해시태그 검색"
-              onChange={(event) => handleChange(event)}
-            />
-          </HashForm>
-        </HashInputContainer>
       </SearchContainer>
+      <HashInputContainer>
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <HashIcon />
+          <HashInput
+            value={value}
+            placeholder="해시태그 검색"
+            onChange={(event) => handleChange(event)}
+          />
+        </form>
+      </HashInputContainer>
     </Container>
   );
 }
