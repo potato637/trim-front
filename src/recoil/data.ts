@@ -18,7 +18,7 @@ export type CategoryStateI =
   | "all"
   | "question"
   | "community"
-  | "share"
+  | "knowledge"
   | "survey";
 export const categoryState = atom<CategoryStateI>({
   key: "category",

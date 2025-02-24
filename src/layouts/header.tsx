@@ -69,7 +69,7 @@ const InputContainer = styled.div`
 const Input = styled.input`
   width: 350px;
   font-size: var(--font-size-small);
-  padding: 7px 10px;
+  padding: 7px 0 7px 15px;
   border-radius: 16px;
   border: 0.5px solid #757575;
   margin-left: 10px;

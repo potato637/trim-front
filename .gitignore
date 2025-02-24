@@ -27,3 +27,5 @@ yarn-error.log*
 # text file
 tofix.txt
 mdecss.txt
+
+/src/api.js

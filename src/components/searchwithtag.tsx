@@ -29,7 +29,7 @@ const SelectedHashtags = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const Hashtag = styled.div`
+const Hashtag = styled.button`
   font-size: var(--font-size-small);
   display: inline-flex;
   justify-content: flex-start;
@@ -40,14 +40,13 @@ const Hashtag = styled.div`
   max-width: 200px;
   height: 30px;
   border-radius: 50px;
+  border: none;
   color: var(--color-gray);
   font-weight: 400;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  & > p {
-    overflow: hidden;
-    white-space: nowrap;
-  }
+  overflow: hidden;
+  white-space: nowrap;
 `;
 const HashInputContainer = styled.div`
   position: relative;
@@ -62,7 +61,7 @@ const HashInput = styled.input`
   border-radius: 20px;
   padding: 0 var(--font-size-large);
   font-size: var(--font-size-small);
-  color: var(--color-gray);
+  color: var(--color-purple);
   &:focus {
     outline: none;
     box-shadow: none;
@@ -108,7 +107,7 @@ export default function Searchwithtag() {
           <SelectedHashtags>
             {hashtags?.map((item, index) => (
               <Hashtag key={index} onClick={() => handleRemoveHashTag(index)}>
-                <p>{`# ${item}`}</p>
+                {`# ${item}`}
               </Hashtag>
             ))}
           </SelectedHashtags>

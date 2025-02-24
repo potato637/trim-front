@@ -4,14 +4,14 @@ import { PiEyesFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { homeDataState, categoryState, getData } from "../recoil/data";
-import { faker } from "../faker";
 import HomeSwiper from "../components/homeswiper";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 const BannerContainer = styled.div`
   display: flex;
   width: 100%;
   min-height: 240px;
-  border-radius: 3px;
+  border-radius: 6px;
   background: linear-gradient(
     90deg,
     var(--color-purple) 0%,
@@ -133,7 +133,6 @@ const Writings = styled.div`
   width: 72%;
   max-height: 450px;
 `;
-
 const Side = styled.div`
   width: 25%;
   max-height: 450px;
@@ -194,29 +193,13 @@ const surveysData = [
   { title: "디자인 인식 조사", endDate: "11.03" },
 ];
 
-type TabI = "all" | "question" | "share" | "community" | "survey";
+type TabI = "all" | "question" | "knowledge" | "community" | "survey";
 
 export default function Home() {
   const setHomeData = useSetRecoilState(homeDataState);
+  const homeData = useRecoilValue(homeDataState);
   const [category, setCategory] = useRecoilState(categoryState);
-  const data = useRecoilValue(getData(category));
   const [selectedTab, setSelectedTab] = useState<TabI>("all");
-
-  const getUser = async () => {
-    try {
-      const data = await (
-        await fetch("http://localhost:8080/api/knowledge")
-      ).json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    setHomeData(faker);
-    getUser();
-  }, []);
 
   function handleTabClick(e: TabI) {
     setCategory(e);
@@ -263,8 +246,8 @@ export default function Home() {
             <span>질문</span>
           </TabAnchor>
           <TabAnchor
-            isSelected={selectedTab === "share"}
-            onClick={() => handleTabClick("share")}
+            isSelected={selectedTab === "knowledge"}
+            onClick={() => handleTabClick("knowledge")}
           >
             <span>지식공유</span>
           </TabAnchor>
@@ -293,15 +276,15 @@ export default function Home() {
         </Ranking>
       </TabBar>
       <Content>
-        <Writings>{data && <HomeSwiper data={data} />}</Writings>
+        <Writings>{homeData && <HomeSwiper data={homeData} />}</Writings>
         <Side>
           <AboutR></AboutR>
           <SurveyContainer>
             <SurveyText>지금 진행 중인 설문조사</SurveyText>
             <Surveys>
               {surveysData &&
-                surveysData.slice(0, 4).map((item) => (
-                  <Survey>
+                surveysData.slice(0, 4).map((item, index) => (
+                  <Survey key={index}>
                     <SurveyTitle>{item.title}</SurveyTitle>
                     <SurveyEndDate>~{item.endDate}</SurveyEndDate>
                   </Survey>
