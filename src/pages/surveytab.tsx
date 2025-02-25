@@ -1,3 +1,4 @@
+import React from "react";
 import SurveyBanner from "../components/surveybanner";
 import SurveySwiper from "../components/surveyswiper";
 import SurveyTag from "../components/surveytag";

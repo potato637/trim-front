@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BsPencilFill } from "react-icons/bs";
 
@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 const BaseBtn = styled.div<{ isActive: boolean }>`
   background-color: ${({ isActive }) => (isActive ? "blue" : "white")};
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
   padding: 5px 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 0.5px;
   border-radius: 15px;
@@ -45,7 +45,7 @@ const WriteContainer = styled.div``;
 const WriteBtn = styled.div`
   position: relative;
   padding: 5px 1.2rem 5px 8px;
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
   border: 0.5px solid #6129e9;
   border-radius: 15px;
   background-color: #f5f3ff;
@@ -57,7 +57,7 @@ const PencilIcon = styled(BsPencilFill)`
   top: 50%;
   transform: translateY(-50%);
   right: 0.3rem;
-  font-size: 0.6rem;
+  font-size: var(--font-size-small);
   color: #8045fa;
 `;
 

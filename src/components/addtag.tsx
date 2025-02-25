@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 `;
 const SearchContainer = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const SearchContainer = styled.div`
   align-items: center;
 `;
 const SearchHashContainer = styled.div`
+  margin-left: 20px;
   display: flex;
   flex-grow: 1;
 `;
@@ -25,54 +27,51 @@ const SelectedHashtags = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 5px;
+  gap: 15px;
 `;
 const Hashtag = styled.div`
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #f5f3ff;
-  padding: 5px;
+  background-color: var(--color-mint-hash);
+  padding: 5px 15px;
   min-width: 30px;
   max-width: 100px;
-  max-height: 17px;
-  border-radius: 45px;
-  color: #2e40bb;
+  height: 30px;
+  border-radius: 50px;
+  color: var(--color-gray);
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
   cursor: pointer;
 `;
 const HashInputContainer = styled.div`
   width: 100%;
-  max-width: 160px;
   position: relative;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-`;
-const HashForm = styled.form`
-  margin: 0;
-  padding: 0;
-  width: 160px;
+  & > form {
+    position: absolute;
+  }
 `;
 const HashInput = styled.input`
-  width: calc(100% - 2rem);
-  height: 16px;
-  border: 0.5px solid #ceb2ff;
-  border-radius: 10px;
-  padding: 0 1rem;
-  font-size: 0.5rem;
-  color: #8045fa;
+  width: 200px;
+  height: 30px;
+  border: 0.5px solid var(--color-input);
+  border-radius: 20px;
+  padding: 0 1.5rem;
+  font-size: var(--font-size-small);
+  color: var(--color-purple);
   &:focus {
     outline: none;
     box-shadow: none;
-    border: 0.7px solid #ceb2ff;
+    border: 0.7px solid var(--color-purple);
   }
   &::placeholder {
-    font-size: 0.5rem;
-    color: #8045fa;
+    font-size: var(--font-size-small);
+    color: var(--color-purple);
   }
 `;
 const HashIcon = styled(FaHashtag)`
@@ -81,8 +80,8 @@ const HashIcon = styled(FaHashtag)`
   top: 50%;
   transform: translateY(-50%);
   left: 0.5rem;
-  font-size: 0.5rem;
-  color: #8045fa;
+  font-size: var(--font-size-small);
+  color: var(--color-purple);
 `;
 
 export default function Addtag() {
@@ -118,14 +117,14 @@ export default function Addtag() {
           </SelectedHashtags>
         </SearchHashContainer>
         <HashInputContainer>
-          <HashForm onSubmit={(event) => handleSubmit(event)}>
+          <form onSubmit={(event) => handleSubmit(event)}>
             <HashIcon />
             <HashInput
               value={value}
               placeholder="해시태그 추가"
               onChange={(event) => handleChange(event)}
             />
-          </HashForm>
+          </form>
         </HashInputContainer>
       </SearchContainer>
     </Container>

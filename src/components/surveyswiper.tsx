@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { getData, HomeDataStateI } from "../recoil/data";
 import ReactPaginate from "react-paginate";
 import React, { useState } from "react";
-import surveyImg from "../assets/survey.jpeg";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -39,7 +38,7 @@ const ItemContainer = styled.div`
 const TopContainer = styled.div`
   width: 100%;
   flex: 5;
-  background: url(${surveyImg}) center/cover no-repeat;
+  background: url("/assets/survey.jpeg") center/cover no-repeat;
 `;
 const BottomContainer = styled.div`
   flex: 2;

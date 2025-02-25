@@ -1,11 +1,11 @@
+import React from "react";
 import styled from "styled-components";
 import { FaComments, FaThumbsUp } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { homeDataState, categoryState, getData } from "../recoil/data";
+import { useState } from "react";
 import HomeSwiper from "../components/homeswiper";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { datasAPI } from "../api";
+import { useQuery } from "@tanstack/react-query";
 
 const BannerContainer = styled.div`
   display: flex;
@@ -193,18 +193,39 @@ const surveysData = [
   { title: "디자인 인식 조사", endDate: "11.03" },
 ];
 
-type TabI = "all" | "question" | "knowledge" | "community" | "survey";
-
 export default function Home() {
-  const setHomeData = useSetRecoilState(homeDataState);
-  const homeData = useRecoilValue(homeDataState);
-  const [category, setCategory] = useRecoilState(categoryState);
-  const [selectedTab, setSelectedTab] = useState<TabI>("all");
-
+  type TabI = "question" | "knowledge" | "community" | "survey";
+  // tab 클릭
+  const [selectedTab, setSelectedTab] = useState<TabI>("question");
   function handleTabClick(e: TabI) {
-    setCategory(e);
     setSelectedTab(e);
   }
+
+  // data fetching
+  const { data: home_question } = useQuery({
+    queryKey: ["home_question"],
+    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+  });
+  const { data: home_knowledge } = useQuery({
+    queryKey: ["home_knowledge"],
+    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+  });
+  const { data: home_community } = useQuery({
+    queryKey: ["home_community"],
+    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+  });
+  const { data: home_survey } = useQuery({
+    queryKey: ["home_survey"],
+    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+  });
+
+  const dataMapping = {
+    question: home_question,
+    knowledge: home_knowledge,
+    community: home_community,
+    survey: home_survey,
+  };
+  const selectedData = dataMapping[selectedTab];
 
   return (
     <>
@@ -233,12 +254,6 @@ export default function Home() {
       </BannerContainer>
       <TabBar>
         <Tab>
-          <TabAnchor
-            isSelected={selectedTab === "all"}
-            onClick={() => handleTabClick("all")}
-          >
-            <span>전체</span>
-          </TabAnchor>
           <TabAnchor
             isSelected={selectedTab === "question"}
             onClick={() => handleTabClick("question")}
@@ -276,7 +291,9 @@ export default function Home() {
         </Ranking>
       </TabBar>
       <Content>
-        <Writings>{homeData && <HomeSwiper data={homeData} />}</Writings>
+        <Writings>
+          {selectedData && <HomeSwiper data={selectedData} />}
+        </Writings>
         <Side>
           <AboutR></AboutR>
           <SurveyContainer>

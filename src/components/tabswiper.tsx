@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -20,7 +20,7 @@ const ItemBox = styled.div`
   padding: 20px;
   text-align: center;
   border-radius: 8px;
-  font-size: 1.2rem;
+  font-size: var(--font-size-medium);
 `;
 const LoadMoreButton = styled.button`
   margin-top: 20px;
@@ -37,36 +37,27 @@ const LoadMoreButton = styled.button`
   }
 `;
 
-// Fake Data Generator
-const generateItems = (start: number, count: number) => {
-  return Array.from({ length: count }, (_, i) => `Item ${start + i + 1}`);
-};
+interface TabSwiperI {
+  data: any[];
+  fetchNextPage?: () => void;
+  hasNextPage: boolean;
+}
 
-export default function Swipertest() {
-  const [items, setItems] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
-  const itemsPerPage = 10;
-
-  // Load initial items
-  useEffect(() => {
-    setItems(generateItems(0, itemsPerPage));
-  }, []);
-
-  // Function to load more items
-  const loadMore = () => {
-    const newItems = generateItems(items.length, itemsPerPage);
-    setItems((prev) => [...prev, ...newItems]);
-    setPage(page + 1);
-  };
-
+export default function Tabswiper({
+  data,
+  fetchNextPage,
+  hasNextPage,
+}: TabSwiperI) {
   return (
     <Container>
       <GridContainer>
-        {items.map((item, index) => (
+        {data?.map((item, index) => (
           <ItemBox key={index}>{item}</ItemBox>
         ))}
       </GridContainer>
-      <LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
+      {hasNextPage && (
+        <LoadMoreButton onClick={fetchNextPage}>Load More</LoadMoreButton>
+      )}
     </Container>
   );
 }

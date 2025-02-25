@@ -4,65 +4,53 @@ import "easymde/dist/easymde.min.css";
 import styled from "styled-components";
 
 const StyledEasyMDE = styled.div`
-  font-size: 0.6rem;
+  font-size: var(--font-size-medium);
   width: 100%;
   display: flex;
   flex-direction: column;
+
   .editor-container {
     display: flex;
     width: 100%;
     overflow: hidden;
   }
-  .editor-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: white;
-    padding: 10px;
-  }
+
   .editor-toolbar {
     display: flex;
+    gap: 5px;
     padding: 0;
     width: 100%;
-    height: 20px;
+    height: 50px;
     align-items: center;
     border: none;
     border-radius: 0px;
-    border-top: 0.5px solid #ccc;
+    border-top: 0.5px solid var(--color-border);
     z-index: 100;
   }
+
   .editor-toolbar button {
-    font-size: 0.5rem;
+    font-size: var(--font-size-small);
     font-weight: 500;
-    min-width: 15px;
+    width: 20px;
     height: 20px;
     padding: 0px;
     margin: 0px;
-    color: #a3a1a1;
+    color: var(--color-mde-toolbar);
   }
+
   .editor-toolbar button.active,
   .editor-toolbar button:hover {
     background: none;
     border: none;
-    color: #000;
+    color: var(--color-black);
   }
+
   .CodeMirror {
     padding: 0;
     border: none;
     border-radius: 0px;
-    border-bottom: 0.5px solid #ccc;
-    line-height: 1rem;
-  }
-  .CodeMirror pre {
-    padding: 0;
-    margin: 0;
-  }
-
-  /* full-screen */
-  .EasyMDEContainer .CodeMirror-scroll {
-  }
-  .editor-toolbar.fullscreen {
-    margin-top: 30px;
+    border-bottom: 0.5px solid var(--color-border);
+    line-height: 1.5rem;
   }
 `;
 const TitleContainer = styled.div`
@@ -72,6 +60,7 @@ const TitleContainer = styled.div`
 `;
 const Title = styled.input`
   flex: 9;
+  font-size: var(--font-size-large);
   font-weight: 600;
   padding: 10px 0px;
   border: none;
@@ -87,28 +76,29 @@ const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   & > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    font-size: 0.45rem;
-    min-width: 40px;
-    border-radius: 10px;
+    width: 100px;
+    font-size: var(--font-size-small);
+    border-radius: 50px;
     border: none;
-    padding: 3px;
+    padding: 8px 0;
   }
   & > button:first-child {
-    color: #37009c;
-    background-color: #fbfbfb;
+    color: var(--color-purple);
+    background-color: var(--color-white-gray);
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   }
   & > button:last-child {
-    color: #fff;
-    background-color: #6129e9;
+    color: var(--color-white-gray);
+    background-color: var(--color-purple);
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   }
 `;
-const Save = styled.button``;
-const Submit = styled.button``;
 
 export default function Mde() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -144,8 +134,6 @@ export default function Mde() {
         "image",
         "link",
         "code",
-        "|",
-        "side-by-side",
       ],
       placeholder: "내용을 입력해주세요!",
       status: false,
@@ -171,12 +159,12 @@ export default function Mde() {
           placeholder="제목을 입력해주세요"
         />
         <Buttons>
-          <Save type="button" onClick={handleSave}>
+          <button type="button" onClick={handleSave}>
             임시저장
-          </Save>
-          <Submit type="button" onClick={handleSubmit}>
+          </button>
+          <button type="button" onClick={handleSubmit}>
             제출하기
-          </Submit>
+          </button>
         </Buttons>
       </TitleContainer>
       <textarea ref={textareaRef} />

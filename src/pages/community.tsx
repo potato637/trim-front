@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import userSVG from "../assets/userSVG.svg";
 import Comments from "../components/comments";
 
 const MainContent = styled.div`
@@ -29,7 +28,7 @@ const WriterContainer = styled.div`
 const WriterSVG = styled.div`
   width: 1rem;
   height: 1rem;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const CommunityText = styled.p`
   font-size: 0.45rem;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import userSVG from "../assets/userSVG.svg";
 import React, { useState } from "react";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 
@@ -120,7 +119,7 @@ const UserImg = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url(/assets/userSVG.svg) center/cover no-repeat;
 `;
 const Content = styled.div`
   width: 92%;
@@ -181,7 +180,7 @@ const ReUserImg = styled.div`
   height: 20px;
   top: 0;
   right: 0;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 
 interface CommentI {

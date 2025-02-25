@@ -2,10 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import Comments from "../components/comments";
 import { TbPencilCheck } from "react-icons/tb";
-import answerImg from "../assets/answerImg.jpeg";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 import React from "react";
-import userSVG from "../assets/userSVG.svg";
 
 const MainContent = styled.div`
   width: 100%;
@@ -31,7 +29,7 @@ const WriterContainer = styled.div`
 const WriterSVG = styled.div`
   width: 1rem;
   height: 1rem;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ContentContainer = styled.div`
   font-size: 0.5rem;
@@ -170,7 +168,7 @@ const answersData: AnswerI[] = [
       },
       {
         type: "image",
-        src: answerImg,
+        src: "/assets/answerImg.jpeg",
         alt: "Placeholder image",
       },
       {
@@ -180,7 +178,7 @@ const answersData: AnswerI[] = [
       },
       {
         type: "image",
-        src: answerImg,
+        src: "/assets/answerImg.jpeg",
         alt: "Another placeholder image",
       },
       {

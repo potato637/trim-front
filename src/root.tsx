@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "./layouts/header";
 import { Outlet } from "react-router-dom";
@@ -85,6 +86,7 @@ const ContentWrapper = styled.div`
   min-height: 100vh;
 `;
 const MainWrapper = styled.main`
+  position: relative;
   flex: 1;
   width: 60%;
   display: flex;
@@ -102,10 +104,10 @@ function Root() {
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
         <AppWrapper>
-          <Controller />
           <ContentWrapper>
             <Header />
             <MainWrapper>
+              <Controller />
               <Outlet />
             </MainWrapper>
             <Footer />

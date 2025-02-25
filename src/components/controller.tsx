@@ -1,46 +1,47 @@
+import React from "react";
 import styled from "styled-components";
 import { FaArrowUp, FaArrowLeft } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi2";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ControllerContainer = styled.div`
-  position: fixed;
-  top: 10%;
-  right: 13%;
-  width: 2rem;
+  position: absolute;
+  top: var(--font-size-medium);
+  right: -4rem;
   z-index: 1000;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 
-  @media (max-width: 1470px) {
+  @media (max-width: 1300px) {
     display: none;
   }
 `;
 const PageContainer = styled.div`
-  width: 100%;
   display: flex;
+  width: 3rem;
+  height: 8rem;
+  padding: 10px 0;
   flex-direction: column;
-  gap: 13px;
-  background-color: #fbfbfb;
-  border: 0.5px solid #cbcdd6;
+  gap: 20px;
+  background-color: var(--color-white-gray);
+  border: 0.5px solid var(--color-border);
   border-radius: 30px;
-  padding: 10px 0px;
   & > div {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #6129e9;
-    gap: 4px;
+    color: var(--color-purple);
+    gap: 6px;
     cursor: pointer;
   }
   & > div > span {
-    font-size: 0.4rem;
+    font-size: var(--font-size-small);
   }
 `;
 const TopContainer = styled.div``;
@@ -50,10 +51,10 @@ const WriteContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #6129e9;
-  font-size: 0.8rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 1rem;
+  font-size: var(--font-size-medium);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
   cursor: pointer;
 `;
 

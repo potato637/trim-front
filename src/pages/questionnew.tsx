@@ -1,3 +1,4 @@
+import React from "react";
 import Addtag from "../components/addtag";
 import Mde from "../components/mde";
 import styled from "styled-components";

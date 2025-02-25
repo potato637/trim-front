@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import shareImg from "../assets/answerImg.jpeg";
-import userSVG from "../assets/userSVG.svg";
 import { useState } from "react";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 
@@ -28,7 +26,7 @@ const WriterContainer = styled.div`
 const WriterSVG = styled.div`
   width: 1rem;
   height: 1rem;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ShareText = styled.p`
   font-size: 0.5rem;
@@ -51,7 +49,7 @@ const About = styled.div`
 const UserImg = styled.div`
   width: 70px;
   height: 70px;
-  background: url(${userSVG}) center/cover no-repeat;
+  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const UserInfo = styled.div`
   display: flex;
@@ -120,7 +118,7 @@ const shareData: ShareDataI = {
   content: [
     {
       type: "image",
-      src: shareImg,
+      src: "/assets/answerImg.jpeg",
       alt: "image",
     },
     {
