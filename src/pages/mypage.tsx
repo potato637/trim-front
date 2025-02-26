@@ -1,8 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
   width: 100%;
-  min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -16,25 +16,38 @@ const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  & > div {
+    height: 300px;
+    background-color: var(--color-light-purple);
+    border: 0.3px solid var(--color-light-purple-border);
+    border-radius: 5px;
+  }
 `;
 const AbatarContainer = styled.div`
-  width: 30%;
   flex: 5;
-  border-radius: 5px;
-  background-color: #f5f3ff;
-  border: 0.3px solid #d9c3ff;
 `;
 const BadgeContainer = styled.div`
-  width: 30%;
   flex: 11;
-  border-radius: 5px;
-  background-color: #f5f3ff;
-  border: 0.3px solid #d9c3ff;
 `;
 const BottomContainer = styled.div`
+  margin-top: 20px;
   width: 100%;
+  height: 150px;
   flex: 5;
-  background-color: green;
+  color: var(--color-purple);
+`;
+const BottomTitle = styled.div``;
+const BottomItemContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+`;
+const BottomItem = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default function Mypage() {
@@ -44,7 +57,16 @@ export default function Mypage() {
         <AbatarContainer></AbatarContainer>
         <BadgeContainer></BadgeContainer>
       </TopContainer>
-      <BottomContainer></BottomContainer>
+      <BottomContainer>
+        <BottomTitle>활동 내역</BottomTitle>
+        <BottomItemContainer>
+          <BottomItem>1</BottomItem>
+          <BottomItem>2</BottomItem>
+          <BottomItem>3</BottomItem>
+          <BottomItem>4</BottomItem>
+          <BottomItem>5</BottomItem>
+        </BottomItemContainer>
+      </BottomContainer>
     </Container>
   );
 }

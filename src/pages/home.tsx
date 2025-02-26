@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { FaComments, FaThumbsUp } from "react-icons/fa6";
+import { FaComments, FaThumbsUp, FaRegComments } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
 import { useState } from "react";
-import HomeSwiper from "../components/homeswiper";
 import { datasAPI } from "../api";
 import { useQuery } from "@tanstack/react-query";
+import { BiLike } from "react-icons/bi";
+import { QuestionDataI, QuestionItemI } from "../types/questionType";
+import { KnowledgeDataI, KnowledgeItemI } from "../types/knowledgeType";
+import { FreeTalkDataI, FreeTalkItemI } from "../types/communityType";
 
 const BannerContainer = styled.div`
   display: flex;
@@ -74,6 +77,7 @@ const Text = styled.p`
   width: 350px;
 `;
 const TabBar = styled.div`
+  min-height: 45px;
   padding: 0 3px;
   display: flex;
   flex: 1;
@@ -122,20 +126,81 @@ const Content = styled.div`
   display: flex;
   justify-content: space-between;
   flex: 15;
+  align-items: stretch;
 `;
 const Writings = styled.div`
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--color-white-gray);
   border-radius: 5px;
   width: 72%;
-  max-height: 450px;
+`;
+const ItemContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 90%;
+  height: 90%;
+`;
+const ItemBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--color-white);
+  padding: 20px;
+  gap: 20px;
+`;
+const ItemMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  & > div {
+    font-size: var(--font-size-extra-small);
+    height: 25px;
+  }
+`;
+const Category = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border-radius: 20px;
+`;
+const Extra = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+`;
+const ItemDate = styled.div`
+  color: var(--color-date);
+`;
+const Like = styled.div`
+  color: var(--color-like);
+`;
+const LikeIcon = styled(BiLike)`
+  font-size: var(--font-size-small);
+`;
+const Comment = styled.div`
+  color: var(--color-comment);
+`;
+const CommentIcon = styled(FaRegComments)`
+  font-size: var(--font-size-small);
+`;
+const ItemTitle = styled.div`
+  color: var(--color-gray);
+  font-size: var(--font-size-medium);
+  font-weight: 400;
 `;
 const Side = styled.div`
   width: 25%;
-  max-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -194,38 +259,61 @@ const surveysData = [
 ];
 
 export default function Home() {
-  type TabI = "question" | "knowledge" | "community" | "survey";
+  type TabI = "question" | "knowledge" | "community";
   // tab 클릭
   const [selectedTab, setSelectedTab] = useState<TabI>("question");
+  const [selectedData, setSelectedData] = useState<
+    QuestionDataI | KnowledgeDataI | FreeTalkDataI | null
+  >(null);
   function handleTabClick(e: TabI) {
     setSelectedTab(e);
   }
 
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 2자리 숫자로 변환
+    const day = String(date.getDate()).padStart(2, "0"); // 2자리 숫자로 변환
+
+    return `${year}.${month}.${day}`;
+  }
+
   // data fetching
-  const { data: home_question } = useQuery({
+  const { data: home_question, isLoading: loading_question } = useQuery({
     queryKey: ["home_question"],
     queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
   });
-  const { data: home_knowledge } = useQuery({
+  const { data: home_knowledge, isLoading: loading_knowledge } = useQuery({
     queryKey: ["home_knowledge"],
-    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+    queryFn: () => datasAPI.knowledge({ currentPage: 0, pageSize: 6 }),
   });
-  const { data: home_community } = useQuery({
+  const { data: home_community, isLoading: loading_community } = useQuery({
     queryKey: ["home_community"],
-    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+    queryFn: () => datasAPI.community({ currentPage: 0, pageSize: 6 }),
   });
-  const { data: home_survey } = useQuery({
-    queryKey: ["home_survey"],
-    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
-  });
+  // const { data: home_survey, isLoading: loading_survey } = useQuery({
+  //   queryKey: ["home_survey"],
+  //   queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+  // });
 
+  const CategoryMapping = {
+    question: "질문게시판",
+    knowledge: "지식공유",
+    community: "커뮤니티",
+  };
   const dataMapping = {
     question: home_question,
     knowledge: home_knowledge,
     community: home_community,
-    survey: home_survey,
+    // survey: home_survey,
   };
-  const selectedData = dataMapping[selectedTab];
+  const isLoading = loading_question || loading_knowledge || loading_community;
+
+  useEffect(() => {
+    setSelectedData(dataMapping[selectedTab]);
+  }, [selectedTab, isLoading]);
+
+  if (isLoading) return null;
 
   return (
     <>
@@ -258,7 +346,7 @@ export default function Home() {
             isSelected={selectedTab === "question"}
             onClick={() => handleTabClick("question")}
           >
-            <span>질문</span>
+            <span>질문게시판</span>
           </TabAnchor>
           <TabAnchor
             isSelected={selectedTab === "knowledge"}
@@ -272,12 +360,12 @@ export default function Home() {
           >
             <span>커뮤니티</span>
           </TabAnchor>
-          <TabAnchor
+          {/* <TabAnchor
             isSelected={selectedTab === "survey"}
             onClick={() => handleTabClick("survey")}
           >
             <span>설문</span>
-          </TabAnchor>
+          </TabAnchor> */}
         </Tab>
         <Ranking>
           <RankinigTitle>
@@ -292,7 +380,41 @@ export default function Home() {
       </TabBar>
       <Content>
         <Writings>
-          {selectedData && <HomeSwiper data={selectedData} />}
+          <ItemContainer>
+            {selectedData &&
+              Object.values(selectedData["result"])[0].map(
+                (
+                  item: QuestionItemI | KnowledgeItemI | FreeTalkItemI,
+                  index: number
+                ) => (
+                  <ItemBox key={index}>
+                    <ItemMeta>
+                      <Category>
+                        <span>{CategoryMapping[selectedTab]}</span>
+                      </Category>
+                      <Extra>
+                        <ItemDate>
+                          <span>
+                            {formatDate(Object.values(item)[0].createdAt)}
+                          </span>
+                        </ItemDate>
+                        <Like>
+                          <LikeIcon />
+                          <span>{item.likeCount}</span>
+                        </Like>
+                        <Comment>
+                          <CommentIcon />
+                          <span>{item.answerCount}</span>
+                        </Comment>
+                      </Extra>
+                    </ItemMeta>
+                    <ItemTitle>
+                      <span>{Object.values(item)[0].title}</span>
+                    </ItemTitle>
+                  </ItemBox>
+                )
+              )}
+          </ItemContainer>
         </Writings>
         <Side>
           <AboutR></AboutR>

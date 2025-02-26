@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import React, { useState } from "react";
+import styled from "styled-components";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 
 const CommentSection = styled.div`

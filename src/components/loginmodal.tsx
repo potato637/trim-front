@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
@@ -5,7 +6,6 @@ import {
   loginModalState,
   userState,
 } from "../recoil/userState";
-import { useRef } from "react";
 
 const ModalOverLay = styled.div`
   position: fixed;

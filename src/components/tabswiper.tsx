@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { QuestionItemI } from "../types/questionType";
+import { KnowledgeItemI } from "../types/knowledgeType";
+import { FreeTalkItemI } from "../types/communityType";
 
 const Container = styled.div`
   width: 100%;
   text-align: center;
+  margin-bottom: 20px;
 `;
 const GridContainer = styled.div`
   display: grid;
@@ -37,22 +41,20 @@ const LoadMoreButton = styled.button`
   }
 `;
 
-interface TabSwiperI {
-  data: any[];
-  fetchNextPage?: () => void;
-  hasNextPage: boolean;
-}
-
 export default function Tabswiper({
   data,
   fetchNextPage,
   hasNextPage,
-}: TabSwiperI) {
+}: {
+  data: QuestionItemI[] | KnowledgeItemI[] | FreeTalkItemI[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+}) {
   return (
     <Container>
       <GridContainer>
-        {data?.map((item, index) => (
-          <ItemBox key={index}>{item}</ItemBox>
+        {data.map((item) => (
+          <ItemBox>{Object.values(item)[0].title}</ItemBox>
         ))}
       </GridContainer>
       {hasNextPage && (

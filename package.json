@@ -26,6 +26,7 @@
     "react-paginate": "^8.2.0",
     "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",
+    "react-select": "^5.10.0",
     "recoil": "^0.7.7",
     "styled-components": "^6.1.13",
     "survey-core": "^1.12.23",

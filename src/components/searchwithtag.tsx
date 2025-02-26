@@ -19,6 +19,8 @@ const SearchContainer = styled.div`
 `;
 const SearchHashContainer = styled.div`
   margin-left: 15px;
+  border-left: 0.5px solid var(--color-border);
+  padding-left: 10px;
   display: flex;
   flex-grow: 1;
 `;

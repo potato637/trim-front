@@ -62,7 +62,7 @@ const Title = styled.input`
   flex: 9;
   font-size: var(--font-size-large);
   font-weight: 600;
-  padding: 10px 0px;
+  padding: 10px 0px 20px 0px;
   border: none;
   &:hover,
   &:active,
