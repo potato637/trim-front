@@ -4,11 +4,13 @@ import { FaComments, FaThumbsUp, FaRegComments } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
 import { useState } from "react";
 import { datasAPI } from "../api";
+import { formatDate } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { BiLike } from "react-icons/bi";
 import { QuestionDataI, QuestionItemI } from "../types/questionType";
 import { KnowledgeDataI, KnowledgeItemI } from "../types/knowledgeType";
 import { FreeTalkDataI, FreeTalkItemI } from "../types/communityType";
+import { useNavigate } from "react-router-dom";
 
 const BannerContainer = styled.div`
   display: flex;
@@ -125,32 +127,38 @@ const Content = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  flex: 15;
   align-items: stretch;
+  gap: 10px;
+  flex: 15;
 `;
 const Writings = styled.div`
+  flex: 13;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--color-white-gray);
   border-radius: 5px;
-  width: 72%;
 `;
 const ItemContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-  width: 90%;
+  width: 95%;
   height: 90%;
 `;
 const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 230px;
+  height: 150px;
   background: var(--color-white);
-  padding: 20px;
+  border-radius: 10px;
+  padding: 15px;
   gap: 20px;
+  box-shadow: 0px 4px 14px 0px rgba(97, 96, 96, 0.15);
+  cursor: pointer;
 `;
 const ItemMeta = styled.div`
   display: flex;
@@ -172,11 +180,11 @@ const Category = styled.div`
 const Extra = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 5px;
   & > div {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 3px;
   }
 `;
 const ItemDate = styled.div`
@@ -200,7 +208,7 @@ const ItemTitle = styled.div`
   font-weight: 400;
 `;
 const Side = styled.div`
-  width: 25%;
+  flex: 4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -269,15 +277,6 @@ export default function Home() {
     setSelectedTab(e);
   }
 
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 2자리 숫자로 변환
-    const day = String(date.getDate()).padStart(2, "0"); // 2자리 숫자로 변환
-
-    return `${year}.${month}.${day}`;
-  }
-
   // data fetching
   const { data: home_question, isLoading: loading_question } = useQuery({
     queryKey: ["home_question"],
@@ -299,7 +298,7 @@ export default function Home() {
   const CategoryMapping = {
     question: "질문게시판",
     knowledge: "지식공유",
-    community: "커뮤니티",
+    community: "자유게시판",
   };
   const dataMapping = {
     question: home_question,
@@ -308,6 +307,7 @@ export default function Home() {
     // survey: home_survey,
   };
   const isLoading = loading_question || loading_knowledge || loading_community;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedData(dataMapping[selectedTab]);
@@ -358,7 +358,7 @@ export default function Home() {
             isSelected={selectedTab === "community"}
             onClick={() => handleTabClick("community")}
           >
-            <span>커뮤니티</span>
+            <span>자유게시판</span>
           </TabAnchor>
           {/* <TabAnchor
             isSelected={selectedTab === "survey"}
@@ -387,7 +387,10 @@ export default function Home() {
                   item: QuestionItemI | KnowledgeItemI | FreeTalkItemI,
                   index: number
                 ) => (
-                  <ItemBox key={index}>
+                  <ItemBox
+                    key={index}
+                    onClick={() => navigate(`/${selectedTab}`)}
+                  >
                     <ItemMeta>
                       <Category>
                         <span>{CategoryMapping[selectedTab]}</span>
@@ -404,7 +407,11 @@ export default function Home() {
                         </Like>
                         <Comment>
                           <CommentIcon />
-                          <span>{item.answerCount}</span>
+                          <span>
+                            {"answerCount" in item
+                              ? item.answerCount
+                              : item.commentCount}
+                          </span>
                         </Comment>
                       </Extra>
                     </ItemMeta>

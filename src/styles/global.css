@@ -2,6 +2,7 @@
   --color-light-purple: #f5f3ff;
   --color-light-purple-border: #d9c3ff;
   --color-purple: #6129e9cc;
+  --color-purple-hover: #6129e9;
   --color-input: #ceb2ff;
   --color-mint-banner: #9ce3cf;
   --color-mint-hash: #d6f3eb;
@@ -10,6 +11,7 @@
   --color-black: #101010;
   --color-border: #ddd;
   --color-gray: #49494c;
+  --color-comment: #49494c;
   --color-white-gray: #fbfbfb;
   --color-mde-toolbar: #a3a1a1;
   --color-date: #65686d;
@@ -18,5 +20,6 @@
   --font-size-extra-small: 0.7rem;
   --font-size-small: 0.8rem;
   --font-size-medium: 1rem;
+  --font-size-extra-medium: 1.5rem;
   --font-size-large: 2rem;
 }

@@ -88,7 +88,6 @@ const ContentWrapper = styled.div`
 const MainWrapper = styled.main`
   position: relative;
   flex: 1;
-  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: stretch;

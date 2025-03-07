@@ -115,7 +115,7 @@ export default function Header() {
   const pathname = {
     "/question": "질문게시판",
     "/share": "지식공유",
-    "/community": "자유게시판",
+    "/community": "커뮤니티",
     "/survey": "설문",
   };
 
@@ -148,8 +148,8 @@ export default function Header() {
           <Tab onClick={() => onClickHandler("question")}>
             <Span isActive={isTabActive("/question")}>질문</Span>
           </Tab>
-          <Tab onClick={() => onClickHandler("share")}>
-            <Span isActive={isTabActive("/share")}>지식공유</Span>
+          <Tab onClick={() => onClickHandler("knowledge")}>
+            <Span isActive={isTabActive("/knowledge")}>지식공유</Span>
           </Tab>
           <Tab onClick={() => onClickHandler("community")}>
             <Span isActive={isTabActive("/community")}>커뮤니티</Span>

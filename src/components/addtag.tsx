@@ -40,7 +40,7 @@ const Hashtag = styled.div`
   padding: 5px 15px;
   min-width: 30px;
   max-width: 100px;
-  height: 30px;
+  height: 38px;
   border-radius: 50px;
   color: var(--color-gray);
   overflow: hidden;
@@ -60,7 +60,7 @@ const HashInputContainer = styled.div`
 `;
 const HashInput = styled.input`
   width: 200px;
-  height: 30px;
+  height: 38px;
   border: 0.5px solid var(--color-input);
   border-radius: 20px;
   padding: 0 1.5rem;
@@ -86,31 +86,38 @@ const HashIcon = styled(FaHashtag)`
   color: var(--color-purple);
 `;
 
-export default function Addtag() {
-  const [hashtags, setHashtags] = useState<String[]>([]);
+interface AddtagI {
+  setMajorType: (majorType: string) => void;
+  tags: string[];
+  setTags: (tags: string[]) => void;
+}
+
+export default function Addtag({ setMajorType, tags, setTags }: AddtagI) {
   const [value, setValue] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (value !== "") {
+    if (value.trim() == "" || tags.length >= 3) {
       setValue("");
+      return;
     }
-    if (value.trim() == "" || hashtags.length >= 3) return;
-    setHashtags([...hashtags, value]);
+    setTags([...tags, value.trim()]);
+    setValue("");
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
   const handleRemoveHashTag = (index: number) => {
-    setHashtags((prev) => prev.filter((_, i) => i !== index));
+    const newTags = tags.filter((_, i) => i !== index);
+    setTags(newTags);
   };
   return (
     <Container>
       <SearchContainer>
-        <Dropdown />
+        <Dropdown setMajorType={setMajorType} />
         <SearchHashContainer>
           <SelectedHashtags>
-            {hashtags?.map((item, index) => (
+            {tags?.map((item, index) => (
               <Hashtag
                 key={index}
                 onClick={() => handleRemoveHashTag(index)}

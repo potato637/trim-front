@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Hot from "../components/hot";
 import Searchwithtag from "../components/searchwithtag";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { datasAPI } from "../api";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { datasAPI, hotAPI } from "../api";
 import Tabswiper from "../components/tabswiper";
 import { KnowledgeItemI } from "../types/knowledgeType";
 
 export default function Sharetab() {
-  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
+  const [majorType, setMajorType] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+
+  const { data: hot, isLoading: hot_isLoading } = useQuery({
+    queryKey: ["question_hot"],
+    queryFn: hotAPI.knowledge_hot,
+  });
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading: data_isLoading,
+  } = useInfiniteQuery({
     queryKey: ["knowledge"],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.knowledge({ currentPage: pageParam }),
@@ -19,13 +32,19 @@ export default function Sharetab() {
     },
   });
 
+  const isLoading = hot_isLoading || data_isLoading;
   if (isLoading) return null;
 
   return (
     <>
-      <Hot />
-      <Searchwithtag />
+      <Hot data={hot.result} category="지식공유" />
+      <Searchwithtag
+        setMajorType={setMajorType}
+        tags={tags}
+        setTags={setTags}
+      />
       <Tabswiper
+        type="knowledge"
         data={
           data?.pages
             .map((page) => page.result.knowledgeResponseList)

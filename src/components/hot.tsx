@@ -1,13 +1,17 @@
 import styled from "styled-components";
-import { Swiper, SwiperClass, SwiperProps, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import { faker } from "../faker";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import { useRef } from "react";
-import Hotitem from "./hotitem";
+import { QuestionItemI } from "../types/questionType";
+import { KnowledgeItemI } from "../types/knowledgeType";
+import { FreeTalkItemI } from "../types/communityType";
+import { BiLike } from "react-icons/bi";
+import { FaRegComments } from "react-icons/fa";
+import { formatDate } from "../utils";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SwiperContainer = styled.div`
   position: relative;
@@ -28,10 +32,10 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 `;
 const Pagebutton = styled.button`
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-medium);
   background: none;
   border: 0.3px solid var(--color-border);
   display: flex;
@@ -42,7 +46,6 @@ const Pagebutton = styled.button`
   border-radius: 50%;
   cursor: pointer;
 `;
-
 const HotContainer = styled.div`
   position: relative;
   width: 100%;
@@ -59,7 +62,7 @@ const HotHeaderWrapper = styled.div`
   width: 100%;
 `;
 const HotHeaderTitle = styled.text`
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-medium);
   color: var(--color-purple);
   font-weight: 600;
   letter-spacing: -0.5px;
@@ -67,12 +70,78 @@ const HotHeaderTitle = styled.text`
 const HotBodyWrapper = styled.div`
   width: 100%;
 `;
+const ItemBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 120px;
+  background: var(--color-light-purple);
+  padding: 20px;
+  gap: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+const ItemMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  & > div {
+    font-size: var(--font-size-extra-small);
+    height: 25px;
+  }
+`;
+const Category = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border-radius: 20px;
+`;
+const Extra = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+`;
+const ItemDate = styled.div`
+  color: var(--color-date);
+`;
+const Like = styled.div`
+  color: var(--color-like);
+`;
+const LikeIcon = styled(BiLike)`
+  font-size: var(--font-size-small);
+`;
+const Comment = styled.div`
+  color: var(--color-comment);
+`;
+const CommentIcon = styled(FaRegComments)`
+  font-size: var(--font-size-small);
+`;
+const ItemTitle = styled.div`
+  color: var(--color-gray);
+  font-size: var(--font-size-medium);
+  font-weight: 400;
+`;
 
-export default function Hot() {
+export default function Hot({
+  data,
+  category,
+}: {
+  data: QuestionItemI[] | KnowledgeItemI[] | FreeTalkItemI[];
+  category: string;
+}) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const to = location.pathname.split("/").filter(Boolean)[0];
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
-  const fakeData = faker.slice(0, 10);
   return (
     <HotContainer>
       <HotHeaderWrapper>
@@ -106,13 +175,53 @@ export default function Hot() {
               }
             }}
           >
-            {fakeData.map((item, idx) => {
-              return (
-                <SwiperSlide key={idx}>
-                  <Hotitem {...item} />
-                </SwiperSlide>
-              );
-            })}
+            {data.map(
+              (
+                item: QuestionItemI | KnowledgeItemI | FreeTalkItemI,
+                index: number
+              ) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <ItemBox
+                      key={index}
+                      onClick={() =>
+                        navigate(
+                          `/${to}/${Object.values(Object.values(item)[0])[0]}`
+                        )
+                      }
+                    >
+                      <ItemMeta>
+                        <Category>
+                          <span>{category}</span>
+                        </Category>
+                        <Extra>
+                          <ItemDate>
+                            <span>
+                              {formatDate(Object.values(item)[0].createdAt)}
+                            </span>
+                          </ItemDate>
+                          <Like>
+                            <LikeIcon />
+                            <span>{item.likeCount}</span>
+                          </Like>
+                          <Comment>
+                            <CommentIcon />
+                            <span>
+                              {"answerCount" in item
+                                ? item.answerCount
+                                : item.commentCount}
+                            </span>
+                          </Comment>
+                        </Extra>
+                      </ItemMeta>
+                      <ItemTitle>
+                        <span>{Object.values(item)[0].title}</span>
+                      </ItemTitle>
+                    </ItemBox>
+                  </SwiperSlide>
+                );
+              }
+            )}
           </StyledSwiper>
         </SwiperContainer>
       </HotBodyWrapper>

@@ -2,7 +2,7 @@ export interface KnowledgeResponseI {
   knowledgeId: number;
   title: string;
   content: string;
-  createdAt: string;
+  createdAt: number;
   resolveStatus: "UNRESOLVED" | "RESOLVED";
   majorType:
     | "INDUSTRIAL_ENGINEERING"
@@ -22,7 +22,7 @@ export interface KnowledgeItemI {
   knowledgeResponse: KnowledgeResponseI;
   memberResponse: MemberResponseI;
   likeCount: number;
-  answerCount: number;
+  commentCount: number;
   tagList: string[];
 }
 

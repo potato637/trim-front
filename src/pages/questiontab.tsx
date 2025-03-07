@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Hot from "../components/hot";
 import Searchwithtag from "../components/searchwithtag";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { datasAPI } from "../api";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { datasAPI, hotAPI } from "../api";
 import Tabswiper from "../components/tabswiper";
 import { QuestionItemI } from "../types/questionType";
 
 export default function Questiontab() {
-  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
+  const [majorType, setMajorType] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+
+  const { data: hot, isLoading: hot_isLoading } = useQuery({
+    queryKey: ["question_hot"],
+    queryFn: hotAPI.question_hot,
+  });
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading: data_isLoading,
+  } = useInfiniteQuery({
     queryKey: ["question"],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.question({ currentPage: pageParam }),
@@ -19,13 +32,19 @@ export default function Questiontab() {
     },
   });
 
+  const isLoading = hot_isLoading || data_isLoading;
   if (isLoading) return null;
 
   return (
     <>
-      <Hot />
-      <Searchwithtag />
+      <Hot data={hot.result} category="질문게시판" />
+      <Searchwithtag
+        setMajorType={setMajorType}
+        tags={tags}
+        setTags={setTags}
+      />
       <Tabswiper
+        type="question"
         data={
           data?.pages
             .map((page) => page.result.questionResponseList)

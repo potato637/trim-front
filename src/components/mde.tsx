@@ -53,75 +53,21 @@ const StyledEasyMDE = styled.div`
     line-height: 1.5rem;
   }
 `;
-const TitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const Title = styled.input`
-  flex: 9;
-  font-size: var(--font-size-large);
-  font-weight: 600;
-  padding: 10px 0px 20px 0px;
-  border: none;
-  &:hover,
-  &:active,
-  &:focus {
-    outline: none;
-    border: none;
-  }
-`;
-const Buttons = styled.div`
-  flex: 2;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 20px;
-  & > button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    width: 100px;
-    font-size: var(--font-size-small);
-    border-radius: 50px;
-    border: none;
-    padding: 8px 0;
-  }
-  & > button:first-child {
-    color: var(--color-purple);
-    background-color: var(--color-white-gray);
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  }
-  & > button:last-child {
-    color: var(--color-white-gray);
-    background-color: var(--color-purple);
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  }
-`;
 
-export default function Mde() {
+interface MdePropsI {
+  setMarkdown: (markdown: string) => void;
+  clearMDE: boolean;
+}
+export default function Mde({ setMarkdown, clearMDE }: MdePropsI) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [markdown, setMarkdown] = useState("");
-  const [title, setTitle] = useState("");
-  const onTitleChange = (text: string) => {
-    setTitle(text);
-  };
-  const handleSave = () => {
-    return null;
-  };
-  const handleSubmit = () => {
-    // markdown 보내기
-    return null;
-  };
+  const easyMDERef = useRef<EasyMDE | null>(null);
 
   useEffect(() => {
     if (!textareaRef.current) return;
 
-    const easyMDE = new EasyMDE({
+    easyMDERef.current = new EasyMDE({
       element: textareaRef.current,
       spellChecker: false,
-      autosave: { enabled: true, uniqueId: "mde" },
       toolbar: [
         "heading-1",
         "heading-2",
@@ -140,33 +86,24 @@ export default function Mde() {
       previewClass: "editor-preview",
     });
 
-    easyMDE.codemirror.on("change", () => {
-      setMarkdown(easyMDE.value());
+    easyMDERef.current.codemirror.on("change", () => {
+      setMarkdown(easyMDERef.current?.value() || "");
     });
 
     return () => {
-      easyMDE.toTextArea();
+      easyMDERef.current?.toTextArea();
+      easyMDERef.current = null;
     };
   }, []);
 
+  useEffect(() => {
+    if (easyMDERef.current) {
+      easyMDERef.current.value("");
+    }
+  }, [clearMDE]);
+
   return (
     <StyledEasyMDE>
-      <TitleContainer>
-        <Title
-          type="text"
-          value={title}
-          onChange={(e) => onTitleChange(e.target.value)}
-          placeholder="제목을 입력해주세요"
-        />
-        <Buttons>
-          <button type="button" onClick={handleSave}>
-            임시저장
-          </button>
-          <button type="button" onClick={handleSubmit}>
-            제출하기
-          </button>
-        </Buttons>
-      </TitleContainer>
       <textarea ref={textareaRef} />
     </StyledEasyMDE>
   );

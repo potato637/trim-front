@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { QuestionItemI } from "../types/questionType";
 import { KnowledgeItemI } from "../types/knowledgeType";
 import { FreeTalkItemI } from "../types/communityType";
+import Questionitem from "./questionitem";
+import Knowledgeitem from "./knowledgeitem";
 
 const Container = styled.div`
   width: 100%;
@@ -12,53 +14,52 @@ const Container = styled.div`
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 30px;
   margin-top: 20px;
 
   @media (max-width: 600px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-const ItemBox = styled.div`
-  background: #f0f0f0;
-  padding: 20px;
-  text-align: center;
-  border-radius: 8px;
-  font-size: var(--font-size-medium);
-`;
 const LoadMoreButton = styled.button`
   margin-top: 20px;
-  padding: 10px;
+  padding: 10px 20px;
   border: none;
-  background-color: #007bff;
-  color: white;
-  font-size: 1rem;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  font-size: var(--font-size-medium);
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 20px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: var(--color-purple-hover);
   }
 `;
 
 export default function Tabswiper({
+  type,
   data,
   fetchNextPage,
   hasNextPage,
 }: {
-  data: QuestionItemI[] | KnowledgeItemI[] | FreeTalkItemI[];
+  type: "question" | "knowledge";
+  data: QuestionItemI[] | KnowledgeItemI[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
 }) {
   return (
     <Container>
       <GridContainer>
-        {data.map((item) => (
-          <ItemBox>{Object.values(item)[0].title}</ItemBox>
-        ))}
+        {type === "question"
+          ? data.map((item, index) => (
+              <Questionitem key={index} data={item as QuestionItemI} />
+            ))
+          : data.map((item, index) => (
+              <Knowledgeitem key={index} data={item as KnowledgeItemI} />
+            ))}
       </GridContainer>
       {hasNextPage && (
-        <LoadMoreButton onClick={fetchNextPage}>Load More</LoadMoreButton>
+        <LoadMoreButton onClick={fetchNextPage}>Show More</LoadMoreButton>
       )}
     </Container>
   );

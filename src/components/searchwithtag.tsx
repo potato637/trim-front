@@ -40,7 +40,7 @@ const Hashtag = styled.button`
   padding: 8px 20px;
   min-width: 30px;
   max-width: 200px;
-  height: 30px;
+  height: 38px;
   border-radius: 50px;
   border: none;
   color: var(--color-gray);
@@ -54,11 +54,11 @@ const HashInputContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
-
 const HashInput = styled.input`
   width: 200px;
-  height: 30px;
+  height: 38px;
   border: 0.5px solid var(--color-input);
   border-radius: 20px;
   padding: 0 var(--font-size-large);
@@ -82,32 +82,57 @@ const HashIcon = styled(FaHashtag)`
   font-size: var(--font-size-small);
   color: var(--color-purple);
 `;
+const Search = styled.div`
+  font-size: var(--font-size-small);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  color: var(--color-white);
+  width: 130px;
+  height: 38px;
+  border-radius: 20px;
+  background-color: var(--color-purple-hover);
+  cursor: pointer;
+`;
 
-export default function Searchwithtag() {
-  const [hashtags, setHashtags] = useState<String[]>([]);
-  const [value, setValue] = useState("");
+interface SearchwithtagI {
+  setMajorType: (majorType: string) => void;
+  tags: string[];
+  setTags: (tags: string[]) => void;
+}
+
+export default function Searchwithtag({
+  setMajorType,
+  tags,
+  setTags,
+}: SearchwithtagI) {
+  const [value, setValue] = useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (value !== "") {
+    if (value.trim() == "" || tags.length >= 3) {
       setValue("");
+      return;
     }
-    if (value.trim() == "" || hashtags.length >= 3) return;
-    setHashtags([...hashtags, value]);
+    setTags([...tags, value.trim()]);
+    setValue("");
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
   const handleRemoveHashTag = (index: number) => {
-    setHashtags((prev) => prev.filter((_, i) => i !== index));
+    const newTags = tags.filter((_, i) => i !== index);
+    setTags(newTags);
   };
+  const handleTagSearch = () => {};
   return (
     <Container>
       <SearchContainer>
-        <Dropdown />
+        <Dropdown setMajorType={setMajorType} />
         <SearchHashContainer>
           <SelectedHashtags>
-            {hashtags?.map((item, index) => (
+            {tags?.map((item, index) => (
               <Hashtag key={index} onClick={() => handleRemoveHashTag(index)}>
                 {`# ${item}`}
               </Hashtag>
@@ -115,12 +140,13 @@ export default function Searchwithtag() {
           </SelectedHashtags>
         </SearchHashContainer>
       </SearchContainer>
+      <Search onClick={handleTagSearch}>검색하기</Search>
       <HashInputContainer>
         <form onSubmit={(event) => handleSubmit(event)}>
           <HashIcon />
           <HashInput
             value={value}
-            placeholder="해시태그 검색"
+            placeholder="해시태그 추가"
             onChange={(event) => handleChange(event)}
           />
         </form>

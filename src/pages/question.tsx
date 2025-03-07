@@ -16,29 +16,29 @@ const MainContent = styled.div`
   padding-bottom: 10px;
 `;
 const TitleContainer = styled.div`
-  font-size: 1.3rem;
+  font-size: var(--font-size-large);
   font-weight: 600;
 `;
 const WriterContainer = styled.div`
-  font-size: 0.45rem;
+  font-size: var(--font-size-small);
   color: #37009c;
   display: flex;
   gap: 5px;
   align-items: center;
 `;
 const WriterSVG = styled.div`
-  width: 1rem;
-  height: 1rem;
+  width: var(--font-size-extra-medium);
+  height: var(--font-size-extra-medium);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ContentContainer = styled.div`
-  font-size: 0.5rem;
+  font-size: var(--font-size-medium);
   line-height: 1.6;
 `;
 const InfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 0.4rem;
+  font-size: var(--font-size-small);
 `;
 const Infos = styled.div`
   display: flex;
@@ -65,16 +65,16 @@ const PencilImg = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
+  width: var(--font-size-extra-medium);
+  height: var(--font-size-extra-medium);
+  border-radius: 50%;
 `;
 const AnswersCount = styled.div`
   display: flex;
   gap: 5px;
   justify-content: flex-start;
   align-items: center;
-  font-size: 0.5rem;
+  font-size: var(--font-size-small);
 `;
 const Answer = styled.div`
   width: 100%;
@@ -88,7 +88,7 @@ const Answer = styled.div`
 `;
 const AnswerWriter = styled(WriterContainer)``;
 const AnswerText = styled.p`
-  font-size: 0.5rem;
+  font-size: var(--font-size-medium);
   line-height: 1.6;
 `;
 const AnswerImg = styled.img`
@@ -97,7 +97,7 @@ const AnswerImg = styled.img`
 const AnswerCommentBtn = styled(CommentBtn)`
   display: flex;
   justify-content: flex-end;
-  font-size: 0.4rem;
+  font-size: var(--font-size-small);
 `;
 
 const questionData = {

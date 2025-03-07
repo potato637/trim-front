@@ -2,13 +2,9 @@ export interface QuestionResponseI {
   questionId: number;
   title: string;
   content: string;
-  createdAt: string;
+  createdAt: number;
   resolveStatus: "UNRESOLVED" | "RESOLVED";
-  majorType:
-    | "INDUSTRIAL_ENGINEERING"
-    | "PHYSICAL_EDUCATION"
-    | "FINE_ARTS"
-    | "NATURAL_SCIENCES";
+  majorType: string;
 }
 export interface MemberResponseI {
   memberId: number;
@@ -36,7 +32,7 @@ export interface QuestionDataI {
   isSuccess: boolean;
   code: number;
   message: string;
-  result: QuestionResponseI;
+  result: QuestionResultI;
 }
 
 export interface InfiniteQuestionDataI {
