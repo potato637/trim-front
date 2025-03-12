@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Mde from "../components/mde";
 import { postAPI } from "../api";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -55,18 +55,37 @@ const Buttons = styled.div`
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   }
 `;
+const ModalOverLay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+const Modal = styled.div`
+  background-color: var(--color-white);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 4px 6px var(--color-modal-shadow);
+`;
 
 export default function Communitynew() {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [markdown, setMarkdown] = useState<string>("");
   const [clearMDE, setClearMDE] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const onTitleChange = (text: string) => {
     setTitle(text);
-  };
-  const handleSave = () => {
-    return null;
   };
   const handleSubmit = () => {
     try {
@@ -90,15 +109,17 @@ export default function Communitynew() {
           placeholder="제목을 입력해주세요"
         />
         <Buttons>
-          <button type="button" onClick={handleSave}>
-            임시저장
-          </button>
           <button type="button" onClick={handleSubmit}>
             제출하기
           </button>
         </Buttons>
       </TitleContainer>
       <Mde setMarkdown={setMarkdown} clearMDE={clearMDE} />
+      {showModal && (
+        <ModalOverLay>
+          <Modal></Modal>
+        </ModalOverLay>
+      )}
     </Container>
   );
 }

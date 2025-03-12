@@ -86,7 +86,6 @@ const ContentWrapper = styled.div`
   min-height: 100vh;
 `;
 const MainWrapper = styled.main`
-  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;

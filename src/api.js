@@ -47,17 +47,12 @@ export const hotAPI = {
 };
 
 export const datasAPI = {
-  question: async ({
-    major = "",
-    hashtags = [],
-    currentPage,
-    pageSize = 30,
-  }) => {
-    const urlParams = hashtags?.join("+");
+  question: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
+    const urlParams = tags?.join(",");
     const url = `${BASE_URL}/api/questions/search?${
-      major ? `majorType=${major}&` : ""
+      majorType ? `majorType=${majorType}&` : ""
     }${
-      hashtags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length != 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
@@ -74,17 +69,12 @@ export const datasAPI = {
     return response.json();
   },
 
-  knowledge: async ({
-    major = "",
-    hashtags = [],
-    currentPage,
-    pageSize = 30,
-  }) => {
-    const urlParams = hashtags?.join("+");
+  knowledge: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
+    const urlParams = tags?.join(",");
     const url = `${BASE_URL}/api/knowledge/search?${
-      major ? `majorType=${major}&` : ""
+      majorType ? `majorType=${majorType}&` : ""
     }${
-      hashtags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length != 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",

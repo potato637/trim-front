@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { QuestionItemI } from "../types/questionType";
 import { KnowledgeItemI } from "../types/knowledgeType";
-import { FreeTalkItemI } from "../types/communityType";
 import Questionitem from "./questionitem";
 import Knowledgeitem from "./knowledgeitem";
 
@@ -41,11 +40,13 @@ export default function Tabswiper({
   data,
   fetchNextPage,
   hasNextPage,
+  isFetchingNextPage,
 }: {
   type: "question" | "knowledge";
   data: QuestionItemI[] | KnowledgeItemI[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 }) {
   return (
     <Container>
@@ -59,7 +60,9 @@ export default function Tabswiper({
             ))}
       </GridContainer>
       {hasNextPage && (
-        <LoadMoreButton onClick={fetchNextPage}>Show More</LoadMoreButton>
+        <LoadMoreButton onClick={fetchNextPage} disabled={isFetchingNextPage}>
+          {isFetchingNextPage ? "Loading..." : "Show More"}
+        </LoadMoreButton>
       )}
     </Container>
   );

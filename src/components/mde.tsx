@@ -58,6 +58,7 @@ interface MdePropsI {
   setMarkdown: (markdown: string) => void;
   clearMDE: boolean;
 }
+
 export default function Mde({ setMarkdown, clearMDE }: MdePropsI) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const easyMDERef = useRef<EasyMDE | null>(null);

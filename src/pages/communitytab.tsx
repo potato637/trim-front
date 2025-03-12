@@ -83,15 +83,15 @@ export default function Communitytab() {
     fetchNextPage,
     hasNextPage,
     isLoading: data_isLoading,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["community"],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.community({ currentPage: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      return lastPage.result.page >= lastPage.result.totalPages
-        ? undefined
-        : lastPage.result.page + 1;
+      const nextPage = lastPage.result.page + 1;
+      return nextPage < lastPage.result.totalPages ? nextPage : undefined;
     },
   });
   const data = freeTalk?.pages
@@ -129,8 +129,11 @@ export default function Communitytab() {
         ))}
       </Container>
       {hasNextPage && (
-        <LoadMoreButton onClick={() => fetchNextPage()}>
-          Show More
+        <LoadMoreButton
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+        >
+          {isFetchingNextPage ? "Loading..." : "Show More"}
         </LoadMoreButton>
       )}
     </>

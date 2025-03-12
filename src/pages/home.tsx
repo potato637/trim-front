@@ -280,11 +280,23 @@ export default function Home() {
   // data fetching
   const { data: home_question, isLoading: loading_question } = useQuery({
     queryKey: ["home_question"],
-    queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
+    queryFn: () =>
+      datasAPI.question({
+        currentPage: 0,
+        pageSize: 6,
+        majorType: "",
+        tags: [],
+      }),
   });
   const { data: home_knowledge, isLoading: loading_knowledge } = useQuery({
     queryKey: ["home_knowledge"],
-    queryFn: () => datasAPI.knowledge({ currentPage: 0, pageSize: 6 }),
+    queryFn: () =>
+      datasAPI.knowledge({
+        currentPage: 0,
+        pageSize: 6,
+        majorType: "",
+        tags: [],
+      }),
   });
   const { data: home_community, isLoading: loading_community } = useQuery({
     queryKey: ["home_community"],

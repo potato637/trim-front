@@ -5,10 +5,10 @@ import { HiPencil } from "react-icons/hi2";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ControllerContainer = styled.div`
-  position: absolute;
-  top: var(--font-size-medium);
-  right: -4rem;
-  z-index: 1000;
+  position: fixed;
+  top: 15%;
+  right: 10%;
+  z-index: 10;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -16,8 +16,7 @@ const ControllerContainer = styled.div`
   align-items: center;
   gap: 20px;
 
-  @media (max-width: 1300px) {
-    display: none;
+  @media (max-width: 1500px) {
   }
 `;
 const PageContainer = styled.div`

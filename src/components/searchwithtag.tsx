@@ -96,16 +96,26 @@ const Search = styled.div`
   cursor: pointer;
 `;
 
+interface Option {
+  value: string;
+  label: string;
+}
 interface SearchwithtagI {
+  majorType: string;
   setMajorType: (majorType: string) => void;
   tags: string[];
   setTags: (tags: string[]) => void;
+  handleTagSearch?: () => void;
+  options: Option[];
 }
 
 export default function Searchwithtag({
+  majorType,
   setMajorType,
   tags,
   setTags,
+  handleTagSearch,
+  options,
 }: SearchwithtagI) {
   const [value, setValue] = useState<string>("");
 
@@ -125,11 +135,14 @@ export default function Searchwithtag({
     const newTags = tags.filter((_, i) => i !== index);
     setTags(newTags);
   };
-  const handleTagSearch = () => {};
   return (
     <Container>
       <SearchContainer>
-        <Dropdown setMajorType={setMajorType} />
+        <Dropdown
+          majorType={majorType}
+          setMajorType={setMajorType}
+          options={options}
+        />
         <SearchHashContainer>
           <SelectedHashtags>
             {tags?.map((item, index) => (
@@ -140,7 +153,9 @@ export default function Searchwithtag({
           </SelectedHashtags>
         </SearchHashContainer>
       </SearchContainer>
-      <Search onClick={handleTagSearch}>검색하기</Search>
+      <Search onClick={() => handleTagSearch && handleTagSearch()}>
+        검색하기
+      </Search>
       <HashInputContainer>
         <form onSubmit={(event) => handleSubmit(event)}>
           <HashIcon />

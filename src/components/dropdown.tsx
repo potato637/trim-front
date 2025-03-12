@@ -1,27 +1,25 @@
-import React from "react";
-import Select, { SingleValue } from "react-select";
+import React, { useState } from "react";
+import Select, { ActionMeta, SingleValue } from "react-select";
 
-const options = [
-  { value: "Law College", label: "인문사회계열" },
-  { value: "science", label: "자연과학계열" },
-  { value: "engineering", label: "공학계열" },
-  { value: "arts", label: "예체능계열" },
-  { value: "medicine", label: "의학계열" },
-  { value: "agriculture", label: "농수산계열" },
-  { value: "lifeScience", label: "생활과학계열" },
-];
-
+interface Option {
+  value: string;
+  label: string;
+}
 interface DropdownI {
+  majorType?: string;
   setMajorType: (majorType: string) => void;
+  options: Option[];
 }
 
-export default function Dropdown({ setMajorType }: DropdownI) {
+export default function Dropdown({
+  majorType,
+  setMajorType,
+  options,
+}: DropdownI) {
   const handleChange = (
     selectedOption: SingleValue<{ value: string; label: string }>
   ) => {
-    if (selectedOption) {
-      setMajorType(selectedOption.value);
-    }
+    setMajorType(selectedOption?.value || "");
   };
 
   return (
@@ -76,6 +74,7 @@ export default function Dropdown({ setMajorType }: DropdownI) {
       }}
       options={options}
       onChange={handleChange}
+      value={options.find((option) => option.value === majorType)}
     />
   );
 }

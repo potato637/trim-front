@@ -12,9 +12,10 @@ const ItemBox = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
+  width: 480px;
   height: 300px;
   background-color: var(--color-white-gray);
-  box-shadow: 0px 4px 14px 0px rgba(97, 96, 96, 0.15);
+  box-shadow: 0px 4px 14px 0px var(--color-item-shadow);
   padding: 25px;
   border-radius: 8px;
   cursor: pointer;
@@ -88,6 +89,17 @@ export default function Questionitem({ data }: { data: KnowledgeItemI }) {
   const createdAt = formatDate(Object.values(data)[0].createdAt);
   const navigate = useNavigate();
 
+  const major = {
+    ENGINEERING: "공학",
+    EDUCATION: "교육",
+    SOCIAL_SCIENCES: "사회",
+    ARTS_PHYSICAL_EDUCATION: "예체능",
+    MEDICINE_PHARMACY: "의약",
+    HUMANITIES: "인문",
+    NATURAL_SCIENCES: "자연",
+    ETC: "기타",
+  };
+
   return (
     <ItemBox
       onClick={() =>
@@ -98,7 +110,9 @@ export default function Questionitem({ data }: { data: KnowledgeItemI }) {
         <WriterSVG />
         <Name>{Object.values(data)[1].role}</Name>
         <Dot />
-        <Major>{Object.values(data)[0].majorType}</Major>
+        <Major>
+          {major[Object.values(data)[0].majorType as keyof typeof major]}
+        </Major>
         <Dot />
         <CreatedAt>{createdAt}</CreatedAt>
       </MetaData>

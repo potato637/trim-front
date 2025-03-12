@@ -11,10 +11,10 @@ const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  width: 480px;
   height: 200px;
   background-color: var(--color-white-gray);
-  box-shadow: 0px 4px 14px 0px rgba(97, 96, 96, 0.15);
+  box-shadow: 0px 4px 14px 0px var(--color-item-shadow);
   padding: 25px;
   border-radius: 8px;
   cursor: pointer;
@@ -40,17 +40,24 @@ const MetaData = styled.div`
 const Name = styled.div``;
 const Major = styled.div``;
 const CreatedAt = styled.div``;
-const Title = styled.div`
-  height: 30px;
+const Title = styled.h4`
+  width: 100%;
+  height: 20px;
   font-size: var(--font-size-medium);
-  justify-content: flex-start;
+  text-align: left;
 `;
 const Content = styled.div`
-  height: 80px;
+  width: 100%;
   font-size: var(--font-size-small);
-  justify-content: flex-start;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+  & > p {
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 const Types = styled.div`
   font-size: var(--font-size-extra-small);
@@ -89,6 +96,17 @@ export default function Questionitem({ data }: { data: QuestionItemI }) {
   const createdAt = formatDate(Object.values(data)[0].createdAt);
   const navigate = useNavigate();
 
+  const major = {
+    ENGINEERING: "공학",
+    EDUCATION: "교육",
+    SOCIAL_SCIENCES: "사회",
+    ARTS_PHYSICAL_EDUCATION: "예체능",
+    MEDICINE_PHARMACY: "의약",
+    HUMANITIES: "인문",
+    NATURAL_SCIENCES: "자연",
+    ETC: "기타",
+  };
+
   return (
     <ItemBox
       onClick={() => navigate(`/question/${data.questionResponse.questionId}`)}
@@ -97,12 +115,16 @@ export default function Questionitem({ data }: { data: QuestionItemI }) {
         <WriterSVG />
         <Name>{Object.values(data)[1].role}</Name>
         <Dot />
-        <Major>{Object.values(data)[0].majorType}</Major>
+        <Major>
+          {major[Object.values(data)[0].majorType as keyof typeof major]}
+        </Major>
         <Dot />
         <CreatedAt>{createdAt}</CreatedAt>
       </MetaData>
       <Title>{Object.values(data)[0].title}</Title>
-      <Content>{Object.values(data)[0].content}</Content>
+      <Content>
+        <p>{Object.values(data)[0].content}</p>
+      </Content>
       <Types>
         <HashTags>
           {Object.values(data)[4].map((hash: string, index: number) => (

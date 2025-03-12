@@ -111,10 +111,22 @@ export default function Addtag({ setMajorType, tags, setTags }: AddtagI) {
     const newTags = tags.filter((_, i) => i !== index);
     setTags(newTags);
   };
+
+  const options = [
+    { value: "engineering", label: "공학" },
+    { value: "education", label: "교육" },
+    { value: "social-sciences", label: "사회" },
+    { value: "arts-physical-education", label: "예체능" },
+    { value: "medicine-pharmacy", label: "의약" },
+    { value: "humanities", label: "인문" },
+    { value: "natural-sciences", label: "자연" },
+    { value: "etc", label: "기타" },
+  ];
+
   return (
     <Container>
       <SearchContainer>
-        <Dropdown setMajorType={setMajorType} />
+        <Dropdown setMajorType={setMajorType} options={options} />
         <SearchHashContainer>
           <SelectedHashtags>
             {tags?.map((item, index) => (

@@ -16,7 +16,7 @@ const HeaderWrapper = styled.header`
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;

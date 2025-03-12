@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Addtag from "../components/addtag";
 import Mde from "../components/mde";
 import styled from "styled-components";
 import { postAPI } from "../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useBlocker } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -56,6 +56,34 @@ const Buttons = styled.div`
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
   }
 `;
+const ModalOverLay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+const ModalOnForm = styled.div`
+  background-color: var(--color-white);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 4px 6px var(--color-modal-shadow);
+`;
+const ModalOnNavigation = styled.div`
+  background-color: var(--color-white);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 4px 6px var(--color-modal-shadow);
+`;
 
 export default function Questionnew() {
   const navigate = useNavigate();
@@ -64,23 +92,36 @@ export default function Questionnew() {
   const [majorType, setMajorType] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [clearMDE, setClearMDE] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
+  const isFormDirty = title.trim() !== "" || markdown.trim() !== "";
+  const blocker = useBlocker(isFormDirty);
+
+  const handleCloseModal = (e: React.MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setShowModal(false);
+    }
+  };
   const onTitleChange = (text: string) => {
     setTitle(text);
   };
-  const handleSave = () => {
-    // 값이 있는데 나가면 입력한 데이터가 사라집니다 경고만 띄우자 자동 저장하지 말고
-    return null;
-  };
   const handleSubmit = () => {
-    try {
-      postAPI.question({ title, content: markdown, majorType, tags });
-      navigate("/question");
-      setTitle("");
-      setMarkdown("");
-      setClearMDE((prev) => !prev);
-    } catch (error) {
-      console.error(error);
+    if (!title.trim() || !markdown.trim() || !majorType) {
+      setShowModal(true);
+    } else {
+      try {
+        postAPI.question({ title, content: markdown, majorType, tags });
+        setTitle("");
+        setMarkdown("");
+        setClearMDE((prev) => !prev);
+        if (blocker && blocker.state === "blocked") {
+          blocker.reset();
+        }
+        navigate("/question");
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -94,9 +135,6 @@ export default function Questionnew() {
           placeholder="제목을 입력해주세요"
         />
         <Buttons>
-          <button type="button" onClick={handleSave}>
-            임시저장
-          </button>
           <button type="button" onClick={handleSubmit}>
             제출하기
           </button>
@@ -104,6 +142,19 @@ export default function Questionnew() {
       </TitleContainer>
       <Mde setMarkdown={setMarkdown} clearMDE={clearMDE} />
       <Addtag setMajorType={setMajorType} tags={tags} setTags={setTags} />
+      {showModal && (
+        <ModalOverLay onClick={handleCloseModal}>
+          <ModalOnForm ref={modalRef}>form</ModalOnForm>
+        </ModalOverLay>
+      )}
+      {blocker?.state === "blocked" && (
+        <ModalOverLay onClick={handleCloseModal}>
+          <ModalOnNavigation ref={modalRef}>
+            <button onClick={() => blocker.proceed()}>proceed</button>
+            <button onClick={() => blocker.reset()}>cancel</button>
+          </ModalOnNavigation>
+        </ModalOverLay>
+      )}
     </Container>
   );
 }
