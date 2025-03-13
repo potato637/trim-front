@@ -109,7 +109,13 @@ export default function Questionitem({ data }: { data: QuestionItemI }) {
 
   return (
     <ItemBox
-      onClick={() => navigate(`/question/${data.questionResponse.questionId}`)}
+      onClick={() =>
+        navigate(`/question/${data.questionResponse.questionId}`, {
+          state: {
+            id: data.questionResponse.questionId,
+          },
+        })
+      }
     >
       <MetaData>
         <WriterSVG />

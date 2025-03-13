@@ -4,6 +4,8 @@ import Comments from "../components/comments";
 import { TbPencilCheck } from "react-icons/tb";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 import React from "react";
+import { useLocation } from "react-router-dom";
+import { singleAPI } from "../api";
 
 const MainContent = styled.div`
   width: 100%;
@@ -270,6 +272,7 @@ interface CommentsI {
 }
 
 export default function Question() {
+  const location = useLocation();
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isAnswerCommentOpen, setIsAnswerCommentOpen] = useState<{
     [key: number]: boolean;
@@ -283,6 +286,9 @@ export default function Question() {
       [index]: !prev[index],
     }));
   };
+
+  const data = singleAPI.question({ id: location.state.id });
+  console.log(data);
 
   return (
     <>

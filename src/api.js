@@ -194,3 +194,53 @@ export const postAPI = {
     return response.json();
   },
 };
+
+export const singleAPI = {
+  question: async ({ id }) => {
+    const url = `${BASE_URL}/api/questions/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  knowledge: async ({ id }) => {
+    const url = `${BASE_URL}/api/knowledge/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  community: async ({ id }) => {
+    const url = `${BASE_URL}/api/free-talks/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+};
