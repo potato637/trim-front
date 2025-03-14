@@ -4,6 +4,7 @@ import Mde from "../components/mde";
 import styled from "styled-components";
 import { postAPI } from "../api";
 import { useNavigate, useBlocker } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Container = styled.div`
   width: 100%;
@@ -86,6 +87,7 @@ const ModalOnNavigation = styled.div`
 `;
 
 export default function Questionnew() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [markdown, setMarkdown] = useState<string>("");
@@ -95,8 +97,8 @@ export default function Questionnew() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const isFormDirty = title.trim() !== "" || markdown.trim() !== "";
-  const blocker = useBlocker(isFormDirty);
+  const isDirty = title.trim() !== "" || markdown.trim() !== "";
+  const blocker = useBlocker(isDirty);
 
   const handleCloseModal = (e: React.MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -106,18 +108,25 @@ export default function Questionnew() {
   const onTitleChange = (text: string) => {
     setTitle(text);
   };
+  const { mutate: postQuestion } = useMutation({
+    mutationFn: () =>
+      postAPI.question({ title, content: markdown, majorType, tags }),
+    onSuccess: () => {
+      if (blocker?.state === "blocked") {
+        blocker.proceed();
+      }
+      queryClient.invalidateQueries({ queryKey: ["question"] });
+      setTitle("");
+      setMarkdown("");
+      setClearMDE((prev) => !prev);
+    },
+  });
   const handleSubmit = () => {
     if (!title.trim() || !markdown.trim() || !majorType) {
       setShowModal(true);
     } else {
       try {
-        postAPI.question({ title, content: markdown, majorType, tags });
-        setTitle("");
-        setMarkdown("");
-        setClearMDE((prev) => !prev);
-        if (blocker && blocker.state === "blocked") {
-          blocker.reset();
-        }
+        postQuestion();
         navigate("/question");
       } catch (error) {
         console.error(error);

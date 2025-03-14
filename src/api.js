@@ -1,3 +1,5 @@
+import { Action } from "survey-core";
+
 const BASE_URL = "http://localhost:8080";
 
 export const hotAPI = {
@@ -193,6 +195,43 @@ export const postAPI = {
     }
     return response.json();
   },
+
+  comment: async ({ id, content, memberID = 1 }) => {
+    console.log(id, content);
+    const url = `${BASE_URL}/api/comments/boards/${id}/members/${memberID}`;
+    const options = {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content,
+      }),
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  like: async ({ id, memberID = 1 }) => {
+    const url = `${BASE_URL}/api/likes/boards/${id}/members/${memberID}`;
+    const options = {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
 };
 
 export const singleAPI = {
@@ -230,6 +269,38 @@ export const singleAPI = {
 
   community: async ({ id }) => {
     const url = `${BASE_URL}/api/free-talks/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  comment: async ({ id }) => {
+    const url = `${BASE_URL}/api/comments/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+      },
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  like: async ({ id }) => {
+    const url = `${BASE_URL}/api/likes/boards/${id}`;
     const options = {
       method: "GET",
       headers: {

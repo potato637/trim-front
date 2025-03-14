@@ -26,8 +26,8 @@ const WriterContainer = styled.div`
   align-items: center;
 `;
 const WriterSVG = styled.div`
-  width: 1rem;
-  height: 1rem;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const CommunityText = styled.p`
@@ -98,7 +98,7 @@ export default function Community() {
         </WriterContainer>
         <CommunityText>{communityData.content}</CommunityText>
       </MainContent>
-      <Comments commentsData={commentsData} />
+      {/* <Comments commentsData={commentsData} /> */}
     </>
   );
 }

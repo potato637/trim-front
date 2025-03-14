@@ -1,42 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { postAPI } from "../api";
+import { useLocation } from "react-router-dom";
+import { CommentI } from "../types/commentType";
+import { formatDate } from "../utils";
 
 const CommentSection = styled.div`
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 const NumberOfComments = styled.div`
-  font-size: 0.5rem;
-  margin-bottom: 10px;
+  font-size: var(--font-size-small);
+  margin-bottom: 20px;
 `;
 const WritingCommentContainer = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   & > form {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
+    gap: 20px;
     & > input[type="text"] {
       box-sizing: border-box;
       width: 100%;
-      min-height: 30px;
-      border: 0.5px solid #cbcdd6;
+      min-height: 50px;
+      border: 0.5px solid var(--color-comment-input);
       border-radius: 4px;
       display: flex;
       padding: 5px 10px;
       align-items: flex-start;
-      font-size: 0.5rem;
-      color: black;
-      background-color: #fbfbfb;
+      font-size: var(--font-size-small);
+      color: var(--color-black);
+      background-color: var(--color-white-gray);
       &:focus {
         outline: none;
         box-shadow: none;
-        border: 0.75px solid #5c37ff;
+        border: 0.75px solid var(--color-comment-input-hover);
       }
       &::placeholder {
-        color: #8d8e94;
+        color: var(--color-input-placeholder);
       }
     }
     & > input[type="submit"] {
@@ -44,18 +49,19 @@ const WritingCommentContainer = styled.div`
       padding: 5px 8px;
       justify-content: center;
       align-items: center;
-      width: 70px;
-      font-size: 0.4rem;
-      color: white;
-      background-color: #6129e9;
-      border-radius: 10px;
+      width: 100px;
+      height: 30px;
+      border-radius: 20px;
+      font-size: var(--font-size-small);
+      color: var(--color-white);
+      background-color: var(--color-purple-hover);
       border: none;
-      box-shadow: 0px 2px 4px 0px rgba(43, 39, 53, 0.15);
+      box-shadow: 0px 2px 4px 0px var(--color-input-shadow);
     }
   }
 `;
 const WritingReCommentContainer = styled.div`
-  width: 92%;
+  width: 95%;
   & > form {
     width: 100%;
     display: flex;
@@ -65,22 +71,22 @@ const WritingReCommentContainer = styled.div`
     & > input[type="text"] {
       box-sizing: border-box;
       width: 100%;
-      min-height: 30px;
-      border: 0.5px solid #cbcdd6;
+      height: 40px;
+      border: 0.5px solid var(--color-comment-input);
       border-radius: 4px;
       display: flex;
       padding: 5px 10px;
       align-items: flex-start;
-      font-size: 0.5rem;
-      color: black;
-      background-color: #fbfbfb;
+      font-size: var(--font-size-small);
+      color: var(--color-black);
+      background-color: var(--color-white-gray);
       &:focus {
         outline: none;
         box-shadow: none;
-        border: 0.75px solid #5c37ff;
+        border: 0.75px solid var(--color-comment-input-hover);
       }
       &::placeholder {
-        color: #8d8e94;
+        color: var(--color-input-placeholder);
       }
     }
     & > input[type="submit"] {
@@ -88,13 +94,14 @@ const WritingReCommentContainer = styled.div`
       padding: 5px 8px;
       justify-content: center;
       align-items: center;
-      width: 70px;
-      font-size: 0.4rem;
-      color: white;
-      background-color: #6129e9;
-      border-radius: 10px;
+      width: 100px;
+      height: 30px;
+      border-radius: 20px;
+      font-size: var(--font-size-small);
+      color: var(--color-white);
+      background-color: var(--color-purple-hover);
       border: none;
-      box-shadow: 0px 2px 4px 0px rgba(43, 39, 53, 0.15);
+      box-shadow: 0px 2px 4px 0px var(--color-input-shadow);
     }
   }
 `;
@@ -111,19 +118,19 @@ const Comment = styled.div`
 `;
 const User = styled.div`
   position: relative;
-  width: 8%;
+  width: 5%;
 `;
 const UserImg = styled.div`
-  width: 20px;
-  height: 20px;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
   position: absolute;
   top: 0;
   left: 0;
   background: url(/assets/userSVG.svg) center/cover no-repeat;
 `;
 const Content = styled.div`
-  width: 92%;
-  background-color: #f5f3ff;
+  width: 95%;
+  background-color: var(--color-light-purple);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -131,12 +138,12 @@ const Content = styled.div`
   gap: 10px;
 `;
 const CommentInfo = styled.div`
-  font-size: 0.4rem;
-  color: #37009c;
+  font-size: var(--font-size-small);
+  color: var(--color-purple);
 `;
 const CommentMain = styled.div`
-  font-size: 0.5rem;
-  line-height: 0.65rem;
+  font-size: var(--font-size-small);
+  line-height: var(--font-size-medium);
   font-weight: 400;
 `;
 const CommentBtns = styled.div`
@@ -144,8 +151,8 @@ const CommentBtns = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  font-size: 0.4rem;
-  color: #65686d;
+  font-size: var(--font-size-small);
+  color: var(--color-date);
   & > div:hover {
     cursor: pointer;
   }
@@ -182,47 +189,67 @@ const ReUserImg = styled.div`
   right: 0;
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
+const CircleUp = styled(FaChevronCircleUp)`
+  color: var(--color-purple-hover);
+`;
+const CircleDown = styled(FaChevronCircleDown)`
+  color: var(--color-purple-hover);
+`;
 
-interface CommentI {
-  name: string;
-  scholar: string;
-  upload: string;
-  main: string;
-}
-interface CommentsI {
-  name: string;
-  scholar: string;
-  upload: string;
-  main: string;
-  re?: CommentI[];
-}
-interface CommentsProps {
-  commentsData: CommentsI[];
-}
-
-export default function Comments({ commentsData }: CommentsProps) {
+export default function Comments({
+  commentsData,
+}: {
+  commentsData: CommentI[];
+}) {
+  const queryClient = useQueryClient();
+  const location = useLocation();
   const [seeReComment, setSeeReComment] = useState<{ [key: number]: boolean }>(
     {}
   );
   const [writeReComment, setWriteReComment] = useState<{
     [key: number]: boolean;
   }>({});
+  const [value, setValue] = useState<string>("");
+
+  const { mutate: postComment } = useMutation({
+    mutationFn: () =>
+      postAPI.comment({ id: location.state.id, content: value }),
+    onSuccess: () => {
+      setValue("");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (value !== "") {
+      try {
+        postComment();
+      } catch (error) {
+        console.error(error);
+      }
+    }
     return null;
   };
+
   const handleSeeReCommentClick = (index: number) => {
     setSeeReComment((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
   };
+
   const handleWriteReCommentClick = (index: number) => {
     setWriteReComment((prev) => ({ ...prev, [index]: !prev[index] }));
   };
+
   const handleReSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     return null;
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
   };
 
   return (
@@ -230,7 +257,12 @@ export default function Comments({ commentsData }: CommentsProps) {
       <NumberOfComments>{`댓글 ${commentsData.length}개`}</NumberOfComments>
       <WritingCommentContainer>
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="댓글 작성하기"></input>
+          <input
+            onChange={(event) => handleInputChange(event)}
+            value={value}
+            type="text"
+            placeholder="댓글 작성하기"
+          ></input>
           <input type="submit" value="댓글 작성하기" />
         </form>
       </WritingCommentContainer>
@@ -243,8 +275,9 @@ export default function Comments({ commentsData }: CommentsProps) {
                   <UserImg />
                 </User>
                 <Content>
-                  <CommentInfo>{`${comment.name} · ${comment.scholar} · ${comment.upload}`}</CommentInfo>
-                  <CommentMain>{comment.main}</CommentMain>
+                  {/* createdAt 넣어야함 */}
+                  <CommentInfo>{`${comment.memberResponse.nickname} ·`}</CommentInfo>
+                  <CommentMain>{comment.commentResponse.content}</CommentMain>
                   <CommentBtns>
                     <WriteReComment
                       onClick={() => handleWriteReCommentClick(index)}
@@ -254,12 +287,12 @@ export default function Comments({ commentsData }: CommentsProps) {
                     <SeeReComment
                       onClick={() => handleSeeReCommentClick(index)}
                     >
-                      {`댓글 ${comment.re?.length || "0"}개`}
+                      {/* {`댓글 ${comment.re?.length || "0"}개`}
                       {seeReComment[index] ? (
-                        <FaChevronCircleDown color="#6129e9" />
+                        <CircleUp />
                       ) : (
-                        <FaChevronCircleUp color="#6129e9" />
-                      )}
+                        <CircleDown />
+                      )} */}
                     </SeeReComment>
                   </CommentBtns>
                 </Content>
@@ -272,7 +305,7 @@ export default function Comments({ commentsData }: CommentsProps) {
                   </form>
                 </WritingReCommentContainer>
               )}
-              {seeReComment[index] &&
+              {/* {seeReComment[index] &&
                 comment.re?.map((reComment, reIndex) => (
                   <ReComment key={reIndex}>
                     <ReContent>
@@ -283,7 +316,7 @@ export default function Comments({ commentsData }: CommentsProps) {
                       <ReUserImg />
                     </ReUser>
                   </ReComment>
-                ))}
+                ))} */}
             </React.Fragment>
           ))}
       </CommentsContainer>

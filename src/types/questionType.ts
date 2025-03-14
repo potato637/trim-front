@@ -35,6 +35,18 @@ export interface QuestionDataI {
   result: QuestionResultI;
 }
 
+export interface QuestionI {
+  isSuccess: boolean;
+  code: number;
+  message: string;
+  result: {
+    questionResponse: QuestionResponseI;
+    memberResponse: MemberResponseI;
+    answerDetailResponseList: [];
+    tagList: string[];
+  };
+}
+
 export interface InfiniteQuestionDataI {
   pageParams: number[];
   pages: QuestionDataI[];

@@ -4,28 +4,28 @@ import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 
 const MainContent = styled.div`
   width: 100%;
-  border-bottom: 0.5px solid #cbcdd6;
+  border-bottom: 0.5px solid var(--color-comment-input);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 `;
 const TitleContainer = styled.div`
-  font-size: 1.3rem;
+  font-size: var(--font-size-extra-medium);
   font-weight: 600;
 `;
 const WriterContainer = styled.div`
-  font-size: 0.45rem;
-  color: #37009c;
+  font-size: var(--font-size-small);
+  color: var(--color-purple-hover);
   display: flex;
-  gap: 5px;
+  gap: 15px;
   align-items: center;
 `;
 const WriterSVG = styled.div`
-  width: 1rem;
-  height: 1rem;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ShareText = styled.p`
@@ -47,8 +47,8 @@ const About = styled.div`
   gap: 10px;
 `;
 const UserImg = styled.div`
-  width: 70px;
-  height: 70px;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const UserInfo = styled.div`
@@ -70,11 +70,29 @@ const Introducing = styled.div`
   color: #65686d;
 `;
 const Infos = styled.div`
-  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  font-size: 0.4rem;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-small);
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 5px 20px;
+    border-radius: 20px;
+  }
 `;
+const Info = styled.div`
+  background-color: var(--color-purple);
+  color: var(--color-white);
+`;
+const Tag = styled.div`
+  color: var(--color-gray);
+  background-color: var(--color-mint-hash);
+`;
+const CommentContainer = styled.div``;
 const CommentBtn = styled.div`
   display: flex;
   justify-content: center;
@@ -191,6 +209,19 @@ export default function Share() {
   return (
     <MainContent>
       <TitleContainer>{shareData.title}</TitleContainer>
+      <Infos>
+        <Info>
+          {/* {
+                major[
+                  questionData?.questionResponse.majorType as keyof typeof major
+                ]
+              } */}
+        </Info>
+        {/* {questionData?.tagList &&
+              questionData?.tagList.map((item, index) => (
+                <Tag key={index}>{`# ${item}`}</Tag>
+              ))} */}
+      </Infos>
       <WriterContainer>
         <WriterSVG />
         {`${shareData.name} · ${shareData.scholar} · ${shareData.upload}`}
@@ -213,7 +244,7 @@ export default function Share() {
             </Introducing>
           </UserInfo>
         </About>
-        <Infos>
+        <CommentContainer>
           <CommentBtn onClick={handleCommentBtnClick}>
             {`댓글 ${shareData.re?.length || "0"}개`}
             {isCommentOpen ? (
@@ -222,7 +253,7 @@ export default function Share() {
               <FaChevronCircleUp color="#6129e9" />
             )}
           </CommentBtn>
-        </Infos>
+        </CommentContainer>
       </Writer>
     </MainContent>
   );
