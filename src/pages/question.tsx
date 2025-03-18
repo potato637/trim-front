@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Comments from "../components/comments";
 import { TbPencilCheck } from "react-icons/tb";
 import {
   FaChevronCircleUp,
   FaChevronCircleDown,
+  FaRegBookmark,
   FaBookmark,
 } from "react-icons/fa";
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { postAPI, singleAPI } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";
-import { BiLike } from "react-icons/bi";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 
 const MainContent = styled.div`
   width: 100%;
@@ -42,8 +44,8 @@ const WriterSVG = styled.div`
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ContentContainer = styled.div`
+  width: 100%;
   padding: 20px 0;
-  font-size: var(--font-size-medium);
   line-height: 1.6;
 `;
 const InfoContainer = styled.div`
@@ -66,7 +68,7 @@ const Infos = styled.div`
     border-radius: 20px;
   }
 `;
-const Info = styled.div`
+const Major = styled.div`
   background-color: var(--color-purple);
   color: var(--color-white);
 `;
@@ -80,14 +82,14 @@ const LikeAndComment = styled.div`
   align-items: center;
   gap: 7px;
 `;
-const LikeIcon = styled(BiLike)`
+const LikeRegIcon = styled(BiLike)`
   color: var(--color-like);
   cursor: pointer;
 `;
 const Like = styled.div`
   color: var(--color-like);
 `;
-const ScrapIcon = styled(FaBookmark)`
+const ScrapRegIcon = styled(FaRegBookmark)`
   color: var(--color-gray);
   cursor: pointer;
 `;
@@ -196,7 +198,7 @@ export default function Question() {
   const { mutate: postLike } = useMutation({
     mutationFn: () => postAPI.like({ id: location.state.id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["like"] });
+      queryClient.invalidateQueries({ queryKey: ["like", location.state.id] });
     },
   });
 
@@ -209,12 +211,12 @@ export default function Question() {
   };
 
   const { data: question, isLoading: question_loading } = useQuery<QuestionI>({
-    queryKey: [location.state.id],
+    queryKey: ["question", location.state.id],
     queryFn: () => singleAPI.question({ id: location.state.id }),
   });
   const questionData = question?.result;
   const { data: comments, isLoading: comments_loading } = useQuery({
-    queryKey: ["comments"],
+    queryKey: ["comments", location.state.id],
     queryFn: () => singleAPI.comment({ id: location.state.id }),
   });
   const commentsData = comments?.result;
@@ -246,27 +248,29 @@ export default function Question() {
             questionData?.questionResponse.createdAt as number
           )}`}
         </WriterContainer>
-        <ContentContainer>
-          {questionData?.questionResponse.content}
+        <ContentContainer className="markdown-content">
+          <Markdown remarkPlugins={[remarkGfm]}>
+            {questionData?.questionResponse.content}
+          </Markdown>
         </ContentContainer>
         <InfoContainer>
           <Infos>
-            <Info>
+            <Major>
               {
                 major[
                   questionData?.questionResponse.majorType as keyof typeof major
                 ]
               }
-            </Info>
+            </Major>
             {questionData?.tagList &&
               questionData?.tagList.map((item, index) => (
                 <Tag key={index}>{`# ${item}`}</Tag>
               ))}
           </Infos>
           <LikeAndComment>
-            <LikeIcon onClick={handleLikeClick} />
+            <LikeRegIcon onClick={handleLikeClick} />
             <Like>{like?.result}</Like>
-            <ScrapIcon />
+            <ScrapRegIcon />
             <Scrap></Scrap>
             <CommentBtn onClick={handleCommentBtnClick}>
               {`댓글 ${commentsData?.length}개`}

@@ -7,13 +7,13 @@ import styled from "styled-components";
 import { BiLike } from "react-icons/bi";
 import { FaRegComments } from "react-icons/fa";
 import { formatDate } from "../utils";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   margin-top: 30px;
 `;
+const ItemContainer = styled.div``;
 const Item = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,8 +56,14 @@ const Comment = styled.div`
 const Content = styled.div`
   font-size: var(--font-size-small);
 `;
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const LoadMoreButton = styled.button`
-  margin-top: 20px;
+  margin: 20px 0;
   padding: 10px 20px;
   border: none;
   background-color: var(--color-purple);
@@ -72,6 +78,7 @@ const LoadMoreButton = styled.button`
 `;
 
 export default function Communitytab() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { data: hot, isLoading: hot_isLoading } = useQuery({
     queryKey: ["community_hot"],
@@ -85,7 +92,7 @@ export default function Communitytab() {
     isLoading: data_isLoading,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["community"],
+    queryKey: ["communities"],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.community({ currentPage: pageParam }),
     initialPageParam: 0,
@@ -105,37 +112,43 @@ export default function Communitytab() {
     <>
       <Hot data={hot.result} category="자유게시판" />
       <Container>
-        {data?.map((item, index) => (
-          <Item
-            key={index}
-            onClick={() =>
-              navigate(`/community/${item.freeTalkResponse.freeTalkId}`)
-            }
-          >
-            <TopContainer>
-              <Title>{item.freeTalkResponse.title}</Title>
-              <MetaData>
-                <CreatedAt>
-                  {formatDate(item.freeTalkResponse.createdAt)}
-                </CreatedAt>
-                <LikeIcon />
-                <Like>{item.likeCount}</Like>
-                <CommentIcon />
-                <Comment>{item.commentCount}</Comment>
-              </MetaData>
-            </TopContainer>
-            <Content>{item.freeTalkResponse.content}</Content>
-          </Item>
-        ))}
+        <ItemContainer>
+          {data?.map((item, index) => (
+            <Item
+              key={index}
+              onClick={() =>
+                navigate(`/community/${item.freeTalkResponse.freeTalkId}`, {
+                  state: { id: item.freeTalkResponse.freeTalkId },
+                })
+              }
+            >
+              <TopContainer>
+                <Title>{item.freeTalkResponse.title}</Title>
+                <MetaData>
+                  <CreatedAt>
+                    {formatDate(item.freeTalkResponse.createdAt)}
+                  </CreatedAt>
+                  <LikeIcon />
+                  <Like>{item.likeCount}</Like>
+                  <CommentIcon />
+                  <Comment>{item.commentCount}</Comment>
+                </MetaData>
+              </TopContainer>
+              <Content>{item.freeTalkResponse.content}</Content>
+            </Item>
+          ))}
+        </ItemContainer>
+        {hasNextPage && (
+          <ButtonContainer>
+            <LoadMoreButton
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+            >
+              {isFetchingNextPage ? "Loading..." : "Show More"}
+            </LoadMoreButton>
+          </ButtonContainer>
+        )}
       </Container>
-      {hasNextPage && (
-        <LoadMoreButton
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? "Loading..." : "Show More"}
-        </LoadMoreButton>
-      )}
     </>
   );
 }

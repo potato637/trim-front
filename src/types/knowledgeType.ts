@@ -27,7 +27,7 @@ export interface KnowledgeItemI {
 }
 
 export interface KnowledgeResultI {
-  questionResponseList: KnowledgeItemI[];
+  knowledgeResponseList: KnowledgeItemI[];
   page: number;
   totalPages: number;
 }
@@ -37,4 +37,16 @@ export interface KnowledgeDataI {
   code: number;
   message: string;
   result: KnowledgeResultI;
+}
+
+export interface KnowledgeI {
+  isSuccess: boolean;
+  code: number;
+  message: string;
+  result: {
+    knowledgeResponse: KnowledgeResponseI;
+    memberResponse: MemberResponseI;
+    commentResponses: [];
+    tags: string[];
+  };
 }

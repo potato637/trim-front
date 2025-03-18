@@ -3,12 +3,6 @@ export interface FreeTalkResponseI {
   title: string;
   content: string;
   createdAt: number;
-  resolveStatus: "UNRESOLVED" | "RESOLVED";
-  majorType:
-    | "INDUSTRIAL_ENGINEERING"
-    | "PHYSICAL_EDUCATION"
-    | "FINE_ARTS"
-    | "NATURAL_SCIENCES";
 }
 export interface MemberResponseI {
   memberId: number;
@@ -23,11 +17,10 @@ export interface FreeTalkItemI {
   memberResponse: MemberResponseI;
   likeCount: number;
   commentCount: number;
-  tagList: string[];
 }
 
 export interface FreeTalkResultI {
-  questionResponseList: FreeTalkItemI[];
+  freeTalkResponseList: FreeTalkItemI[];
   page: number;
   totalPages: number;
 }
@@ -37,4 +30,14 @@ export interface FreeTalkDataI {
   code: number;
   message: string;
   result: FreeTalkResultI;
+}
+
+export interface FreeTalkI {
+  isSuccess: boolean;
+  code: number;
+  message: string;
+  result: {
+    freeTalkResponse: FreeTalkResponseI;
+    memberResponse: MemberResponseI;
+  };
 }

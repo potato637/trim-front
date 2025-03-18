@@ -4,6 +4,8 @@
   --color-purple: #6129e9cc;
   --color-purple-hover: #6129e9;
   --color-input: #ceb2ff;
+  --color-pink-modal: #ff447ccc;
+  --color-pink-modal-hover: #ff447c;
   --color-comment-input: #cbcdd6;
   --color-comment-input-hover: #5c37ff;
   --color-input-placeholder: #8d8e94;
@@ -23,6 +25,8 @@
   --color-item-shadow: #61606026;
   --color-modal-overlay: #00000080;
   --color-modal-shadow: #0000001a;
+  --color-modal-gray: #eaeaeccc;
+  --color-modal-gray-hover: #eaeaec;
   --font-size-logo: 2.5rem;
   --font-size-extra-small: 0.7rem;
   --font-size-small: 0.8rem;
@@ -30,4 +34,5 @@
   --font-size-extra-medium: 1.5rem;
   --font-size-large: 2rem;
   --font-size-user: 30px;
+  --font-size-knowledge-user: 150px;
 }

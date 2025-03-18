@@ -34,7 +34,7 @@ export default function Questiontab() {
     isLoading: data_isLoading,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["question", searchParams.majorType, searchParams.tags],
+    queryKey: ["questions", searchParams.majorType, searchParams.tags],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.question({ currentPage: pageParam, ...searchParams }),
     initialPageParam: 0,
@@ -46,7 +46,7 @@ export default function Questiontab() {
 
   const handleTagSearch = () => {
     setSearchParams({ majorType, tags });
-    queryClient.invalidateQueries({ queryKey: ["question"] });
+    queryClient.invalidateQueries({ queryKey: ["questions"] });
   };
 
   const isLoading = hot_isLoading || data_isLoading;

@@ -34,7 +34,7 @@ export default function Sharetab() {
     isLoading: data_isLoading,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["knowledge", searchParams.majorType, searchParams.tags],
+    queryKey: ["knowledges", searchParams.majorType, searchParams.tags],
     queryFn: ({ pageParam = 0 }) =>
       datasAPI.knowledge({ currentPage: pageParam, ...searchParams }),
     initialPageParam: 0,
@@ -46,7 +46,7 @@ export default function Sharetab() {
 
   const handleTagSearch = () => {
     setSearchParams({ majorType, tags });
-    queryClient.invalidateQueries({ queryKey: ["question"] });
+    queryClient.invalidateQueries({ queryKey: ["knowledges"] });
   };
 
   const isLoading = hot_isLoading || data_isLoading;

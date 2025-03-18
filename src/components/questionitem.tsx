@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Markdown from "react-markdown";
 import { QuestionItemI } from "../types/questionType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";
@@ -129,7 +130,11 @@ export default function Questionitem({ data }: { data: QuestionItemI }) {
       </MetaData>
       <Title>{Object.values(data)[0].title}</Title>
       <Content>
-        <p>{Object.values(data)[0].content}</p>
+        <Markdown
+          components={{ img: () => null, a: () => null, code: () => null }}
+        >
+          {Object.values(data)[0].content}
+        </Markdown>
       </Content>
       <Types>
         <HashTags>

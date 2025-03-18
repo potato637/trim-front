@@ -110,7 +110,7 @@ const CommentsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  gap: 10px;
+  gap: 20px;
 `;
 const Comment = styled.div`
   width: 100%;
@@ -216,7 +216,9 @@ export default function Comments({
       postAPI.comment({ id: location.state.id, content: value }),
     onSuccess: () => {
       setValue("");
-      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      queryClient.invalidateQueries({
+        queryKey: ["comments", location.state.id],
+      });
     },
   });
 

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import Mde from "../components/mde";
 import { postAPI } from "../api";
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useBlocker, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Container = styled.div`
   width: 100%;
@@ -67,16 +68,71 @@ const ModalOverLay = styled.div`
   justify-content: center;
   z-index: 1000;
 `;
-const Modal = styled.div`
+const ModalOnForm = styled.div`
   background-color: var(--color-white);
   padding: 20px;
   border-radius: 10px;
-  max-width: 300px;
-  width: 100%;
+  width: 260px;
+  height: 70px;
   box-shadow: 0 4px 6px var(--color-modal-shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-pink-modal);
+  border: 1px solid var(--color-pink-modal);
+`;
+const ModalOnNavigation = styled.div`
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  height: 150px;
+  box-shadow: 0 4px 6px var(--color-modal-shadow);
+  color: var(--color-pink-modal);
+  border: 1px solid var(--color-pink-modal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+const ModalButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+
+  & > button {
+    width: 110px;
+    height: 50px;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    transition: 100ms;
+    cursor: pointer;
+  }
+
+  & > :first-child {
+    color: var(--color-black);
+    background-color: var(--color-modal-gray);
+
+    &:hover {
+      background-color: var(--color-modal-gray-hover);
+    }
+  }
+
+  & > :last-child {
+    color: var(--color-white);
+    background-color: var(--color-pink-modal);
+
+    &:hover {
+      background-color: var(--color-pink-modal-hover);
+    }
+  }
 `;
 
 export default function Communitynew() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [markdown, setMarkdown] = useState<string>("");
@@ -84,18 +140,48 @@ export default function Communitynew() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const isFormDirty = title.trim() !== "" || markdown.trim() !== "";
+  const blocker = useBlocker(isFormDirty);
+
+  useEffect(() => {
+    if (blocker?.state === "blocked") {
+      setShowModal(true);
+    }
+  }, [blocker?.state]);
+
+  const handleCloseModal = (e: React.MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setShowModal(false);
+      if (blocker?.state === "blocked") {
+        blocker.reset();
+      }
+    }
+  };
   const onTitleChange = (text: string) => {
     setTitle(text);
   };
-  const handleSubmit = () => {
-    try {
-      postAPI.community({ title, content: markdown });
-      navigate("/community");
+  const { mutate: postCommunity } = useMutation({
+    mutationFn: () => postAPI.community({ title, content: markdown }),
+    onSuccess: () => {
+      if (blocker?.state === "blocked") {
+        blocker.proceed();
+      }
+      queryClient.invalidateQueries({ queryKey: ["communities"] });
       setTitle("");
       setMarkdown("");
       setClearMDE((prev) => !prev);
-    } catch (error) {
-      console.error(error);
+    },
+  });
+  const handleSubmit = () => {
+    if (!title.trim() || !markdown.trim()) {
+      setShowModal(true);
+    } else {
+      try {
+        postCommunity();
+        navigate("/community");
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -116,8 +202,21 @@ export default function Communitynew() {
       </TitleContainer>
       <Mde setMarkdown={setMarkdown} clearMDE={clearMDE} />
       {showModal && (
-        <ModalOverLay>
-          <Modal></Modal>
+        <ModalOverLay onClick={handleCloseModal}>
+          <ModalOnForm ref={modalRef}>
+            <span>필요한 값이 입력되지 않았습니다.</span>
+          </ModalOnForm>
+        </ModalOverLay>
+      )}
+      {blocker?.state === "blocked" && (
+        <ModalOverLay onClick={handleCloseModal}>
+          <ModalOnNavigation ref={modalRef}>
+            <p>입력한 값이 사라질 수 있습니다.</p>
+            <ModalButtons>
+              <button onClick={() => blocker.proceed()}>진행</button>
+              <button onClick={() => blocker.reset()}>취소</button>
+            </ModalButtons>
+          </ModalOnNavigation>
         </ModalOverLay>
       )}
     </Container>

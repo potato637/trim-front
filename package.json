@@ -29,6 +29,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.10.0",
     "recoil": "^0.7.7",
+    "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.13",
     "survey-core": "^1.12.23",
     "survey-react-ui": "^1.12.23",

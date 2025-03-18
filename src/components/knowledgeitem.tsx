@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Markdown from "react-markdown";
 import { KnowledgeItemI } from "../types/knowledgeType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";
@@ -48,9 +49,15 @@ const Title = styled.div`
 const Content = styled.div`
   height: 100px;
   font-size: var(--font-size-small);
-  justify-content: flex-start;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+  & > p {
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 const Types = styled.div`
   font-size: var(--font-size-extra-small);
@@ -85,7 +92,7 @@ const Comment = styled.div`
   color: var(--color-comment);
 `;
 
-export default function Questionitem({ data }: { data: KnowledgeItemI }) {
+export default function Knowledgeitem({ data }: { data: KnowledgeItemI }) {
   const createdAt = formatDate(Object.values(data)[0].createdAt);
   const navigate = useNavigate();
 
@@ -103,7 +110,11 @@ export default function Questionitem({ data }: { data: KnowledgeItemI }) {
   return (
     <ItemBox
       onClick={() =>
-        navigate(`/knowledge/${data.knowledgeResponse.knowledgeId}`)
+        navigate(`/knowledge/${data.knowledgeResponse.knowledgeId}`, {
+          state: {
+            id: data.knowledgeResponse.knowledgeId,
+          },
+        })
       }
     >
       <MetaData>
@@ -117,7 +128,13 @@ export default function Questionitem({ data }: { data: KnowledgeItemI }) {
         <CreatedAt>{createdAt}</CreatedAt>
       </MetaData>
       <Title>{Object.values(data)[0].title}</Title>
-      <Content>{Object.values(data)[0].content}</Content>
+      <Content>
+        <Markdown
+          components={{ img: () => null, a: () => null, code: () => null }}
+        >
+          {Object.values(data)[0].content}
+        </Markdown>
+      </Content>
       <Types>
         <HashTags>
           {Object.values(data)[4].map((hash: string) => (

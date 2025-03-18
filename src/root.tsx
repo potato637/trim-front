@@ -66,6 +66,71 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
+
+  .markdown-content {
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #333;
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+}
+
+.markdown-content p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.markdown-content ul, .markdown-content ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content strong {
+  font-weight: bold;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1rem;
+  color: #555;
+}
+
+.markdown-content pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
 `;
 const AppWrapper = styled.div`
   display: flex;

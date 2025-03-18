@@ -46,8 +46,3 @@ export interface QuestionI {
     tagList: string[];
   };
 }
-
-export interface InfiniteQuestionDataI {
-  pageParams: number[];
-  pages: QuestionDataI[];
-}
