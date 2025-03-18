@@ -1,8 +1,6 @@
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { getData, HomeDataStateI } from "../recoil/data";
-import ReactPaginate from "react-paginate";
 import React, { useState } from "react";
+import styled from "styled-components";
+import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -63,65 +61,66 @@ const PaginationContainer = styled.div`
   }
 `;
 
-function Items({ currentItems }: { currentItems: HomeDataStateI[] }) {
-  const navigate = useNavigate();
+function Items() {
+  //   const navigate = useNavigate();
 
-  const itemClickHandler = (itemId: string) => {
-    navigate(itemId);
-  };
+  //   const itemClickHandler = (itemId: string) => {
+  //     navigate(itemId);
+  //   };
 
-  return (
-    <>
-      <GridContainer>
-        {currentItems &&
-          currentItems.map((item, index) => (
-            <ItemContainer onClick={() => itemClickHandler(item.createDate)}>
-              <TopContainer />
-              <BottomContainer>
-                <h2 key={index}>{item.title}</h2>
-              </BottomContainer>
-            </ItemContainer>
-          ))}
-      </GridContainer>
-    </>
-  );
-}
+  //   return (
+  //     <>
+  //       <GridContainer>
+  //         {currentItems &&
+  //           currentItems.map((item, index) => (
+  //             <ItemContainer onClick={() => itemClickHandler(item.createDate)}>
+  //               <TopContainer />
+  //               <BottomContainer>
+  //                 <h2 key={index}>{item.title}</h2>
+  //               </BottomContainer>
+  //             </ItemContainer>
+  //           ))}
+  //       </GridContainer>
+  //     </>
+  //   );
+  // }
 
-export default function SurveySwiper({
-  itemsPerPage,
-}: {
-  itemsPerPage: number;
-}) {
-  const data = useRecoilValue(getData("question"));
-  const [itemOffset, setItemOffset] = useState(0);
+  // export default function SurveySwiper({
+  //   itemsPerPage,
+  // }: {
+  //   itemsPerPage: number;
+  // }) {
+  //   const data = useRecoilValue(getData("question"));
+  //   const [itemOffset, setItemOffset] = useState(0);
 
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = data.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(data.length / itemsPerPage);
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   const currentItems = data.slice(itemOffset, endOffset);
+  //   const pageCount = Math.ceil(data.length / itemsPerPage);
 
-  const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * itemsPerPage) % data.length;
-    setItemOffset(newOffset);
-  };
+  //   const handlePageClick = (event: { selected: number }) => {
+  //     const newOffset = (event.selected * itemsPerPage) % data.length;
+  //     setItemOffset(newOffset);
+  //   };
 
-  return (
-    <Container>
-      <Items currentItems={currentItems} />
-      <PaginationContainer>
-        <ReactPaginate
-          breakLabel="..."
-          pageCount={pageCount}
-          nextLabel=">"
-          previousLabel="<"
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={1}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
-          containerClassName="pagination"
-          pageClassName="page-item"
-          activeClassName="selected"
-        />
-      </PaginationContainer>
-    </Container>
-  );
+  //   return (
+  //     <Container>
+  //       <Items currentItems={currentItems} />
+  //       <PaginationContainer>
+  //         <ReactPaginate
+  //           breakLabel="..."
+  //           pageCount={pageCount}
+  //           nextLabel=">"
+  //           previousLabel="<"
+  //           pageRangeDisplayed={3}
+  //           marginPagesDisplayed={1}
+  //           onPageChange={handlePageClick}
+  //           renderOnZeroPageCount={null}
+  //           containerClassName="pagination"
+  //           pageClassName="page-item"
+  //           activeClassName="selected"
+  //         />
+  //       </PaginationContainer>
+  //     </Container>
+  //   );
+  return null;
 }

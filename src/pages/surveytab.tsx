@@ -1,6 +1,6 @@
 import React from "react";
 import SurveyBanner from "../components/surveybanner";
-import SurveySwiper from "../components/surveyswiper";
+// import SurveySwiper from "../components/surveyswiper";
 import SurveyTag from "../components/surveytag";
 
 export default function Surveytab() {
@@ -8,7 +8,7 @@ export default function Surveytab() {
     <>
       <SurveyBanner />
       <SurveyTag />
-      <SurveySwiper itemsPerPage={10} />
+      {/* <SurveySwiper itemsPerPage={10} /> */}
     </>
   );
 }

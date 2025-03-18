@@ -1,15 +1,6 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  additionalDataModalState,
-  loginModalState,
-  userState,
-  isLoggedIn,
-} from "../recoil/userState";
-import LoginModal from "../components/loginmodal";
-import AdditionalDataModal from "../components/additionaldatamodal";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -59,7 +50,8 @@ const Tab = styled.div`
 const Span = styled.span<{ isActive: boolean }>`
   font-size: var(--font-size-small);
   font-weight: 400;
-  color: ${({ isActive }) => (isActive ? "#5c37ff" : "#000")};
+  color: ${({ isActive }) =>
+    isActive ? "var(--color-comment-input-hover)" : "var(--color-black)"};
 `;
 const InputContainer = styled.div`
   width: 400px;
@@ -71,13 +63,13 @@ const Input = styled.input`
   font-size: var(--font-size-small);
   padding: 7px 0 7px 15px;
   border-radius: 16px;
-  border: 0.5px solid #757575;
+  border: 0.5px solid var(--color-header-input);
   margin-left: 10px;
 
   &:focus {
     outline: none;
     box-shadow: none;
-    border: 0.75px solid #5c37ff;
+    border: 0.75px solid var(--color-comment-input-hover);
   }
 `;
 const NavBtnContainer = styled.div`
@@ -103,18 +95,13 @@ const NavBtnContainer = styled.div`
 `;
 
 export default function Header() {
-  const user = useRecoilValue(userState);
-  const isLoginModalOpen = useRecoilValue(loginModalState);
-  const isAdditionalDataModalOpen = useRecoilValue(additionalDataModalState);
-  const setLoginModalOpen = useSetRecoilState(loginModalState);
-  const [loggedIn, setLoggedIn] = useRecoilState(isLoggedIn);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   const pathname = {
     "/question": "질문게시판",
-    "/share": "지식공유",
+    "/knowledge": "지식공유",
     "/community": "커뮤니티",
     "/survey": "설문",
   };
@@ -127,9 +114,7 @@ export default function Header() {
     return location.pathname.startsWith(path);
   }
 
-  const handleLogIn = () => {
-    setLoggedIn((prev) => !prev);
-  };
+  const handleLogIn = () => {};
 
   useEffect(() => {
     const activePath = Object.keys(pathname).find((path) =>
@@ -175,12 +160,8 @@ export default function Header() {
         </InputContainer>
         <NavBtnContainer>
           <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-          <button onClick={handleLogIn}>
-            {loggedIn ? "로그인" : "로그아웃"}
-          </button>
+          <button onClick={handleLogIn}>로그인</button>
         </NavBtnContainer>
-        {isLoginModalOpen && <LoginModal />}
-        {isAdditionalDataModalOpen && <AdditionalDataModal />}
       </Container>
     </HeaderWrapper>
   );
