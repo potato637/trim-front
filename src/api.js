@@ -1,10 +1,8 @@
-import { Action } from "survey-core";
-
 const BASE_URL = "http://localhost:8080";
 
 export const hotAPI = {
   question_hot: async () => {
-    const url = `${BASE_URL}/api/questions/hot-issue`;
+    const url = `${BASE_URL}/api/access/questions/hot-issue`;
     const options = {
       method: "GET",
       headers: {},
@@ -18,7 +16,7 @@ export const hotAPI = {
     return response.json();
   },
   knowledge_hot: async () => {
-    const url = `${BASE_URL}/api/knowledge/hot-issue`;
+    const url = `${BASE_URL}/api/access/knowledge/hot-issue`;
     const options = {
       method: "GET",
       headers: {},
@@ -32,7 +30,7 @@ export const hotAPI = {
     return response.json();
   },
   community_hot: async () => {
-    const url = `${BASE_URL}/api/free-talks/hot-issue`;
+    const url = `${BASE_URL}/api/access/free-talks/hot-issue`;
     const options = {
       method: "GET",
       headers: {},
@@ -51,7 +49,7 @@ export const hotAPI = {
 export const datasAPI = {
   question: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
     const urlParams = tags?.join(",");
-    const url = `${BASE_URL}/api/questions/search?${
+    const url = `${BASE_URL}/api/access/questions/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
       tags.length != 0 ? `keyword=${urlParams}&` : ""
@@ -73,7 +71,7 @@ export const datasAPI = {
 
   knowledge: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
     const urlParams = tags?.join(",");
-    const url = `${BASE_URL}/api/knowledge/search?${
+    const url = `${BASE_URL}/api/access/knowledge/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
       tags.length != 0 ? `keyword=${urlParams}&` : ""
@@ -83,6 +81,7 @@ export const datasAPI = {
       headers: {},
     };
     const response = await fetch(url, options);
+    console.log(url);
 
     if (!response.ok) {
       throw new Error(
@@ -94,7 +93,7 @@ export const datasAPI = {
   },
 
   community: async ({ currentPage, pageSize = 30 }) => {
-    const url = `${BASE_URL}/api/free-talks/page?currentPage=${currentPage}&pageSize=${pageSize}`;
+    const url = `${BASE_URL}/api/access/free-talks/page?currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
       headers: {},
@@ -111,7 +110,7 @@ export const datasAPI = {
   },
 
   survey: async ({ currentPage, pageSize = 30 }) => {
-    const url = `${BASE_URL}/api/survey/page?currentPage=${currentPage}&pageSize=${pageSize}`;
+    const url = `${BASE_URL}/api/access/survey/page?currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
       headers: {},
@@ -236,7 +235,7 @@ export const postAPI = {
 
 export const singleAPI = {
   question: async ({ id }) => {
-    const url = `${BASE_URL}/api/questions/${id}`;
+    const url = `${BASE_URL}/api/access/questions/${id}`;
     const options = {
       method: "GET",
       headers: {
@@ -252,7 +251,7 @@ export const singleAPI = {
   },
 
   knowledge: async ({ id }) => {
-    const url = `${BASE_URL}/api/knowledge/${id}`;
+    const url = `${BASE_URL}/api/access/knowledge/${id}`;
     const options = {
       method: "GET",
       headers: {
@@ -268,7 +267,7 @@ export const singleAPI = {
   },
 
   community: async ({ id }) => {
-    const url = `${BASE_URL}/api/free-talks/${id}`;
+    const url = `${BASE_URL}/api/access/free-talks/${id}`;
     const options = {
       method: "GET",
       headers: {
@@ -284,7 +283,7 @@ export const singleAPI = {
   },
 
   comment: async ({ id }) => {
-    const url = `${BASE_URL}/api/comments/${id}`;
+    const url = `${BASE_URL}/api/access/comments/${id}`;
     const options = {
       method: "GET",
       headers: {
@@ -300,7 +299,7 @@ export const singleAPI = {
   },
 
   like: async ({ id }) => {
-    const url = `${BASE_URL}/api/likes/boards/${id}`;
+    const url = `${BASE_URL}/api/access/likes/boards/${id}`;
     const options = {
       method: "GET",
       headers: {
