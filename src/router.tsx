@@ -15,6 +15,9 @@ import Questionnew from "./pages/questionnew";
 import Sharenew from "./pages/sharenew";
 import Communitynew from "./pages/communitynew";
 import Surveynew from "./pages/surveynew";
+import Redirection from "./pages/redirection";
+import Signin from "./pages/signin";
+import Signup from "./pages/signup";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +38,9 @@ const router = createBrowserRouter([
       { path: "survey/:itemId", element: <Survey /> },
       { path: "survey/new", element: <Surveynew /> },
       { path: "mypage", element: <Mypage /> },
+      { path: "oauth/:provider/callback", element: <Redirection /> },
+      { path: "signin", element: <Signin /> },
+      { path: "signup", element: <Signup /> },
     ],
     errorElement: <Error />,
   },

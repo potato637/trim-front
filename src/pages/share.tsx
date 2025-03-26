@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { postAPI, singleAPI } from "../api";
+import { postAPI, singleAPI } from "../apis/api";
 import { KnowledgeI } from "../types/knowledgeType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";

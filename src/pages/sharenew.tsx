@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Addtag from "../components/addtag";
 import Mde from "../components/mde";
-import { postAPI } from "../api";
+import { postAPI } from "../apis/api";
 import { useBlocker, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

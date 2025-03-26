@@ -1,9 +1,9 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import Comments from "../components/comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
-import { postAPI, singleAPI } from "../api";
+import { postAPI, singleAPI } from "../apis/api";
 import { FreeTalkI } from "../types/communityType";
 import { formatDate } from "../utils";
 import { BiLike, BiSolidLike } from "react-icons/bi";

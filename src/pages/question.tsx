@@ -11,7 +11,7 @@ import {
   FaBookmark,
 } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-import { postAPI, singleAPI } from "../api";
+import { postAPI, singleAPI } from "../apis/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";

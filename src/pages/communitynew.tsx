@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Mde from "../components/mde";
-import { postAPI } from "../api";
+import { postAPI } from "../apis/api";
 import { useEffect, useRef, useState } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

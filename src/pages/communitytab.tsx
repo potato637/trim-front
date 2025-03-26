@@ -1,7 +1,7 @@
 import React from "react";
 import Hot from "../components/hot";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { datasAPI, hotAPI } from "../api";
+import { datasAPI, hotAPI } from "../apis/api";
 import { FreeTalkItemI } from "../types/communityType";
 import styled from "styled-components";
 import { BiLike } from "react-icons/bi";

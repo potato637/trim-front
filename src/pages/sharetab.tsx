@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { datasAPI, hotAPI } from "../api";
+import { datasAPI, hotAPI } from "../apis/api";
 import Tabswiper from "../components/tabswiper";
 import { KnowledgeItemI } from "../types/knowledgeType";
 

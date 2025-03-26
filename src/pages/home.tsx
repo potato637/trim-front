@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FaComments, FaThumbsUp, FaRegComments } from "react-icons/fa6";
 import { PiEyesFill } from "react-icons/pi";
 import { useState } from "react";
-import { datasAPI } from "../api";
+import { datasAPI } from "../apis/api";
 import { formatDate } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { BiLike } from "react-icons/bi";

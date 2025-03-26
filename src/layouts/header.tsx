@@ -98,6 +98,8 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
+  const kakaoAuthUrl = process.env.REACT_APP_KAKAO_AUTH_URL;
+  const googleAuthUrl = process.env.REACT_APP_GOOGLE_AUTH_URL;
 
   const pathname = {
     "/question": "질문게시판",
@@ -114,7 +116,12 @@ export default function Header() {
     return location.pathname.startsWith(path);
   }
 
-  const handleLogIn = () => {};
+  const handleSignIn = () => {
+    navigate("/signin");
+  };
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
 
   useEffect(() => {
     const activePath = Object.keys(pathname).find((path) =>
@@ -160,7 +167,8 @@ export default function Header() {
         </InputContainer>
         <NavBtnContainer>
           <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-          <button onClick={handleLogIn}>로그인</button>
+          <button onClick={handleSignIn}>로그인</button>
+          <button onClick={handleSignUp}>회원가입</button>
         </NavBtnContainer>
       </Container>
     </HeaderWrapper>

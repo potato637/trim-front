@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import { postAPI } from "../api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postAPI } from "../apis/api";
 import { useLocation } from "react-router-dom";
 import { CommentI } from "../types/commentType";
 import { formatDate } from "../utils";
