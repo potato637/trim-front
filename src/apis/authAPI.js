@@ -1,6 +1,7 @@
 const BASE_URL = "http://localhost:8080";
 
 export const getInfo = async ({ code, provider }) => {
+  console.log(code);
   const url = `${BASE_URL}/api/access/oauth/${provider}/user-info?code=${code}`;
   const options = {
     method: "GET",

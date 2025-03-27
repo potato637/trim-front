@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getInfo, signIn, signUp } from "../apis/authAPI";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -18,7 +18,6 @@ interface InfoI {
 export default function Redirection() {
   const { provider } = useParams<{ provider: ProviderI }>();
   const location = useLocation();
-  const navigate = useNavigate();
   const code = new URLSearchParams(location.search).get("code");
 
   const { data: info, isLoading } = useQuery<InfoI>({
@@ -51,7 +50,6 @@ export default function Redirection() {
     } else {
       signUpMutation.mutate();
     }
-    console.log(token);
   }, []);
 
   return null;
