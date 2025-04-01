@@ -81,7 +81,6 @@ export const datasAPI = {
       headers: {},
     };
     const response = await fetch(url, options);
-    console.log(url);
 
     if (!response.ok) {
       throw new Error(

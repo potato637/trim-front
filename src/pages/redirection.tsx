@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getInfo, signIn, signUp } from "../apis/authAPI";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 type ProviderI = "google" | "naver" | "kakao";
 interface InfoI {
@@ -16,8 +16,10 @@ interface InfoI {
   };
 }
 export default function Redirection() {
+  const prevUrl = sessionStorage.getItem("prevUrl") || "/";
   const { provider } = useParams<{ provider: ProviderI }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const code = new URLSearchParams(location.search).get("code");
 
   const { data: info, isLoading } = useQuery<InfoI>({
@@ -26,31 +28,26 @@ export default function Redirection() {
     enabled: !!code && !!provider,
   });
 
-  const signUpMutation = useMutation({
-    mutationFn: () => signUp({ email: info?.result.email, provider }),
-    onSuccess: () => {
-      refetch();
-    },
-    onError: (error) => {
-      console.error("sign up error: ", error);
-    },
-  });
-
-  const { data: token, refetch } = useQuery({
-    queryKey: ["sign in"],
-    queryFn: () => signIn({ email: info?.result.email, provider }),
-    enabled: false,
-  });
-
   useEffect(() => {
-    if (isLoading) return;
+    if (!info) return;
 
-    if (info?.result.userExist) {
-      refetch();
-    } else {
-      signUpMutation.mutate();
-    }
-  }, []);
+    const process = async () => {
+      const { email, userExist } = info.result;
+      try {
+        userExist
+          ? await signIn({ email, provider })
+          : await signUp({ email, provider });
+        navigate(prevUrl);
+        sessionStorage.removeItem("prevUrl");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    process();
+  }, [info, provider, navigate]);
+
+  if (isLoading) return null;
 
   return null;
 }

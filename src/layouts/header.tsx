@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UrlContext } from "../context/url_context";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -95,11 +96,10 @@ const NavBtnContainer = styled.div`
 `;
 
 export default function Header() {
+  const url_context = useContext(UrlContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
-  const kakaoAuthUrl = process.env.REACT_APP_KAKAO_AUTH_URL;
-  const googleAuthUrl = process.env.REACT_APP_GOOGLE_AUTH_URL;
 
   const pathname = {
     "/question": "질문게시판",
@@ -117,9 +117,13 @@ export default function Header() {
   }
 
   const handleSignIn = () => {
+    url_context?.setPrevUrl(location.pathname);
+    sessionStorage.setItem("prevUrl", location.pathname);
     navigate("/signin");
   };
   const handleSignUp = () => {
+    url_context?.setPrevUrl(location.pathname);
+    sessionStorage.setItem("prevUrl", location.pathname);
     navigate("/signup");
   };
 

@@ -4,6 +4,8 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Url, UrlObject } from "url";
+import { useContext } from "react";
+import { UrlContext } from "../context/url_context";
 
 const Container = styled.div`
   margin-top: 10rem;
@@ -60,8 +62,6 @@ const Kakao = styled(RiKakaoTalkFill)`
 `;
 
 export default function Signin() {
-  const navigate = useNavigate();
-
   const handleGoogleClick = () => {
     window.location.href = process.env.REACT_APP_GOOGLE_AUTH_URL as string;
   };
