@@ -164,14 +164,16 @@ export default function Share() {
   }
 
   const { data: like, isLoading: like_loading } = useQuery<LikeI>({
-    queryKey: ["like", location.state.id],
-    queryFn: () => singleAPI.like({ id: location.state.id }),
+    queryKey: ["like", location.pathname.split("/")[2]],
+    queryFn: () => singleAPI.like({ id: location.pathname.split("/")[2] }),
   });
 
   const { mutate: postLike } = useMutation({
-    mutationFn: () => postAPI.like({ id: location.state.id }),
+    mutationFn: () => postAPI.like({ id: location.pathname.split("/")[2] }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["like", location.state.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["like", location.pathname.split("/")[2]],
+      });
     },
   });
 
@@ -185,13 +187,14 @@ export default function Share() {
 
   const { data: knowledge, isLoading: knowledge_loading } =
     useQuery<KnowledgeI>({
-      queryKey: ["knowledge", location.state.id],
-      queryFn: () => singleAPI.knowledge({ id: location.state.id }),
+      queryKey: ["knowledge", location.pathname.split("/")[2]],
+      queryFn: () =>
+        singleAPI.knowledge({ id: location.pathname.split("/")[2] }),
     });
   const knowledgeData = knowledge?.result;
   const { data: comments, isLoading: comments_loading } = useQuery({
-    queryKey: ["comments", location.state.id],
-    queryFn: () => singleAPI.comment({ id: location.state.id }),
+    queryKey: ["comments", location.pathname.split("/")[2]],
+    queryFn: () => singleAPI.comment({ id: location.pathname.split("/")[2] }),
   });
   const commentsData = comments?.result;
 
