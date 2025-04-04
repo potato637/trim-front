@@ -129,8 +129,8 @@ export const datasAPI = {
 };
 
 export const postAPI = {
-  question: async ({ title, content, majorType, tags, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/questions/members/${memberID}`;
+  question: async ({ title, content, majorType, tags }) => {
+    const url = `${BASE_URL}/api/questions`;
     const options = {
       method: "POST",
       headers: {
@@ -154,13 +154,14 @@ export const postAPI = {
     return response.json();
   },
 
-  knowledge: async ({ title, content, majorType, tags, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/knowledge/members/${memberID}`;
+  knowledge: async ({ title, content, majorType, tags }) => {
+    const url = `${BASE_URL}/api/knowledge`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
@@ -168,6 +169,7 @@ export const postAPI = {
         majorType,
         tags,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -177,18 +179,20 @@ export const postAPI = {
     return response.json();
   },
 
-  community: async ({ title, content, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/free-talks/members/${memberID}`;
+  community: async ({ title, content }) => {
+    const url = `${BASE_URL}/api/free-talks`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
         content,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 

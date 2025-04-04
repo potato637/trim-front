@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useAuth } from "./context/auth_context";
+
 export function formatDate(createdAt: number): string {
   const now = Date.now();
   const secondsAgo = Math.floor((now - createdAt) / 1000);
@@ -23,4 +26,15 @@ export function getCookieValue(name: string): string | null {
     .find((row) => row.startsWith(name + "="));
 
   return cookies ? cookies.split("=")[1] : null;
+}
+
+export function useSyncAuthWithCookie() {
+  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    const cookies = document.cookie;
+    const hasToken = cookies.includes("accessToken=");
+
+    if (hasToken) setAuth({ isLoggedIn: true });
+  });
 }
