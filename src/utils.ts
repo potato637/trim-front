@@ -16,3 +16,11 @@ export function formatDate(createdAt: number): string {
   const yearsAgo = Math.floor(daysAgo / 365);
   return `${yearsAgo}년 전`;
 }
+
+export function getCookieValue(name: string): string | null {
+  const cookies = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(name + "="));
+
+  return cookies ? cookies.split("=")[1] : null;
+}

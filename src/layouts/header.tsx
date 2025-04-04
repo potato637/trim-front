@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UrlContext } from "../context/url_context";
+import { useAuth } from "../context/auth_context";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -96,6 +97,7 @@ const NavBtnContainer = styled.div`
 `;
 
 export default function Header() {
+  const { isLoggedIn } = useAuth();
   const url_context = useContext(UrlContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -171,7 +173,9 @@ export default function Header() {
         </InputContainer>
         <NavBtnContainer>
           <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-          <button onClick={handleSignIn}>로그인</button>
+          <button onClick={handleSignIn}>
+            {isLoggedIn ? "환영합니다" : "로그인"}
+          </button>
           <button onClick={handleSignUp}>회원가입</button>
         </NavBtnContainer>
       </Container>

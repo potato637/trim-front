@@ -1,3 +1,5 @@
+import { getCookieValue } from "../utils";
+
 const BASE_URL = "http://localhost:8080";
 
 export const hotAPI = {
@@ -134,6 +136,7 @@ export const postAPI = {
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
@@ -141,6 +144,7 @@ export const postAPI = {
         majorType,
         tags,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
