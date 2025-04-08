@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UrlContext } from "../context/url_context";
+import { useAuth } from "../context/auth_context";
+import useLogout from "../hooks/useLogout";
+import useLogin from "../hooks/useLogin";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -36,7 +38,7 @@ const Logo = styled.div`
   cursor: pointer;
 `;
 const Tabs = styled.div`
-  width: 350px;
+  width: 300px;
   display: flex;
   align-items: center;
   gap: 30px;
@@ -74,7 +76,7 @@ const Input = styled.input`
   }
 `;
 const NavBtnContainer = styled.div`
-  width: 300px;
+  width: 200px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -96,10 +98,12 @@ const NavBtnContainer = styled.div`
 `;
 
 export default function Header() {
-  const url_context = useContext(UrlContext);
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
+  const logout = useLogout();
+  const login = useLogin();
 
   const pathname = {
     "/question": "질문게시판",
@@ -112,19 +116,16 @@ export default function Header() {
     navigate(`/${tab}`);
   }
 
+  function handleMypageClick() {
+    login("/mypage");
+  }
   function isTabActive(path: string) {
     return location.pathname.startsWith(path);
   }
 
   const handleSignIn = () => {
-    url_context?.setPrevUrl(location.pathname);
     sessionStorage.setItem("prevUrl", location.pathname);
     navigate("/signin");
-  };
-  const handleSignUp = () => {
-    url_context?.setPrevUrl(location.pathname);
-    sessionStorage.setItem("prevUrl", location.pathname);
-    navigate("/signup");
   };
 
   useEffect(() => {
@@ -170,9 +171,12 @@ export default function Header() {
           </form>
         </InputContainer>
         <NavBtnContainer>
-          <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-          <button onClick={handleSignIn}>로그인</button>
-          <button onClick={handleSignUp}>회원가입</button>
+          <button onClick={handleMypageClick}>마이페이지</button>
+          {isLoggedIn ? (
+            <button onClick={logout}>로그아웃</button>
+          ) : (
+            <button onClick={handleSignIn}>로그인</button>
+          )}
         </NavBtnContainer>
       </Container>
     </HeaderWrapper>

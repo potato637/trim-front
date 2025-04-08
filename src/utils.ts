@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { useAuth } from "./context/auth_context";
+import Cookies from "js-cookie";
+
 export function formatDate(createdAt: number): string {
   const now = Date.now();
   const secondsAgo = Math.floor((now - createdAt) / 1000);
@@ -15,4 +19,18 @@ export function formatDate(createdAt: number): string {
   if (monthsAgo < 12) return `${monthsAgo}개월 전`;
   const yearsAgo = Math.floor(daysAgo / 365);
   return `${yearsAgo}년 전`;
+}
+
+export function getCookieValue(name: string): string | undefined {
+  return Cookies.get(name);
+}
+
+export function useSyncAuthWithCookie() {
+  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    const hasToken = !!Cookies.get("accessToken");
+
+    if (hasToken) setAuth({ isLoggedIn: true });
+  }, []);
 }

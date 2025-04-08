@@ -7,6 +7,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Controller from "./components/controller";
 import "../src/styles/global.css";
+import { useSyncAuthWithCookie } from "./utils";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -162,6 +163,8 @@ const MainWrapper = styled.main`
 const queryClient = new QueryClient();
 
 function Root() {
+  useSyncAuthWithCookie();
+
   return (
     <>
       <GlobalStyle />

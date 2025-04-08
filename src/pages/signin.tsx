@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Url, UrlObject } from "url";
 import { useContext } from "react";
-import { UrlContext } from "../context/url_context";
 
 const Container = styled.div`
   margin-top: 10rem;

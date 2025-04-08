@@ -64,13 +64,15 @@ export default function Community() {
     result: number;
   }
   const { data: like, isLoading: like_loading } = useQuery<LikeI>({
-    queryKey: ["like", location.state.id],
-    queryFn: () => singleAPI.like({ id: location.state.id }),
+    queryKey: ["like", location.pathname.split("/")[2]],
+    queryFn: () => singleAPI.like({ id: location.pathname.split("/")[2] }),
   });
   const { mutate: postLike } = useMutation({
-    mutationFn: () => postAPI.like({ id: location.state.id }),
+    mutationFn: () => postAPI.like({ id: location.pathname.split("/")[2] }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["like", location.state.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["like", location.pathname.split("/")[2]],
+      });
     },
   });
   const handleLikeClick = () => {
@@ -83,14 +85,15 @@ export default function Community() {
 
   const { data: community, isLoading: community_loading } = useQuery<FreeTalkI>(
     {
-      queryKey: ["community", location.state.id],
-      queryFn: () => singleAPI.community({ id: location.state.id }),
+      queryKey: ["community", location.pathname.split("/")[2]],
+      queryFn: () =>
+        singleAPI.community({ id: location.pathname.split("/")[2] }),
     }
   );
   const communityData = community?.result;
   const { data: comments, isLoading: comments_loading } = useQuery({
-    queryKey: ["comments", location.state.id],
-    queryFn: () => singleAPI.comment({ id: location.state.id }),
+    queryKey: ["comments", location.pathname.split("/")[2]],
+    queryFn: () => singleAPI.comment({ id: location.pathname.split("/")[2] }),
   });
   const commentsData = comments?.result;
 

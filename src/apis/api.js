@@ -1,3 +1,5 @@
+import { getCookieValue } from "../utils";
+
 const BASE_URL = "http://localhost:8080";
 
 export const hotAPI = {
@@ -52,7 +54,7 @@ export const datasAPI = {
     const url = `${BASE_URL}/api/access/questions/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
-      tags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length !== 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
@@ -74,7 +76,7 @@ export const datasAPI = {
     const url = `${BASE_URL}/api/access/knowledge/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
-      tags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length !== 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
@@ -127,13 +129,14 @@ export const datasAPI = {
 };
 
 export const postAPI = {
-  question: async ({ title, content, majorType, tags, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/questions/members/${memberID}`;
+  question: async ({ title, content, majorType, tags }) => {
+    const url = `${BASE_URL}/api/questions`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
@@ -141,6 +144,7 @@ export const postAPI = {
         majorType,
         tags,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -150,13 +154,14 @@ export const postAPI = {
     return response.json();
   },
 
-  knowledge: async ({ title, content, majorType, tags, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/knowledge/members/${memberID}`;
+  knowledge: async ({ title, content, majorType, tags }) => {
+    const url = `${BASE_URL}/api/knowledge`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
@@ -164,6 +169,7 @@ export const postAPI = {
         majorType,
         tags,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -173,18 +179,20 @@ export const postAPI = {
     return response.json();
   },
 
-  community: async ({ title, content, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/free-talks/members/${memberID}`;
+  community: async ({ title, content }) => {
+    const url = `${BASE_URL}/api/free-talks`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         title,
         content,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -194,18 +202,19 @@ export const postAPI = {
     return response.json();
   },
 
-  comment: async ({ id, content, memberID = 1 }) => {
-    console.log(id, content);
-    const url = `${BASE_URL}/api/comments/boards/${id}/members/${memberID}`;
+  comment: async ({ id, content }) => {
+    const url = `${BASE_URL}/api/comments/boards/${id}`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         content,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -215,13 +224,15 @@ export const postAPI = {
     return response.json();
   },
 
-  like: async ({ id, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/likes/boards/${id}/members/${memberID}`;
+  like: async ({ id }) => {
+    const url = `${BASE_URL}/api/likes/boards/${id}`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
