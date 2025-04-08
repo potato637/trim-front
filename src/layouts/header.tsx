@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UrlContext } from "../context/url_context";
 import { useAuth } from "../context/auth_context";
 import useLogout from "../hooks/useLogout";
 
@@ -99,7 +98,6 @@ const NavBtnContainer = styled.div`
 
 export default function Header() {
   const { isLoggedIn } = useAuth();
-  const url_context = useContext(UrlContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
@@ -121,7 +119,6 @@ export default function Header() {
   }
 
   const handleSignIn = () => {
-    url_context?.setPrevUrl(location.pathname);
     sessionStorage.setItem("prevUrl", location.pathname);
     navigate("/signin");
   };

@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import { UrlContextProvider } from "./context/url_context";
 import { AuthProvider } from "./context/auth_context";
 
 const root = ReactDOM.createRoot(
@@ -12,9 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <UrlContextProvider>
-        <RouterProvider router={router} />
-      </UrlContextProvider>
+      <RouterProvider router={router} />
     </AuthProvider>
   </React.StrictMode>
 );
