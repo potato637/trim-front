@@ -125,11 +125,6 @@ export default function Header() {
     sessionStorage.setItem("prevUrl", location.pathname);
     navigate("/signin");
   };
-  const handleSignUp = () => {
-    url_context?.setPrevUrl(location.pathname);
-    sessionStorage.setItem("prevUrl", location.pathname);
-    navigate("/signup");
-  };
 
   useEffect(() => {
     const activePath = Object.keys(pathname).find((path) =>
