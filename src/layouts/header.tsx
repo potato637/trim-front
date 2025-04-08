@@ -75,7 +75,7 @@ const Input = styled.input`
   }
 `;
 const NavBtnContainer = styled.div`
-  width: 300px;
+  width: 250px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -174,9 +174,9 @@ export default function Header() {
         <NavBtnContainer>
           <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
           <button onClick={handleSignIn}>
-            {isLoggedIn ? "환영합니다" : "로그인"}
+            {isLoggedIn ? "로그아웃" : "로그인"}
           </button>
-          <button onClick={handleSignUp}>회원가입</button>
+          {isLoggedIn ? null : <button onClick={handleSignUp}>회원가입</button>}
         </NavBtnContainer>
       </Container>
     </HeaderWrapper>

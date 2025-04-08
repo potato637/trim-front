@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getInfo, signIn, signUp } from "../apis/authAPI";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../context/auth_context";
+import Cookies from "js-cookie";
 
 type ProviderI = "google" | "naver" | "kakao";
 interface InfoI {
@@ -50,13 +51,18 @@ export default function Redirection() {
           ? await signIn({ email, provider })
           : await signUp({ email, provider });
 
-        document.cookie = `accessToken=${token.result.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
+        Cookies.set("accessToken", token.result.accessToken, {
+          path: "/",
+          secure: true,
+          sameSite: "Strict",
+          expires: 1800,
+        });
         setAuth({ isLoggedIn: true });
 
         navigate(prevUrl);
         sessionStorage.removeItem("prevUrl");
       } catch (error) {
-        console.error(error);
+        console.error("쿠키 세팅 에러 발생", error);
       }
     };
 

@@ -54,7 +54,7 @@ export const datasAPI = {
     const url = `${BASE_URL}/api/access/questions/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
-      tags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length !== 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
@@ -76,7 +76,7 @@ export const datasAPI = {
     const url = `${BASE_URL}/api/access/knowledge/search?${
       majorType ? `majorType=${majorType}&` : ""
     }${
-      tags.length != 0 ? `keyword=${urlParams}&` : ""
+      tags.length !== 0 ? `keyword=${urlParams}&` : ""
     }currentPage=${currentPage}&pageSize=${pageSize}`;
     const options = {
       method: "GET",
@@ -202,18 +202,19 @@ export const postAPI = {
     return response.json();
   },
 
-  comment: async ({ id, content, memberID = 1 }) => {
-    console.log(id, content);
-    const url = `${BASE_URL}/api/comments/boards/${id}/members/${memberID}`;
+  comment: async ({ id, content }) => {
+    const url = `${BASE_URL}/api/comments/boards/${id}`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
       body: JSON.stringify({
         content,
       }),
+      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -223,13 +224,15 @@ export const postAPI = {
     return response.json();
   },
 
-  like: async ({ id, memberID = 1 }) => {
-    const url = `${BASE_URL}/api/likes/boards/${id}/members/${memberID}`;
+  like: async ({ id }) => {
+    const url = `${BASE_URL}/api/likes/boards/${id}`;
     const options = {
       method: "POST",
       headers: {
         Accept: "*/*",
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
+      credentials: "include",
     };
     const response = await fetch(url, options);
 

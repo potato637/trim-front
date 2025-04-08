@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "./context/auth_context";
+import Cookies from "js-cookie";
 
 export function formatDate(createdAt: number): string {
   const now = Date.now();
@@ -20,21 +21,16 @@ export function formatDate(createdAt: number): string {
   return `${yearsAgo}년 전`;
 }
 
-export function getCookieValue(name: string): string | null {
-  const cookies = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(name + "="));
-
-  return cookies ? cookies.split("=")[1] : null;
+export function getCookieValue(name: string): string | undefined {
+  return Cookies.get(name);
 }
 
 export function useSyncAuthWithCookie() {
   const { setAuth } = useAuth();
 
   useEffect(() => {
-    const cookies = document.cookie;
-    const hasToken = cookies.includes("accessToken=");
+    const hasToken = !!Cookies.get("accessToken");
 
     if (hasToken) setAuth({ isLoggedIn: true });
-  });
+  }, []);
 }

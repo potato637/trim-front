@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FaArrowUp, FaArrowLeft } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi2";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth_context";
 
 const ControllerContainer = styled.div`
   position: fixed;
@@ -59,6 +60,7 @@ const WriteContainer = styled.div`
 `;
 
 export default function Controller() {
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const scrollToTop = () => {
@@ -71,6 +73,10 @@ export default function Controller() {
     navigate(-1);
   };
   const handleWriteBtnClick = () => {
+    if (!isLoggedIn) {
+      navigate("/signin");
+      return;
+    }
     const to = location.pathname.split("/").filter(Boolean)[0] || "question";
     navigate(`/${to}/new`);
   };
