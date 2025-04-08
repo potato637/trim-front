@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth_context";
 import useLogout from "../hooks/useLogout";
+import useLogin from "../hooks/useLogin";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -102,6 +103,7 @@ export default function Header() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const logout = useLogout();
+  const login = useLogin();
 
   const pathname = {
     "/question": "질문게시판",
@@ -114,6 +116,9 @@ export default function Header() {
     navigate(`/${tab}`);
   }
 
+  function handleMypageClick() {
+    login("/mypage");
+  }
   function isTabActive(path: string) {
     return location.pathname.startsWith(path);
   }
@@ -166,7 +171,7 @@ export default function Header() {
           </form>
         </InputContainer>
         <NavBtnContainer>
-          <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
+          <button onClick={handleMypageClick}>마이페이지</button>
           {isLoggedIn ? (
             <button onClick={logout}>로그아웃</button>
           ) : (

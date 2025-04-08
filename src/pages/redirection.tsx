@@ -58,8 +58,8 @@ export default function Redirection() {
           expires: 1800,
         });
         setAuth({ isLoggedIn: true });
-
-        navigate(prevUrl);
+        const to = prevUrl === "/signin" ? "/" : prevUrl;
+        navigate(to);
         sessionStorage.removeItem("prevUrl");
       } catch (error) {
         console.error("쿠키 세팅 에러 발생", error);

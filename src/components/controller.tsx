@@ -61,9 +61,7 @@ const WriteContainer = styled.div`
 
 export default function Controller() {
   const location = useLocation();
-  const login = useLogin(
-    `/${location.pathname.split("/").filter(Boolean)[0] || "question"}/new`
-  );
+  const login = useLogin();
   const navigate = useNavigate();
   const scrollToTop = () => {
     window.scrollTo({
@@ -75,7 +73,8 @@ export default function Controller() {
     navigate(-1);
   };
   const handleWriteBtnClick = () => {
-    login();
+    const to = location.pathname.split("/").filter(Boolean)[0] || "question";
+    login(`/${to}/new`);
   };
 
   return (
