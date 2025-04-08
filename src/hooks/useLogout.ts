@@ -6,5 +6,6 @@ export default function useLogout() {
 
   return () => {
     Cookies.remove("accessToken");
+    setAuth({ isLoggedIn: false });
   };
 }

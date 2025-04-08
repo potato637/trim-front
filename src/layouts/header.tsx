@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UrlContext } from "../context/url_context";
 import { useAuth } from "../context/auth_context";
+import useLogout from "../hooks/useLogout";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -37,7 +38,7 @@ const Logo = styled.div`
   cursor: pointer;
 `;
 const Tabs = styled.div`
-  width: 350px;
+  width: 300px;
   display: flex;
   align-items: center;
   gap: 30px;
@@ -75,7 +76,7 @@ const Input = styled.input`
   }
 `;
 const NavBtnContainer = styled.div`
-  width: 250px;
+  width: 200px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -102,6 +103,7 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>(null);
+  const logout = useLogout();
 
   const pathname = {
     "/question": "질문게시판",
@@ -173,10 +175,11 @@ export default function Header() {
         </InputContainer>
         <NavBtnContainer>
           <button onClick={() => onClickHandler("mypage")}>마이페이지</button>
-          <button onClick={handleSignIn}>
-            {isLoggedIn ? "로그아웃" : "로그인"}
-          </button>
-          {isLoggedIn ? null : <button onClick={handleSignUp}>회원가입</button>}
+          {isLoggedIn ? (
+            <button onClick={logout}>로그아웃</button>
+          ) : (
+            <button onClick={handleSignIn}>로그인</button>
+          )}
         </NavBtnContainer>
       </Container>
     </HeaderWrapper>
