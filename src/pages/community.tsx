@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Comments from "../components/comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { postAPI, singleAPI } from "../apis/api";
 import { FreeTalkI } from "../types/communityType";
 import { formatDate } from "../utils";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import { useAuth } from "../context/auth_context";
 
 const MainContent = styled.div`
   width: 100%;
@@ -56,6 +57,8 @@ const Like = styled.div`
 export default function Community() {
   const queryClient = useQueryClient();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   interface LikeI {
     isSuccess: boolean;
@@ -76,10 +79,14 @@ export default function Community() {
     },
   });
   const handleLikeClick = () => {
-    try {
-      postLike();
-    } catch (error) {
-      console.error(error);
+    if (isLoggedIn) {
+      try {
+        postLike();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      navigate("/signin");
     }
   };
 

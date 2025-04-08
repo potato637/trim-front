@@ -10,12 +10,13 @@ import {
   FaRegBookmark,
   FaBookmark,
 } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { postAPI, singleAPI } from "../apis/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import { useAuth } from "../context/auth_context";
 
 const MainContent = styled.div`
   width: 100%;
@@ -168,6 +169,8 @@ const Pencil = styled(TbPencilCheck)`
 
 export default function Question() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isAnswerCommentOpen, setIsAnswerCommentOpen] = useState<{
@@ -205,10 +208,14 @@ export default function Question() {
   });
 
   const handleLikeClick = () => {
-    try {
-      postLike();
-    } catch (error) {
-      console.error(error);
+    if (isLoggedIn) {
+      try {
+        postLike();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      navigate("/signin");
     }
   };
 

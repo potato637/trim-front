@@ -9,13 +9,14 @@ import {
   FaRegBookmark,
   FaBookmark,
 } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postAPI, singleAPI } from "../apis/api";
 import { KnowledgeI } from "../types/knowledgeType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import { useAuth } from "../context/auth_context";
 
 const MainContent = styled.div`
   width: 100%;
@@ -150,6 +151,8 @@ const CircleDown = styled(FaChevronCircleDown)`
 export default function Share() {
   const queryClient = useQueryClient();
   const location = useLocation();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
 
   const handleCommentBtnClick = () => {
@@ -178,10 +181,14 @@ export default function Share() {
   });
 
   const handleLikeClick = () => {
-    try {
-      postLike();
-    } catch (error) {
-      console.error(error);
+    if (isLoggedIn) {
+      try {
+        postLike();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      navigate("/signin");
     }
   };
 
