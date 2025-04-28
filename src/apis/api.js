@@ -203,7 +203,7 @@ export const postAPI = {
   },
 
   comment: async ({ id, content }) => {
-    const url = `${BASE_URL}/api/comments/boards/${id}`;
+    const url = `${BASE_URL}/api/comments/boards/${id}?content=${content}`;
     const options = {
       method: "POST",
       headers: {
@@ -211,9 +211,6 @@ export const postAPI = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
-      body: JSON.stringify({
-        content,
-      }),
       credentials: "include",
     };
     const response = await fetch(url, options);
