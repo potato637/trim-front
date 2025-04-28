@@ -1,54 +1,53 @@
-const BASE_URL = "http://localhost:8080";
+import axios from "axios";
+
+const auth = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
 
 export const getInfo = async ({ code, provider }) => {
-  const url = `${BASE_URL}/api/access/oauth/${provider}/user-info?code=${code}`;
-  const options = {
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-    },
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+  try {
+    const { data } = await auth.get(`/api/access/oauth/${provider}/user-info`, {
+      params: {
+        code,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error(`An unexpected error occurred`);
   }
-  return response.json();
 };
 
 export const signIn = async ({ email, provider }) => {
-  const url = `${BASE_URL}/api/access/oauth/login?email=${email}&socialType=${provider}`;
-  const options = {
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-    },
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+  try {
+    const { data } = await auth.get(`/api/access/oauth/login`, {
+      params: {
+        email,
+        socialType: provider,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error(`An unexpected error occurred`);
   }
-  return response.json();
 };
 
 export const signUp = async ({ email, provider }) => {
-  const url = `${BASE_URL}/api/access/oauth/sign-up`;
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  try {
+    const { data } = await auth.post("/api/access/oauth/sign-up", {
       email,
       oauthProvider: provider,
-    }),
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+    });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error(`An unexpected error occurred`);
   }
-  return response.json();
 };

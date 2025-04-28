@@ -1,130 +1,152 @@
+import axios from "axios";
 import { getCookieValue } from "../utils";
+import { keyboard } from "@testing-library/user-event/dist/keyboard";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
+const api_secure = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
+// api_secure.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     const originReqeust = error.config;
+
+//     if (error.response.status === 401 && !originReqeust._retry) {
+//       originReqeust._retry = true;
+
+//       try {
+//         const refreshToken = getCookieValue("refreshToken");
+//         const newAccessTokenResponse = await axios.post
+//       }
+//     }
+//   }
+// );
 
 export const hotAPI = {
   question_hot: async () => {
-    const url = `${BASE_URL}/api/access/questions/hot-issue`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch questions hot-issue`);
+    try {
+      const { data } = await api.get("/api/access/questions/hot-issue");
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error! Status: ${error.response.status}`);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    return response.json();
   },
   knowledge_hot: async () => {
-    const url = `${BASE_URL}/api/access/knowledge/hot-issue`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch knowledge hot-issue`);
+    try {
+      const { data } = await api.get("/api/access/knowledge/hot-issue");
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error! Status: ${error.response.status}`);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    return response.json();
   },
   community_hot: async () => {
-    const url = `${BASE_URL}/api/access/free-talks/hot-issue`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch community hot-issue`);
+    try {
+      const { data } = await api.get("/api/access/free-talks/hot-issue");
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error! Status: ${error.response.status}`);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    return response.json();
   },
   survey_hot: async () => {},
 };
 
 export const datasAPI = {
   question: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
-    const urlParams = tags?.join(",");
-    const url = `${BASE_URL}/api/access/questions/search?${
-      majorType ? `majorType=${majorType}&` : ""
-    }${
-      tags.length !== 0 ? `keyword=${urlParams}&` : ""
-    }currentPage=${currentPage}&pageSize=${pageSize}`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch boards: ${response.status} ${response.statusText}`
-      );
+    try {
+      const urlParams = tags?.join(",");
+      const { data } = await api.get(`/api/access/questions/search`, {
+        params: {
+          ...(majorType ? { majorType } : {}),
+          ...(tags?.length ? { keyword: urlParams } : {}),
+          currentPage,
+          pageSize,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-
-    return response.json();
+    // const url = `${BASE_URL}/api/access/questions/search?${
+    //   majorType ? `majorType=${majorType}&` : ""
+    // }${
+    //   tags.length !== 0 ? `keyword=${urlParams}&` : ""
+    // }currentPage=${currentPage}&pageSize=${pageSize}`;
+    // const options = {
+    //   method: "GET",
+    //   headers: {},
+    // };
   },
 
   knowledge: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
-    const urlParams = tags?.join(",");
-    const url = `${BASE_URL}/api/access/knowledge/search?${
-      majorType ? `majorType=${majorType}&` : ""
-    }${
-      tags.length !== 0 ? `keyword=${urlParams}&` : ""
-    }currentPage=${currentPage}&pageSize=${pageSize}`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch boards: ${response.status} ${response.statusText}`
-      );
+    try {
+      const urlParams = tags?.join(",");
+      const { data } = await api.get(`/api/access/knowledge/search`, {
+        params: {
+          ...(majorType ? { majorType } : {}),
+          ...(tags?.length ? { keyword: urlParams } : {}),
+          currentPage,
+          pageSize,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-
-    return response.json();
   },
 
   community: async ({ currentPage, pageSize = 30 }) => {
-    const url = `${BASE_URL}/api/access/free-talks/page?currentPage=${currentPage}&pageSize=${pageSize}`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch boards: ${response.status} ${response.statusText}`
-      );
+    try {
+      const { data } = await api.get("/api/access/free-talks/page", {
+        params: {
+          currentPage,
+          pageSize,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-
-    return response.json();
   },
 
   survey: async ({ currentPage, pageSize = 30 }) => {
-    const url = `${BASE_URL}/api/access/survey/page?currentPage=${currentPage}&pageSize=${pageSize}`;
-    const options = {
-      method: "GET",
-      headers: {},
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch boards: ${response.status} ${response.statusText}`
-      );
+    try {
+      const { data } = await api.get("/api/access/survey/page", {
+        params: {
+          currentPage,
+          pageSize,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-
-    return response.json();
   },
 };
 
@@ -144,7 +166,6 @@ export const postAPI = {
         majorType,
         tags,
       }),
-      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -169,7 +190,6 @@ export const postAPI = {
         majorType,
         tags,
       }),
-      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -192,7 +212,6 @@ export const postAPI = {
         title,
         content,
       }),
-      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -211,7 +230,6 @@ export const postAPI = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
-      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -229,7 +247,6 @@ export const postAPI = {
         Accept: "*/*",
         Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
-      credentials: "include",
     };
     const response = await fetch(url, options);
 
@@ -242,82 +259,62 @@ export const postAPI = {
 
 export const singleAPI = {
   question: async ({ id }) => {
-    const url = `${BASE_URL}/api/access/questions/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const { data } = api.get(`/api/access/questions/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-    return response.json();
   },
 
   knowledge: async ({ id }) => {
-    const url = `${BASE_URL}/api/access/knowledge/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const { data } = api.get(`/api/access/knowledge/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-    return response.json();
   },
 
   community: async ({ id }) => {
-    const url = `${BASE_URL}/api/access/free-talks/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const { data } = api.get(`/api/access/free-talks/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-    return response.json();
   },
 
   comment: async ({ id }) => {
-    const url = `${BASE_URL}/api/access/comments/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const { data } = api.get(`/api/access/comments/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-    return response.json();
   },
 
   like: async ({ id }) => {
-    const url = `${BASE_URL}/api/access/likes/boards/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    };
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const { data } = api.get(`/api/access/likes/boards/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
     }
-    return response.json();
   },
 };

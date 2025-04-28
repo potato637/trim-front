@@ -57,6 +57,12 @@ export default function Redirection() {
           sameSite: "Strict",
           expires: 1800,
         });
+        Cookies.set("refreshToken", token.result.refreshToken, {
+          path: "/",
+          secure: true,
+          sameSite: "Strict",
+          expires: 3600,
+        });
         setAuth({ isLoggedIn: true });
         const to = prevUrl === "/signin" ? "/" : prevUrl;
         navigate(to);
