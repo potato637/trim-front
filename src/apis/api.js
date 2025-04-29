@@ -1,8 +1,6 @@
 import axios from "axios";
 import { getCookieValue } from "../utils";
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -10,23 +8,50 @@ const api = axios.create({
 const api_secure = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
-// api_secure.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     const originReqeust = error.config;
+api_secure.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originReqeust = error.config;
 
-//     if (error.response.status === 401 && !originReqeust._retry) {
-//       originReqeust._retry = true;
+    if (error.response.status === 500 && !originReqeust._retry) {
+      originReqeust._retry = true;
 
-//       try {
-//         const refreshToken = getCookieValue("refreshToken");
-//         const newAccessTokenResponse = await axios.post
-//       }
-//     }
-//   }
-// );
+      try {
+        const refreshToken = getCookieValue("refreshToken");
+        const newToken = await axios.put(
+          `${process.env.REACT_APP_BASE_URL}/api/access/oauth/reissue`,
+          {},
+          {
+            params: { refreshToken },
+          }
+        );
+        const newAccessToken = newToken.data.result.accessToken;
+        const newRefreshToken = newToken.data.result.refreshToken;
+
+        Cookies.set("accessToken", newAccessToken, {
+          path: "/",
+          secure: true,
+          sameSite: "Strict",
+          expires: 1,
+        });
+        Cookies.set("refreshToken", newRefreshToken, {
+          path: "/",
+          secure: true,
+          sameSite: "Strict",
+          expires: 1,
+        });
+        originReqeust.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api_secure(originReqeust);
+      } catch (refreshError) {
+        return Promise.reject("refreshToken is invalid");
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export const hotAPI = {
   question_hot: async () => {
@@ -143,115 +168,96 @@ export const datasAPI = {
 
 export const postAPI = {
   question: async ({ title, content, majorType, tags }) => {
-    const url = `${BASE_URL}/api/questions`;
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookieValue("accessToken")}`,
-      },
-      body: JSON.stringify({
+    const response = await api_secure.post(
+      "/api/questions",
+      {
         title,
         content,
         majorType,
         tags,
-      }),
-    };
-    const response = await fetch(url, options);
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
+    return response.data;
   },
 
   knowledge: async ({ title, content, majorType, tags }) => {
-    const url = `${BASE_URL}/api/knowledge`;
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookieValue("accessToken")}`,
-      },
-      body: JSON.stringify({
+    const response = await api_secure.post(
+      "/api/knowledge",
+      {
         title,
         content,
         majorType,
         tags,
-      }),
-    };
-    const response = await fetch(url, options);
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
+    return response.data;
   },
 
   community: async ({ title, content }) => {
-    const url = `${BASE_URL}/api/free-talks`;
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookieValue("accessToken")}`,
-      },
-      body: JSON.stringify({
+    const response = await api_secure.post(
+      "/api/free-talks",
+      {
         title,
         content,
-      }),
-    };
-    const response = await fetch(url, options);
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
+    return response.data;
   },
 
   comment: async ({ id, content }) => {
-    const url = `${BASE_URL}/api/comments/boards/${id}?content=${content}`;
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookieValue("accessToken")}`,
-      },
-    };
-    const response = await fetch(url, options);
+    const response = await api_secure.post(
+      `/api/comments/boards/${id}`,
+      {},
+      {
+        params: {
+          content,
+        },
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
+    return response.data;
   },
 
   like: async ({ id }) => {
-    const url = `${BASE_URL}/api/likes/boards/${id}`;
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        Authorization: `Bearer ${getCookieValue("accessToken")}`,
-      },
-    };
-    const response = await fetch(url, options);
+    const response = await api_secure.post(
+      `/api/likes/boards/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
+    return response.data;
   },
 };
 
 export const singleAPI = {
   question: async ({ id }) => {
     try {
-      const { data } = api.get(`/api/access/questions/${id}`);
+      const { data } = await api.get(`/api/access/questions/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -263,7 +269,7 @@ export const singleAPI = {
 
   knowledge: async ({ id }) => {
     try {
-      const { data } = api.get(`/api/access/knowledge/${id}`);
+      const { data } = await api.get(`/api/access/knowledge/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -275,7 +281,7 @@ export const singleAPI = {
 
   community: async ({ id }) => {
     try {
-      const { data } = api.get(`/api/access/free-talks/${id}`);
+      const { data } = await api.get(`/api/access/free-talks/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -287,7 +293,7 @@ export const singleAPI = {
 
   comment: async ({ id }) => {
     try {
-      const { data } = api.get(`/api/access/comments/${id}`);
+      const { data } = await api.get(`/api/access/comments/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -299,7 +305,7 @@ export const singleAPI = {
 
   like: async ({ id }) => {
     try {
-      const { data } = api.get(`/api/access/likes/boards/${id}`);
+      const { data } = await api.get(`/api/access/likes/boards/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

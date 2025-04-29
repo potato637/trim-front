@@ -55,13 +55,13 @@ export default function Redirection() {
           path: "/",
           secure: true,
           sameSite: "Strict",
-          expires: 1800,
+          expires: 1,
         });
         Cookies.set("refreshToken", token.result.refreshToken, {
           path: "/",
           secure: true,
           sameSite: "Strict",
-          expires: 3600,
+          expires: 1,
         });
         setAuth({ isLoggedIn: true });
         const to = prevUrl === "/signin" ? "/" : prevUrl;

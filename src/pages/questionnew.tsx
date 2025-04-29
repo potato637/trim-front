@@ -170,6 +170,9 @@ export default function Questionnew() {
       setMarkdown("");
       setClearMDE((prev) => !prev);
     },
+    onError: () => {
+      navigate("/signin");
+    },
   });
   const handleSubmit = () => {
     if (!title.trim() || !markdown.trim() || !majorType) {
