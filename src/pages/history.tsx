@@ -7,7 +7,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: yellow;
 `;
 const ControllerContainer = styled.div`
   position: absolute;
