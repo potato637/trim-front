@@ -217,7 +217,7 @@ export default function Comments({
     onSuccess: () => {
       setValue("");
       queryClient.invalidateQueries({
-        queryKey: ["comments", location.state.id],
+        queryKey: ["comments", String(location.state.id)],
       });
     },
   });
