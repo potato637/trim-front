@@ -84,15 +84,6 @@ export const datasAPI = {
       }
       throw new Error(`An unexpected error occurred`);
     }
-    // const url = `${BASE_URL}/api/access/questions/search?${
-    //   majorType ? `majorType=${majorType}&` : ""
-    // }${
-    //   tags.length !== 0 ? `keyword=${urlParams}&` : ""
-    // }currentPage=${currentPage}&pageSize=${pageSize}`;
-    // const options = {
-    //   method: "GET",
-    //   headers: {},
-    // };
   },
 
   knowledge: async ({ majorType, tags, currentPage, pageSize = 30 }) => {
