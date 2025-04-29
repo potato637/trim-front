@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FaChevronCircleRight } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -130,6 +131,8 @@ const BottomItem = styled.div`
 `;
 
 export default function Mypage() {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <TopContainer>
@@ -146,14 +149,14 @@ export default function Mypage() {
           </div>
           <UserSetProfile>
             <span>프로필 설정</span>
-            <RightIcon />
+            <RightIcon onClick={() => navigate("/profile")} />
           </UserSetProfile>
         </AbatarContainer>
         <BadgeContainer>
           <Badges></Badges>
           <UserSetBadge>
             <span>뱃지 전체 보기</span>
-            <RightIcon />
+            <RightIcon onClick={() => navigate("/badges")} />
           </UserSetBadge>
         </BadgeContainer>
       </TopContainer>
