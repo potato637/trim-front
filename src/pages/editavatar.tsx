@@ -24,11 +24,15 @@ const AllAvatar = styled.div`
   flex: 5.5;
 `;
 const AvatarContainer = styled.div`
+  margin-top: 20px;
   display: grid;
   min-height: 500px;
   grid-template-columns: 3;
   gap: 10px;
   overflow-y: auto;
+  background-color: var(--color-white-gray);
+  border-radius: 6px;
+  box-shadow: 0px 4px 14px rgba(97, 96, 96, 0.15);
 
   /* Hide scrollbar (Chrome, Edge, Safari) */
   &::-webkit-scrollbar {
@@ -48,6 +52,10 @@ const FeatureBtn = styled.button<{ selected: boolean }>`
 `;
 const MyAvatar = styled.div`
   flex: 4.5;
+  font-size: var(--font-size-medium);
+`;
+const MyAvatarContainer = styled.div`
+  margin-top: 20px;
 `;
 
 export default function Editavatar() {
@@ -100,7 +108,12 @@ export default function Editavatar() {
           </div>
           <AvatarContainer></AvatarContainer>
         </AllAvatar>
-        <MyAvatar></MyAvatar>
+        <MyAvatar>
+          <div>
+            <span>현재 아바타</span>
+          </div>
+          <MyAvatarContainer></MyAvatarContainer>
+        </MyAvatar>
       </EditAvatar>
     </Container>
   );
