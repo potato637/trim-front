@@ -26,7 +26,7 @@ const AllAvatar = styled.div`
 const AvatarContainer = styled.div`
   margin-top: 20px;
   display: grid;
-  min-height: 500px;
+  height: 500px;
   grid-template-columns: 3;
   gap: 10px;
   overflow-y: auto;
@@ -56,6 +56,16 @@ const MyAvatar = styled.div`
 `;
 const MyAvatarContainer = styled.div`
   margin-top: 20px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+const AvatarNow = styled.div`
+  flex: 2;
+`;
+const AvatarPresetContainer = styled.div`
+  flex: 1;
 `;
 
 export default function Editavatar() {
@@ -112,7 +122,19 @@ export default function Editavatar() {
           <div>
             <span>현재 아바타</span>
           </div>
-          <MyAvatarContainer></MyAvatarContainer>
+          <MyAvatarContainer>
+            <AvatarNow>
+              <div style={{ position: "relative", width: 115, height: 115 }}>
+                <img
+                  src="../../public/assets/avatar/face.svg"
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+                <img />
+                <img />
+              </div>
+            </AvatarNow>
+            <AvatarPresetContainer></AvatarPresetContainer>
+          </MyAvatarContainer>
         </MyAvatar>
       </EditAvatar>
     </Container>
