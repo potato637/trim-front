@@ -23,6 +23,21 @@ const EditAvatar = styled.div`
 const AllAvatar = styled.div`
   flex: 5.5;
 `;
+const AvatarContainer = styled.div`
+  display: grid;
+  min-height: 500px;
+  grid-template-columns: 3;
+  gap: 10px;
+  overflow-y: auto;
+
+  /* Hide scrollbar (Chrome, Edge, Safari) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar (Firefox) */
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE and Edge */
+`;
 const FeatureBtn = styled.button<{ selected: boolean }>`
   border: none;
   background: none;
@@ -83,6 +98,7 @@ export default function Editavatar() {
               배경
             </FeatureBtn>
           </div>
+          <AvatarContainer></AvatarContainer>
         </AllAvatar>
         <MyAvatar></MyAvatar>
       </EditAvatar>
