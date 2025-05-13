@@ -16,7 +16,7 @@ const ControllerContainer = styled.div`
 `;
 const EditAvatar = styled.div`
   margin-top: 60px;
-  width: 70%;
+  width: 80%;
   display: flex;
   gap: 20px;
 `;
@@ -59,10 +59,39 @@ const MyAvatarContainer = styled.div`
   height: 500px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
 `;
 const AvatarNow = styled.div`
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > div {
+    position: relative;
+    width: 270px;
+    height: 270px;
+    background-color: var(--color-purple);
+    border-radius: 50%;
+    > img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+    }
+  }
+  & > button {
+    width: fit-content;
+    margin-top: 20px;
+    color: var(--color-white);
+    background-color: var(--color-purple-hover);
+    padding: 7px 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
 `;
 const AvatarPresetContainer = styled.div`
   flex: 1;
@@ -92,12 +121,6 @@ export default function Editavatar() {
               눈
             </FeatureBtn>
             <FeatureBtn
-              onClick={() => setSelectedBtn("nose")}
-              selected={selectedBtn === "nose"}
-            >
-              코
-            </FeatureBtn>
-            <FeatureBtn
               onClick={() => setSelectedBtn("mouth")}
               selected={selectedBtn === "mouth"}
             >
@@ -124,14 +147,14 @@ export default function Editavatar() {
           </div>
           <MyAvatarContainer>
             <AvatarNow>
-              <div style={{ position: "relative", width: 115, height: 115 }}>
-                <img
-                  src="../../public/assets/avatar/face.svg"
-                  style={{ position: "absolute", top: 0, left: 0 }}
-                />
-                <img />
-                <img />
+              <div>
+                <img src="/assets/avatar/face.svg" />
+                <img src="/assets/avatar/hair/hair1.svg" />
+                <img src="/assets/avatar/eye/eye1.svg" />
+                <img src="/assets/avatar/mouth/mouth1.svg" />
+                <img src="/assets/avatar/costume/costume1.svg" />
               </div>
+              <button>현재 아바타로 저장하기</button>
             </AvatarNow>
             <AvatarPresetContainer></AvatarPresetContainer>
           </MyAvatarContainer>

@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postAPI } from "../apis/api";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { postAPI, singleAPI } from "../apis/api";
 import { useLocation } from "react-router-dom";
-import { CommentI } from "../types/commentType";
+import { CommentI, ReCommentI, ReResultI } from "../types/commentType";
 import { formatDate } from "../utils";
 
 const CommentSection = styled.div`
@@ -147,12 +152,14 @@ const CommentMain = styled.div`
   font-weight: 400;
 `;
 const CommentBtns = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--font-size-small);
-  color: var(--color-date);
+  & > div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--font-size-small);
+    color: var(--color-date);
+  }
   & > div:hover {
     cursor: pointer;
   }
@@ -183,8 +190,8 @@ const ReUser = styled.div`
 `;
 const ReUserImg = styled.div`
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
   top: 0;
   right: 0;
   background: url("/assets/userSVG.svg") center/cover no-repeat;
@@ -222,6 +229,9 @@ export default function Comments({
     },
   });
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value !== "") {
@@ -239,19 +249,50 @@ export default function Comments({
       ...prev,
       [index]: !prev[index],
     }));
-  };
-
-  const handleWriteReCommentClick = (index: number) => {
     setWriteReComment((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  const handleReSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    return null;
+  const reCommentQueries = useQueries({
+    queries: commentsData.map((comment, index) => ({
+      queryKey: ["reComments", comment.commentResponse.commentId],
+      queryFn: () =>
+        singleAPI.reComment({ id: comment.commentResponse.commentId }),
+      enabled: !!seeReComment[index],
+    })),
+  });
+  const [reCommentText, setReCommentText] = useState<{ [key: number]: string }>(
+    {}
+  );
+  const handleReChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    setReCommentText((prev) => ({ ...prev, [index]: e.target.value }));
   };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+  const { mutate: postReComment } = useMutation({
+    mutationFn: postAPI.reComment,
+    onSuccess: (_, variables) => {
+      const index = commentsData.findIndex(
+        (comment) => comment.commentResponse.commentId === variables.id
+      );
+      setReCommentText((prev) => ({ ...prev, [index]: "" }));
+      queryClient.invalidateQueries({
+        queryKey: ["reComments"], // 나중에 해당 reComments만 수정되도록 변경
+      });
+    },
+  });
+  const handleReSubmit = (
+    e: React.FormEvent<HTMLFormElement>,
+    index: number
+  ) => {
+    e.preventDefault();
+    if (reCommentText[index]?.trim() !== "") {
+      postReComment({
+        id: commentsData[index].commentResponse.commentId,
+        content: reCommentText[index],
+      });
+    }
+    return null;
   };
 
   return (
@@ -281,44 +322,48 @@ export default function Comments({
                   <CommentInfo>{`${comment.memberResponse.nickname} ·`}</CommentInfo>
                   <CommentMain>{comment.commentResponse.content}</CommentMain>
                   <CommentBtns>
-                    <WriteReComment
-                      onClick={() => handleWriteReCommentClick(index)}
-                    >
-                      댓글 쓰기
-                    </WriteReComment>
-                    <SeeReComment
-                      onClick={() => handleSeeReCommentClick(index)}
-                    >
-                      {/* {`댓글 ${comment.re?.length || "0"}개`}
-                      {seeReComment[index] ? (
-                        <CircleUp />
-                      ) : (
-                        <CircleDown />
-                      )} */}
-                    </SeeReComment>
+                    <div onClick={() => handleSeeReCommentClick(index)}>
+                      <WriteReComment>댓글 쓰기</WriteReComment>
+                      <SeeReComment>
+                        {seeReComment[index] ? <CircleUp /> : <CircleDown />}
+                      </SeeReComment>
+                    </div>
                   </CommentBtns>
                 </Content>
               </Comment>
               {writeReComment[index] && (
                 <WritingReCommentContainer>
-                  <form onSubmit={handleReSubmit}>
-                    <input type="text" placeholder="댓글 작성하기"></input>
-                    <input type="submit" value="댓글 작성하기" />
+                  <form onSubmit={(e) => handleReSubmit(e, index)}>
+                    <input
+                      value={reCommentText[index] || ""}
+                      onChange={(e) => handleReChange(e, index)}
+                      type="text"
+                      placeholder="대댓글 작성하기"
+                    ></input>
+                    <input type="submit" value="대댓글 작성하기" />
                   </form>
                 </WritingReCommentContainer>
               )}
-              {/* {seeReComment[index] &&
-                comment.re?.map((reComment, reIndex) => (
-                  <ReComment key={reIndex}>
-                    <ReContent>
-                      <CommentInfo>{`${reComment.name} · ${reComment.scholar} · ${reComment.upload}`}</CommentInfo>
-                      <CommentMain>{reComment.main}</CommentMain>
-                    </ReContent>
-                    <ReUser>
-                      <ReUserImg />
-                    </ReUser>
-                  </ReComment>
-                ))} */}
+              {seeReComment[index] &&
+                reCommentQueries[index]?.data?.result?.map(
+                  (reComment: ReResultI, idx: number) => (
+                    <ReComment key={index}>
+                      <ReContent>
+                        <CommentInfo>{`${
+                          reComment.memberResponse.nickname
+                        } · ${formatDate(
+                          reComment.replyResponse.createdAt
+                        )}`}</CommentInfo>
+                        <CommentMain>
+                          {reComment.replyResponse.content}
+                        </CommentMain>
+                      </ReContent>
+                      <ReUser>
+                        <ReUserImg />
+                      </ReUser>
+                    </ReComment>
+                  )
+                )}
             </React.Fragment>
           ))}
       </CommentsContainer>

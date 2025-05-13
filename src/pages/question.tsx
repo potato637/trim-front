@@ -25,7 +25,6 @@ const MainContent = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-top: 20px;
-  margin-bottom: 20px;
   padding-bottom: 20px;
 `;
 const TitleContainer = styled.div`
@@ -116,6 +115,7 @@ const NoAnswer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: var(--font-size-small);
 `;
 const PencilImg = styled.div`
   background-color: var(--color-purple-hover);
@@ -165,6 +165,10 @@ const CircleDown = styled(FaChevronCircleDown)`
 const Pencil = styled(TbPencilCheck)`
   font-size: var(--font-size-medium);
   color: var(--color-white);
+`;
+const WriteAnswerContainer = styled.div`
+  width: 100%;
+  border-top: 0.5px solid var(--color-comment-input);
 `;
 
 export default function Question() {
@@ -289,8 +293,10 @@ export default function Question() {
         </InfoContainer>
       </MainContent>
       {isCommentOpen && <Comments commentsData={commentsData || []} />}
-      {questionData?.answerDetailResponseList.length == 0 ? (
-        <NoAnswer>작성된 답변이 없습니다.</NoAnswer>
+      {questionData?.answerDetailResponseList.length === 0 ? (
+        <NoAnswer>
+          작성된 답변이 없습니다. 소중한 첫번째 답변을 남겨보세요!
+        </NoAnswer>
       ) : (
         <AnswersContainer>
           <AnswersCount>
@@ -334,6 +340,7 @@ export default function Question() {
           ))} */}
         </AnswersContainer>
       )}
+      <WriteAnswerContainer></WriteAnswerContainer>
     </>
   );
 }

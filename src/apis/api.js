@@ -186,6 +186,17 @@ export const postAPI = {
     return response.data;
   },
 
+  question_answer: async ({ id, title, content }) => {
+    const response = await api_secure.post(
+      `/api/answers/questions/${id}`,
+      {
+        title,
+        content,
+      },
+      { headers: { Authorization: `Bearer ${getCookieValue("accessToken")}` } }
+    );
+  },
+
   knowledge: async ({ title, content, majorType, tags }) => {
     const response = await api_secure.post(
       "/api/knowledge",
@@ -233,6 +244,19 @@ export const postAPI = {
         headers: {
           Authorization: `Bearer ${getCookieValue("accessToken")}`,
         },
+      }
+    );
+
+    return response.data;
+  },
+
+  reComment: async ({ id, content }) => {
+    const response = await api_secure.post(
+      `/api/replies/comments/${id}`,
+      {},
+      {
+        params: { content },
+        headers: { Authorization: `Bearer ${getCookieValue("accessToken")}` },
       }
     );
 
@@ -294,6 +318,18 @@ export const singleAPI = {
   comment: async ({ id }) => {
     try {
       const { data } = await api.get(`/api/access/comments/${id}`);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(`HTTP error: Status: ${error.response.status}`);
+      }
+      throw new Error(`An unexpected error occurred`);
+    }
+  },
+
+  reComment: async ({ id }) => {
+    try {
+      const { data } = await api.get(`/api/access/replies/comments/${id}`);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
