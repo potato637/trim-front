@@ -14,6 +14,7 @@ import { formatDate } from "../utils";
 
 const CommentSection = styled.div`
   width: 100%;
+  margin-top: 20px;
   margin-bottom: 20px;
 `;
 const NumberOfComments = styled.div`

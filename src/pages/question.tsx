@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -17,6 +17,7 @@ import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
+import Markdowneditor from "../components/markdowneditor";
 
 const MainContent = styled.div`
   width: 100%;
@@ -132,6 +133,7 @@ const AnswersCount = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: var(--font-size-small);
+  margin: 15px 0;
 `;
 const Answer = styled.div`
   width: 100%;
@@ -166,9 +168,15 @@ const Pencil = styled(TbPencilCheck)`
   font-size: var(--font-size-medium);
   color: var(--color-white);
 `;
-const WriteAnswerContainer = styled.div`
-  width: 100%;
-  border-top: 0.5px solid var(--color-comment-input);
+const AnswerBtn = styled.button`
+  width: 100px;
+  margin: 15px 0;
+  background-color: var(--color-purple-hover);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
 `;
 
 export default function Question() {
@@ -177,6 +185,21 @@ export default function Question() {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<string>("");
+  const { mutate: postAnswer } = useMutation({
+    mutationFn: postAPI.question_answer,
+    onSuccess: () => {
+      setAnswer("");
+      queryClient.invalidateQueries({
+        queryKey: ["question", location.pathname.split("/")[2]],
+      });
+    },
+  });
+  const handleAnswerSubmit = () => {
+    if (answer.trim() !== "") {
+      postAnswer({ id: location.pathname.split("/")[2], content: answer });
+    }
+  };
   const [isAnswerCommentOpen, setIsAnswerCommentOpen] = useState<{
     [key: number]: boolean;
   }>({});
@@ -303,44 +326,45 @@ export default function Question() {
             <PencilImg>
               <Pencil />
             </PencilImg>
-            {/* {answersData.length == 0
-            ? "작성된 답변이 없습니다."
-            : `작성된 ${answersData.length}개의 답변`} */}
+            <span>
+              {`작성된 ${questionData?.answerDetailResponseList.length}개의 답변`}
+            </span>
           </AnswersCount>
-          {/* {answersData &&
-          answersData.map((answer, index) => (
-            <React.Fragment key={index}>
-              <Answer>
-                <AnswerWriter>
-                  <WriterSVG />
-                  {`${answer.name} · ${answer.scholar} · ${answer.upload}`}
-                </AnswerWriter>
-                {answer.content.map((item, index) =>
-                  item.type === "text" ? (
-                    <AnswerText key={index}>{item.content}</AnswerText>
-                  ) : (
-                    <AnswerImg key={index} src={item.src} alt={item.alt} />
-                  )
-                )}
-                <AnswerCommentBtn
-                  onClick={() => handleAnswerCommentBtnClick(index)}
-                >
-                  {`댓글 ${answer.re?.length || "0"}개`}
-                  {isAnswerCommentOpen[index] ? (
-                    <FaChevronCircleDown color="#6129e9" />
-                  ) : (
-                    <FaChevronCircleUp color="#6129e9" />
+          {answersData &&
+            answersData.map((answer, index) => (
+              <React.Fragment key={index}>
+                <Answer>
+                  <AnswerWriter>
+                    <WriterSVG />
+                    {`${answer.name} · ${answer.scholar} · ${answer.upload}`}
+                  </AnswerWriter>
+                  {answer.content.map((item, index) =>
+                    item.type === "text" ? (
+                      <AnswerText key={index}>{item.content}</AnswerText>
+                    ) : (
+                      <AnswerImg key={index} src={item.src} alt={item.alt} />
+                    )
                   )}
-                </AnswerCommentBtn>
-                {isAnswerCommentOpen[index] && (
-                  <Comments commentsData={answer.re || []} />
-                )}
-              </Answer>
-            </React.Fragment>
-          ))} */}
+                  <AnswerCommentBtn
+                    onClick={() => handleAnswerCommentBtnClick(index)}
+                  >
+                    {`댓글 ${answer.re?.length || "0"}개`}
+                    {isAnswerCommentOpen[index] ? (
+                      <FaChevronCircleDown color="#6129e9" />
+                    ) : (
+                      <FaChevronCircleUp color="#6129e9" />
+                    )}
+                  </AnswerCommentBtn>
+                  {isAnswerCommentOpen[index] && (
+                    <Comments commentsData={answer.re || []} />
+                  )}
+                </Answer>
+              </React.Fragment>
+            ))}
         </AnswersContainer>
       )}
-      <WriteAnswerContainer></WriteAnswerContainer>
+      <Markdowneditor value={answer} onChange={setAnswer} />
+      <AnswerBtn onClick={handleAnswerSubmit}>작성</AnswerBtn>
     </>
   );
 }

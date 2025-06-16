@@ -186,11 +186,11 @@ export const postAPI = {
     return response.data;
   },
 
-  question_answer: async ({ id, title, content }) => {
+  question_answer: async ({ id, content }) => {
+    console.log("api calls");
     const response = await api_secure.post(
       `/api/answers/questions/${id}`,
       {
-        title,
         content,
       },
       { headers: { Authorization: `Bearer ${getCookieValue("accessToken")}` } }
