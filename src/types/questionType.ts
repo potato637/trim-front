@@ -13,6 +13,14 @@ export interface MemberResponseI {
   socialType: "TRIM" | "GOOGLE" | "KAKAO" | "NAVER";
   nickname: string;
 }
+export interface AnswerResponseI {
+  answerResponse: {
+    content: string;
+    questionId: number;
+    createdAt: number;
+  };
+  memberResponse: MemberResponseI;
+}
 
 export interface QuestionItemI {
   questionResponse: QuestionResponseI;
@@ -42,7 +50,7 @@ export interface QuestionI {
   result: {
     questionResponse: QuestionResponseI;
     memberResponse: MemberResponseI;
-    answerDetailResponseList: [];
+    answerDetailResponseList: AnswerResponseI[];
     tagList: string[];
   };
 }

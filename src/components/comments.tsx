@@ -238,6 +238,7 @@ export default function Comments({
     if (value !== "") {
       try {
         postComment();
+        console.log(value);
       } catch (error) {
         console.error(error);
       }
@@ -324,7 +325,7 @@ export default function Comments({
                   <CommentMain>{comment.commentResponse.content}</CommentMain>
                   <CommentBtns>
                     <div onClick={() => handleSeeReCommentClick(index)}>
-                      <WriteReComment>댓글 쓰기</WriteReComment>
+                      <WriteReComment>대댓글 쓰기</WriteReComment>
                       <SeeReComment>
                         {seeReComment[index] ? <CircleUp /> : <CircleDown />}
                       </SeeReComment>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,7 +7,6 @@ import {
   FaChevronCircleUp,
   FaChevronCircleDown,
   FaRegBookmark,
-  FaBookmark,
 } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +14,7 @@ import { postAPI, singleAPI } from "../apis/api";
 import { KnowledgeI } from "../types/knowledgeType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 
 const MainContent = styled.div`

@@ -221,9 +221,6 @@ const AboutR = styled.div`
   border: 0.5px solid #d9c3ff;
   border-radius: 5px;
 `;
-const AboutA = styled.div`
-  position: absolute;
-`;
 const SurveyContainer = styled.div`
   display: flex;
   flex-direction: column;

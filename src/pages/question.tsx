@@ -15,7 +15,7 @@ import { postAPI, singleAPI } from "../apis/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 import Markdowneditor from "../components/markdowneditor";
 
@@ -149,14 +149,6 @@ const AnswerWriter = styled(WriterContainer)``;
 const AnswerText = styled.p`
   font-size: var(--font-size-medium);
   line-height: 1.6;
-`;
-const AnswerImg = styled.img`
-  width: 100%;
-`;
-const AnswerCommentBtn = styled(CommentBtn)`
-  display: flex;
-  justify-content: flex-end;
-  font-size: var(--font-size-small);
 `;
 const CircleUp = styled(FaChevronCircleUp)`
   color: var(--color-purple-hover);
@@ -330,39 +322,27 @@ export default function Question() {
               {`작성된 ${questionData?.answerDetailResponseList.length}개의 답변`}
             </span>
           </AnswersCount>
-          {answersData &&
-            answersData.map((answer, index) => (
-              <React.Fragment key={index}>
-                <Answer>
-                  <AnswerWriter>
-                    <WriterSVG />
-                    {`${answer.name} · ${answer.scholar} · ${answer.upload}`}
-                  </AnswerWriter>
-                  {answer.content.map((item, index) =>
-                    item.type === "text" ? (
-                      <AnswerText key={index}>{item.content}</AnswerText>
-                    ) : (
-                      <AnswerImg key={index} src={item.src} alt={item.alt} />
-                    )
-                  )}
-                  <AnswerCommentBtn
-                    onClick={() => handleAnswerCommentBtnClick(index)}
-                  >
-                    {`댓글 ${answer.re?.length || "0"}개`}
-                    {isAnswerCommentOpen[index] ? (
-                      <FaChevronCircleDown color="#6129e9" />
-                    ) : (
-                      <FaChevronCircleUp color="#6129e9" />
-                    )}
-                  </AnswerCommentBtn>
-                  {isAnswerCommentOpen[index] && (
-                    <Comments commentsData={answer.re || []} />
-                  )}
-                </Answer>
-              </React.Fragment>
-            ))}
+          {questionData?.answerDetailResponseList.map((answer, index) => (
+            <React.Fragment key={index}>
+              <Answer>
+                <AnswerWriter>
+                  <WriterSVG />
+                  {/* {`${answer.memberResponse.nickname} · ${answer.memberResponse.scholar} · ${formatDate(answer.answerResponse.createdAt)}`} */}
+                  {`${answer.memberResponse.nickname} · ${formatDate(
+                    answer.answerResponse.createdAt
+                  )}`}
+                </AnswerWriter>
+                <AnswerText className="markdown-content">
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {answer.answerResponse.content}
+                  </Markdown>
+                </AnswerText>
+              </Answer>
+            </React.Fragment>
+          ))}
         </AnswersContainer>
       )}
+      <div style={{ width: "100%", marginTop: "20px" }}></div>
       <Markdowneditor value={answer} onChange={setAnswer} />
       <AnswerBtn onClick={handleAnswerSubmit}>작성</AnswerBtn>
     </>

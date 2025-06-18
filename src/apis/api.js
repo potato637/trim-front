@@ -234,6 +234,7 @@ export const postAPI = {
   },
 
   comment: async ({ id, content }) => {
+    console.log(id, content);
     const response = await api_secure.post(
       `/api/comments/boards/${id}`,
       {},

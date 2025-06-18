@@ -122,7 +122,7 @@ export default function Community() {
           <Like>{like?.result}</Like>
         </LikeContainer>
       </MainContent>
-      <Comments commentsData={commentsData} />
+      <Comments commentsData={commentsData || []} />
     </>
   );
 }
