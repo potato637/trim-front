@@ -119,7 +119,7 @@ const NoAnswer = styled.div`
   font-size: var(--font-size-small);
 `;
 const PencilImg = styled.div`
-  background-color: var(--color-purple-hover);
+  background-color: var(--color-primary-hover);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,8 +138,8 @@ const AnswersCount = styled.div`
 const Answer = styled.div`
   width: 100%;
   border-radius: 6px;
-  background-color: #fbfbfb;
-  box-shadow: 0px 4px 14px 0px rgba(97, 96, 96, 0.15);
+  background-color: var(--color-bg);
+  box-shadow: 0px 4px 14px 0px var(--color-item-shadow);
   display: flex;
   flex-direction: column;
   gap: 10px;

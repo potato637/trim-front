@@ -96,16 +96,17 @@ const Dot = styled(GoDotFill)`
 const UserName = styled.div`
   font-size: var(--font-size-extra-medium);
   font-weight: 600;
+  color: var(--color-text);
 `;
 const UserEmail = styled.div`
   font-size: var(--font-size-small);
-  color: var(--color-date);
+  color: var(--color-text-secondary);
   display: flex;
   align-items: center;
 `;
 const Introducing = styled.div`
   font-size: var(--font-size-small);
-  color: var(--color-date);
+  color: var(--color-text-secondary);
 `;
 const LikeAndComments = styled.div`
   width: 100%;

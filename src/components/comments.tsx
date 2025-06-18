@@ -178,7 +178,7 @@ const ReComment = styled.div`
 `;
 const ReContent = styled.div`
   flex: 13;
-  background-color: #f5f3ff;
+  background-color: var(--color-bg-light);
   border-radius: 6px;
   display: flex;
   flex-direction: column;

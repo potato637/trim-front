@@ -1,33 +1,51 @@
 :root {
+  /* Primary/Accent Colors */
+  --color-primary: #6129e9cc; /* Main purple */
+  --color-primary-hover: #6129e9; /* Main purple hover */
+  --color-accent: #ff447c; /* Accent pink */
+  --color-accent-hover: #ff447ccc;
+
+  /* Grayscale & Text */
+  --color-text: #101010; /* Main text */
+  --color-text-secondary: #65686d; /* Sub text, date */
+  --color-gray: #49494c; /* General gray */
+  --color-border: #ddd; /* Border */
+  --color-white: #fff;
+  --color-black: #101010;
+  --color-bg: #fbfbfb; /* Main background */
+  --color-bg-light: #f5f3ff; /* Light purple bg */
+
+  /* UI/Component Specific */
+  --color-input: #ceb2ff;
+  --color-input-placeholder: #8d8e94;
+  --color-input-shadow: #2b273526;
+  --color-comment-bg: #f5f3ff;
+  --color-comment-input: #cbcdd6;
+  --color-comment-input-hover: #5c37ff;
+  --color-hash-bg: #d6f3eb;
+  --color-hash-mint: #9ce3cf;
+  --color-modal-bg: #eaeaeccc;
+  --color-modal-bg-hover: #eaeaec;
+  --color-modal-shadow: #0000001a;
+  --color-modal-overlay: #00000080;
+  --color-item-shadow: #61606026;
+  --color-badge: #ffd700;
+
+  /* Deprecated/Legacy (for migration) */
+  --color-mint-banner: #9ce3cf;
+  --color-mint-hash: #d6f3eb;
+  --color-pink-modal: #ff447ccc;
+  --color-pink-modal-hover: #ff447c;
   --color-light-purple: #f5f3ff;
   --color-light-purple-border: #d9c3ff;
   --color-purple: #6129e9cc;
   --color-purple-hover: #6129e9;
-  --color-input: #ceb2ff;
-  --color-pink-modal: #ff447ccc;
-  --color-pink-modal-hover: #ff447c;
-  --color-comment-input: #cbcdd6;
-  --color-comment-input-hover: #5c37ff;
-  --color-input-placeholder: #8d8e94;
-  --color-input-shadow: #2b273526;
-  --color-header-input: #757575;
-  --color-mint-banner: #9ce3cf;
-  --color-mint-hash: #d6f3eb;
-  --color-blue: #2e40bb;
-  --color-white: #fff;
-  --color-black: #101010;
-  --color-border: #ddd;
-  --color-gray: #49494c;
-  --color-comment: #49494c;
-  --color-white-gray: #fbfbfb;
   --color-mde-toolbar: #a3a1a1;
   --color-date: #65686d;
   --color-like: #ff447c;
-  --color-item-shadow: #61606026;
-  --color-modal-overlay: #00000080;
-  --color-modal-shadow: #0000001a;
-  --color-modal-gray: #eaeaeccc;
-  --color-modal-gray-hover: #eaeaec;
+  --color-white-gray: #fbfbfb;
+
+  /* Font Sizes */
   --font-size-logo: 2.5rem;
   --font-size-extra-small: 0.7rem;
   --font-size-small: 0.8rem;

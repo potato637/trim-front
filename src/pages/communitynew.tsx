@@ -88,8 +88,8 @@ const ModalOnNavigation = styled.div`
   width: 300px;
   height: 150px;
   box-shadow: 0 4px 6px var(--color-modal-shadow);
-  color: var(--color-pink-modal);
-  border: 1px solid var(--color-pink-modal);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-hover);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -113,20 +113,20 @@ const ModalButtons = styled.div`
   }
 
   & > :first-child {
-    color: var(--color-black);
-    background-color: var(--color-modal-gray);
+    color: var(--color-text);
+    background-color: var(--color-modal-bg);
 
     &:hover {
-      background-color: var(--color-modal-gray-hover);
+      background-color: var(--color-modal-bg-hover);
     }
   }
 
   & > :last-child {
     color: var(--color-white);
-    background-color: var(--color-pink-modal);
+    background-color: var(--color-accent);
 
     &:hover {
-      background-color: var(--color-pink-modal-hover);
+      background-color: var(--color-accent-hover);
     }
   }
 `;

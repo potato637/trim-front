@@ -7,6 +7,7 @@ const FooterWrapper = styled.footer`
   justify-content: space-around;
   align-items: center;
   font-size: var(--font-size-medium);
+  background-color: var(--color-white);
 `;
 
 const Info = styled.div`
@@ -16,7 +17,7 @@ const Info = styled.div`
 const Logo = styled.div`
   font-size: var(--font-size-large);
   font-weight: bold;
-  color: var(--color-purple);
+  color: var(--color-primary);
   margin-bottom: 5px;
 `;
 const Contact = styled.div`
@@ -36,7 +37,7 @@ const FooterLinks = styled.div`
   a {
     font-size: var(--font-size-small);
     font-weight: 400;
-    color: var(--color-black);
+    color: var(--color-text);
     text-decoration: none;
     white-space: nowrap;
     text-overflow: hidden;

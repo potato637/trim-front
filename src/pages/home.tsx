@@ -115,7 +115,7 @@ const RankinigTitle = styled.div`
   justify-content: center;
   align-items: center;
   span {
-    color: #855ff3;
+    color: var(--color-primary-hover);
   }
   padding-right: 5px;
 `;
@@ -217,8 +217,8 @@ const AboutR = styled.div`
   position: relative;
   display: flex;
   flex: 5.5;
-  background-color: #f5f3ff;
-  border: 0.5px solid #d9c3ff;
+  background-color: var(--color-bg-light);
+  border: 0.5px solid var(--color-light-purple-border);
   border-radius: 5px;
 `;
 const SurveyContainer = styled.div`
@@ -237,9 +237,9 @@ const Surveys = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background-color: #f5f3ff;
-  border-top: 1px solid #acacac;
-  border-bottom: 1px solid #acacac;
+  background-color: var(--color-bg-light);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 `;
 const Survey = styled.div`
   flex: 1;

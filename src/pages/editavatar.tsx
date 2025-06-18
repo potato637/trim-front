@@ -103,7 +103,7 @@ const ItemName = styled.div`
 `;
 const PriceTag = styled.div`
   font-size: var(--font-size-small);
-  color: var(--color-purple);
+  color: var(--color-primary);
   font-weight: bold;
   margin-top: 5px;
 `;

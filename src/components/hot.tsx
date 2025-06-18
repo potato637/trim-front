@@ -75,7 +75,7 @@ const ItemBox = styled.div`
   flex-direction: column;
   width: 100%;
   height: 120px;
-  background: var(--color-light-purple);
+  background: var(--color-bg-light);
   padding: 20px;
   gap: 20px;
   border-radius: 10px;
@@ -94,7 +94,7 @@ const Category = styled.div`
   justify-content: center;
   align-items: center;
   width: 70px;
-  background-color: var(--color-purple);
+  background-color: var(--color-primary);
   color: var(--color-white);
   border-radius: 20px;
 `;

@@ -68,8 +68,8 @@ const EditButton = styled.button`
 `;
 const SaveButton = styled.button<{ disabled?: boolean }>`
   background-color: ${({ disabled }) =>
-    disabled ? "#ccc" : "var(--color-purple)"};
-  color: white;
+    disabled ? "var(--color-border)" : "var(--color-primary)"};
+  color: var(--color-white);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -79,12 +79,12 @@ const SaveButton = styled.button<{ disabled?: boolean }>`
 
   &:hover {
     background-color: ${({ disabled }) =>
-      disabled ? "#ccc" : "var(--color-purple-hover)"};
+      disabled ? "var(--color-border)" : "var(--color-primary-hover)"};
   }
 `;
 const CancelButton = styled.button`
-  background-color: #666;
-  color: white;
+  background-color: var(--color-gray);
+  color: var(--color-white);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -93,11 +93,11 @@ const CancelButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #555;
+    background-color: var(--color-text-secondary);
   }
 `;
 const Warning = styled.div`
-  color: red;
+  color: var(--color-accent);
   font-size: var(--font-size-small);
   margin-top: 4px;
 `;
