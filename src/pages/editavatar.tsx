@@ -123,7 +123,7 @@ const FeatureBtn = styled.button<{ selected: boolean }>`
   }
 `;
 const MyAvatar = styled.div`
-  flex: 4.5;
+  flex: 5;
   font-size: var(--font-size-medium);
 `;
 const MyAvatarContainer = styled.div`
@@ -140,33 +140,55 @@ const AvatarNow = styled.div`
   flex-direction: column;
   align-items: center;
   & > div {
-    position: relative;
-    width: 270px;
-    height: 270px;
-    background-color: var(--color-purple);
-    border-radius: 50%;
-    > img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%;
-      height: 80%;
+    display: flex;
+    gap: 10px;
+    > button {
+      width: fit-content;
+      margin-top: 20px;
+      color: var(--color-white);
+      background-color: var(--color-purple-hover);
+      padding: 7px 10px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
     }
   }
-  & > button {
-    width: fit-content;
-    margin-top: 20px;
-    color: var(--color-white);
-    background-color: var(--color-purple-hover);
-    padding: 7px 10px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+`;
+const AvatarPreset = styled.div`
+  position: relative;
+  width: 270px;
+  height: 270px;
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+  }
+`;
+const SaveAvatarPreset = styled.div<{ bgColor: string }>`
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: ${({ bgColor }) => bgColor};
+  border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
   }
 `;
 const AvatarPresetContainer = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 const ItemsGrid = styled.div`
   display: grid;
@@ -374,6 +396,12 @@ export default function Editavatar() {
               헤어
             </FeatureBtn>
             <FeatureBtn
+              onClick={() => setSelectedBtn("costume")}
+              selected={selectedBtn === "costume"}
+            >
+              의상
+            </FeatureBtn>
+            <FeatureBtn
               onClick={() => setSelectedBtn("eye")}
               selected={selectedBtn === "eye"}
             >
@@ -384,12 +412,6 @@ export default function Editavatar() {
               selected={selectedBtn === "mouth"}
             >
               입
-            </FeatureBtn>
-            <FeatureBtn
-              onClick={() => setSelectedBtn("costume")}
-              selected={selectedBtn === "costume"}
-            >
-              의상
             </FeatureBtn>
           </div>
           <AvatarContainer>
@@ -417,21 +439,128 @@ export default function Editavatar() {
           </AvatarContainer>
         </AllAvatar>
         <MyAvatar>
-          <div>
+          <div
+            style={{ height: "35.5px", display: "flex", alignItems: "center" }}
+          >
             <span>현재 아바타</span>
           </div>
           <MyAvatarContainer>
             <AvatarNow>
-              <div>
+              <AvatarPreset>
                 <img src="/assets/avatar/face.svg" />
                 <img src="/assets/avatar/hair/hair1.svg" />
                 <img src="/assets/avatar/eye/eye1.svg" />
                 <img src="/assets/avatar/mouth/mouth1.svg" />
                 <img src="/assets/avatar/costume/costume1.svg" />
+              </AvatarPreset>
+              <div>
+                <button>현재 아바타로 저장하기</button>
+                <button>프리셋 저장하기</button>
               </div>
-              <button>현재 아바타로 저장하기</button>
             </AvatarNow>
-            <AvatarPresetContainer></AvatarPresetContainer>
+            <AvatarPresetContainer>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  width: "100%",
+                }}
+              >
+                <span>저장된 아바타</span>
+              </div>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    alignItems: "center",
+                  }}
+                >
+                  <SaveAvatarPreset bgColor="#EBA0AA" />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ fontSize: "var(--font-size-small)" }}>
+                      프리셋 1
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "var(--font-size-small)",
+                        color: "var(--color-gray)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      X
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    alignItems: "center",
+                  }}
+                >
+                  <SaveAvatarPreset bgColor="#9CE3CF" />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ fontSize: "var(--font-size-small)" }}>
+                      프리셋 2
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "var(--font-size-small)",
+                        color: "var(--color-gray)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      X
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    alignItems: "center",
+                  }}
+                >
+                  <SaveAvatarPreset bgColor="#FFDE6C" />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ fontSize: "var(--font-size-small)" }}>
+                      프리셋 3
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "var(--font-size-small)",
+                        color: "var(--color-gray)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      X
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </AvatarPresetContainer>
           </MyAvatarContainer>
         </MyAvatar>
       </EditAvatar>

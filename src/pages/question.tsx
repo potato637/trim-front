@@ -298,8 +298,6 @@ export default function Question() {
           <LikeAndComment>
             <LikeRegIcon onClick={handleLikeClick} />
             <Like>{like?.result}</Like>
-            <ScrapRegIcon />
-            <Scrap></Scrap>
             <CommentBtn onClick={handleCommentBtnClick}>
               {`댓글 ${commentsData?.length}개`}
               {isCommentOpen ? <CircleUp /> : <CircleDown />}

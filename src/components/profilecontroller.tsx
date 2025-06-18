@@ -44,7 +44,6 @@ export default function Profilecontroller() {
       <Top>
         <span onClick={() => navigate("/profile")}>프로필 설정</span>
         <span onClick={() => navigate("/badges")}>뱃지 전체 보기</span>
-        <span onClick={() => navigate("/history")}>활동 내역 보기</span>
       </Top>
       <Line />
       <Bottom>

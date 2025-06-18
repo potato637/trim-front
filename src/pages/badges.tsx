@@ -4,6 +4,7 @@ import Profilecontroller from "../components/profilecontroller";
 const Container = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,6 +43,18 @@ const AllBadges = styled.div`
     font-size: var(--font-size-small);
   }
 `;
+const Badge = styled.img`
+  width: 155px;
+  height: 195px;
+`;
+const NoBadge = styled.div`
+  width: 145px;
+  height: 185px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-purple-hover);
+`;
 
 export default function Badges() {
   return (
@@ -52,9 +65,42 @@ export default function Badges() {
       <EditBadges>
         <SelectedBadges>
           <span>내 대표 뱃지</span>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexDirection: "column",
+              marginTop: "10px",
+            }}
+          >
+            <Badge src="/assets/badge.svg" />
+            <NoBadge>+</NoBadge>
+            <NoBadge>+</NoBadge>
+          </div>
         </SelectedBadges>
         <AllBadges>
           <span>획득한 뱃지</span>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              marginTop: "10px",
+              gap: "10px",
+            }}
+          >
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+            <Badge src="/assets/badge.svg" />
+          </div>
         </AllBadges>
       </EditBadges>
     </Container>

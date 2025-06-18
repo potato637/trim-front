@@ -3,11 +3,7 @@ import styled from "styled-components";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Comments from "../components/comments";
-import {
-  FaChevronCircleUp,
-  FaChevronCircleDown,
-  FaRegBookmark,
-} from "react-icons/fa";
+import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postAPI, singleAPI } from "../apis/api";
@@ -125,13 +121,6 @@ const LikeRegIcon = styled(BiLike)`
 `;
 const Like = styled.div`
   color: var(--color-like);
-`;
-const ScrapRegIcon = styled(FaRegBookmark)`
-  color: var(--color-gray);
-  cursor: pointer;
-`;
-const Scrap = styled.div`
-  color: var(--color-gray);
 `;
 const CommentBtn = styled.div`
   display: flex;
@@ -266,8 +255,6 @@ export default function Share() {
           <LikeAndComments>
             <LikeRegIcon onClick={handleLikeClick} />
             <Like>{like?.result}</Like>
-            <ScrapRegIcon />
-            <Scrap></Scrap>
             <CommentBtn onClick={handleCommentBtnClick}>
               {`댓글 ${knowledgeData?.commentResponses.length}개`}
               {isCommentOpen ? <CircleDown /> : <CircleUp />}

@@ -15,7 +15,6 @@ import Redirection from "./pages/redirection";
 import Signin from "./pages/signin";
 import Profile from "./pages/profile";
 import Badges from "./pages/badges";
-import History from "./pages/history";
 import Editavatar from "./pages/editavatar";
 
 const router = createBrowserRouter([
@@ -37,7 +36,6 @@ const router = createBrowserRouter([
       { path: "signin", element: <Signin /> },
       { path: "profile", element: <Profile /> },
       { path: "badges", element: <Badges /> },
-      { path: "history", element: <History /> },
       { path: "edit-avatar", element: <Editavatar /> },
     ],
     errorElement: <Error />,
