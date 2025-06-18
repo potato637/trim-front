@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Container = styled.div`
   position: relative;
@@ -128,10 +128,24 @@ export default function Profile() {
   // 편집 중인지 전체 판단
   const isAnyEditing = Object.values(editing).some(Boolean);
 
+  // 각 input ref
+  const nameRef = useRef<HTMLInputElement>(null);
+  const nicknameRef = useRef<HTMLInputElement>(null);
+  const introduceRef = useRef<HTMLInputElement>(null);
+  const schoolRef = useRef<HTMLInputElement>(null);
+  const majorRef = useRef<HTMLInputElement>(null);
+
   // 편집 버튼 클릭
   const handleEdit = (field: keyof typeof editing, value: string) => {
     setEditing((prev) => ({ ...prev, [field]: true }));
     setTemp((prev) => ({ ...prev, [field]: value }));
+    setTimeout(() => {
+      if (field === "name") nameRef.current?.focus();
+      if (field === "nickname") nicknameRef.current?.focus();
+      if (field === "introduce") introduceRef.current?.focus();
+      if (field === "school") schoolRef.current?.focus();
+      if (field === "major") majorRef.current?.focus();
+    }, 0);
   };
   // input 변경
   const handleTempChange = (field: keyof typeof temp, value: string) => {
@@ -188,6 +202,7 @@ export default function Profile() {
           </Half>
           <Half>
             <Input
+              ref={nameRef}
               value={editing.name ? temp.name : name}
               onChange={(e) =>
                 editing.name
@@ -197,6 +212,7 @@ export default function Profile() {
               disabled={!editing.name}
             />
             <Input
+              ref={nicknameRef}
               value={editing.nickname ? temp.nickname : nickname}
               onChange={(e) =>
                 editing.nickname
@@ -220,6 +236,7 @@ export default function Profile() {
             </span>
           </Full>
           <Input
+            ref={introduceRef}
             value={editing.introduce ? temp.introduce : introduce}
             onChange={(e) =>
               editing.introduce
@@ -249,6 +266,7 @@ export default function Profile() {
           </Half>
           <Half>
             <Input
+              ref={schoolRef}
               value={editing.school ? temp.school : school}
               onChange={(e) =>
                 editing.school
@@ -258,6 +276,7 @@ export default function Profile() {
               disabled={!editing.school}
             />
             <Input
+              ref={majorRef}
               value={editing.major ? temp.major : major}
               onChange={(e) =>
                 editing.major
