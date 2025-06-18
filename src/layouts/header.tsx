@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth_context";
@@ -60,20 +60,6 @@ const InputContainer = styled.div`
   width: 400px;
   display: flex;
   align-items: center;
-`;
-const Input = styled.input`
-  width: 350px;
-  font-size: var(--font-size-small);
-  padding: 7px 0 7px 15px;
-  border-radius: 16px;
-  border: 0.5px solid var(--color-header-input);
-  margin-left: 10px;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-    border: 0.75px solid var(--color-comment-input-hover);
-  }
 `;
 const NavBtnContainer = styled.div`
   width: 200px;
@@ -151,21 +137,7 @@ export default function Header() {
             <Span isActive={isTabActive("/community")}>커뮤니티</Span>
           </Tab>
         </Tabs>
-        <InputContainer>
-          <form
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Input
-              placeholder={`${
-                pathname[activeTab as keyof typeof pathname] || "Trim"
-              }에서 검색하기`}
-            ></Input>
-          </form>
-        </InputContainer>
+        <InputContainer></InputContainer>
         <NavBtnContainer>
           <button onClick={handleMypageClick}>마이페이지</button>
           {isLoggedIn ? (

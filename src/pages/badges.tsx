@@ -4,7 +4,6 @@ import Profilecontroller from "../components/profilecontroller";
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +15,7 @@ const ControllerContainer = styled.div`
 `;
 const EditBadges = styled.div`
   margin-top: 60px;
-  width: 70%;
+  width: 80%;
   display: flex;
   gap: 20px;
 `;

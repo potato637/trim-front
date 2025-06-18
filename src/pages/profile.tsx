@@ -16,7 +16,7 @@ const ControllerContainer = styled.div`
 `;
 const EditProfile = styled.div`
   margin-top: 60px;
-  width: 70%;
+  width: 80%;
   & > h2 {
     font-size: var(--font-size-extra-medium);
   }
@@ -66,18 +66,20 @@ const EditButton = styled.button`
   cursor: pointer;
   font-size: var(--font-size-small);
 `;
-const SaveButton = styled.button`
-  background-color: var(--color-purple);
+const SaveButton = styled.button<{ disabled?: boolean }>`
+  background-color: ${({ disabled }) =>
+    disabled ? "#ccc" : "var(--color-purple)"};
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   font-size: var(--font-size-small);
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: var(--color-purple-hover);
+    background-color: ${({ disabled }) =>
+      disabled ? "#ccc" : "var(--color-purple-hover)"};
   }
 `;
 const CancelButton = styled.button`
@@ -93,6 +95,11 @@ const CancelButton = styled.button`
   &:hover {
     background-color: #555;
   }
+`;
+const Warning = styled.div`
+  color: red;
+  font-size: var(--font-size-small);
+  margin-top: 4px;
 `;
 
 export default function Profile() {
@@ -221,6 +228,9 @@ export default function Profile() {
             }
             disabled={!editing.introduce}
           />
+          {editing.introduce && temp.introduce.length > 150 && (
+            <Warning>한줄 소개는 150자 이내로 입력해 주세요.</Warning>
+          )}
           <Full />
           <Full />
           <Half>
@@ -267,7 +277,12 @@ export default function Profile() {
                 marginTop: 24,
               }}
             >
-              <SaveButton onClick={handleSaveAll}>저장</SaveButton>
+              <SaveButton
+                onClick={handleSaveAll}
+                disabled={editing.introduce && temp.introduce.length > 150}
+              >
+                저장
+              </SaveButton>
               <CancelButton onClick={handleCancelAll}>취소</CancelButton>
             </div>
           )}

@@ -89,9 +89,17 @@ export default function Controller() {
           <span>BACK</span>
         </BackContainer>
       </PageContainer>
-      <WriteContainer onClick={handleWriteBtnClick}>
-        <HiPencil color="white" />
-      </WriteContainer>
+      {(() => {
+        const path = location.pathname;
+        // 허용 경로: /question, /question/숫자, /knowledge, /knowledge/숫자, /community, /community/숫자
+        const match = /^\/(question|knowledge|community)(\/\d+)?$/.test(path);
+        if (!match) return null;
+        return (
+          <WriteContainer onClick={handleWriteBtnClick}>
+            <HiPencil color="white" />
+          </WriteContainer>
+        );
+      })()}
     </ControllerContainer>
   );
 }
