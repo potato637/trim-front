@@ -109,7 +109,6 @@ export default function Header() {
     "/question": "질문게시판",
     "/knowledge": "지식공유",
     "/community": "커뮤니티",
-    "/survey": "설문",
   };
 
   function onClickHandler(tab: string) {
@@ -150,9 +149,6 @@ export default function Header() {
           </Tab>
           <Tab onClick={() => onClickHandler("community")}>
             <Span isActive={isTabActive("/community")}>커뮤니티</Span>
-          </Tab>
-          <Tab onClick={() => onClickHandler("survey")}>
-            <Span isActive={isTabActive("/survey")}>설문</Span>
           </Tab>
         </Tabs>
         <InputContainer>
