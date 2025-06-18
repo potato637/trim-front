@@ -9,28 +9,29 @@ const ControllerContainer = styled.div`
   position: fixed;
   top: 15%;
   right: 10%;
-  z-index: 10;
-  border-radius: 15px;
+  z-index: 20;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-
+  gap: 24px;
+  padding: 8px 0 8px 0;
   @media (max-width: 1400px) {
     display: none;
   }
 `;
 const PageContainer = styled.div`
   display: flex;
-  width: 3rem;
-  height: 8rem;
-  padding: 10px 0;
+  width: 3.5rem;
+  height: 8.5rem;
+  padding: 14px 0;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   background-color: var(--color-white-gray);
-  border: 0.5px solid var(--color-border);
-  border-radius: 30px;
+  border: 1.5px solid var(--color-light-purple-border);
+  border-radius: 32px;
+  box-shadow: 0 2px 8px 0 var(--color-item-shadow);
   & > div {
     flex: 1;
     display: flex;
@@ -38,11 +39,18 @@ const PageContainer = styled.div`
     justify-content: center;
     align-items: center;
     color: var(--color-purple);
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
+    border-radius: 18px;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    &:hover {
+      color: var(--color-purple-hover);
+    }
   }
   & > div > span {
     font-size: var(--font-size-small);
+    font-weight: 500;
+    letter-spacing: 0.01em;
   }
 `;
 const TopContainer = styled.div``;
@@ -51,12 +59,24 @@ const WriteContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #6129e9;
-  font-size: var(--font-size-medium);
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-purple-hover) 60%,
+    #a084fa 100%
+  );
+  font-size: 1.7rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 4px 16px 0 rgba(97, 41, 233, 0.18);
+  border: 2.5px solid #fff;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  &:hover {
+    background: linear-gradient(135deg, #7c4dff 60%, #b39ddb 100%);
+    box-shadow: 0 6px 20px 0 rgba(97, 41, 233, 0.22);
+    transform: scale(1.07);
+  }
 `;
 
 export default function Controller() {
