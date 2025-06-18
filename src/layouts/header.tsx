@@ -116,7 +116,7 @@ export default function Header() {
   }
 
   function handleMypageClick() {
-    login("/mypage");
+    login("/profile");
   }
   function isTabActive(path: string) {
     return location.pathname.startsWith(path);

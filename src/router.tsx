@@ -5,7 +5,6 @@ import Error from "./pages/error";
 import Questiontab from "./pages/questiontab";
 import Sharetab from "./pages/sharetab";
 import Communitytab from "./pages/communitytab";
-import Mypage from "./pages/mypage";
 import Question from "./pages/question";
 import Share from "./pages/share";
 import Community from "./pages/community";
@@ -34,7 +33,6 @@ const router = createBrowserRouter([
       { path: "community", element: <Communitytab /> },
       { path: "community/:itemId", element: <Community /> },
       { path: "community/new", element: <Communitynew /> },
-      { path: "mypage", element: <Mypage /> },
       { path: "oauth/:provider/callback", element: <Redirection /> },
       { path: "signin", element: <Signin /> },
       { path: "profile", element: <Profile /> },
