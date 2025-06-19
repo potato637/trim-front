@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
 import { useState, useRef, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile, updateProfile } from "../apis/profileAPI";
 
 const Container = styled.div`
   position: relative;
@@ -109,6 +111,22 @@ export default function Profile() {
   const [school, setSchool] = useState("");
   const [major, setMajor] = useState("");
 
+  const { data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  // 최초 마운트 시 profileData로 초기값 세팅
+  useEffect(() => {
+    if (profileData && profileData.result) {
+      setName(profileData.result.name ?? "");
+      setNickname(profileData.result.nickname ?? "");
+      setIntroduce(profileData.result.description ?? "");
+      setSchool(profileData.result.university ?? "");
+      setMajor(profileData.result.major ?? "");
+    }
+  }, [profileData]);
+
   // 편집 모드 관리: 각 필드별로 true/false
   const [editing, setEditing] = useState({
     name: false,
@@ -152,12 +170,21 @@ export default function Profile() {
     setTemp((prev) => ({ ...prev, [field]: value }));
   };
   // 저장
-  const handleSaveAll = () => {
-    setName(temp.name);
-    setNickname(temp.nickname);
-    setIntroduce(temp.introduce);
-    setSchool(temp.school);
-    setMajor(temp.major);
+  const handleSaveAll = async () => {
+    // 빈 값이면 기존 값 유지
+    const payload = {
+      name: temp.name !== "" ? temp.name : name,
+      nickname: temp.nickname !== "" ? temp.nickname : nickname,
+      description: temp.introduce !== "" ? temp.introduce : introduce,
+      university: temp.school !== "" ? temp.school : school,
+      major: temp.major !== "" ? temp.major : major,
+    };
+    await updateProfile(payload);
+    setName(payload.name);
+    setNickname(payload.nickname);
+    setIntroduce(payload.description);
+    setSchool(payload.university);
+    setMajor(payload.major);
     setEditing({
       name: false,
       nickname: false,

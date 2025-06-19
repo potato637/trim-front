@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth_context";
-import { QuestionPanelDynamicTemplateSurveyImpl } from "survey-core/typings/packages/survey-core/src/question_paneldynamic";
 
 export default function useLogin() {
   const location = useLocation();

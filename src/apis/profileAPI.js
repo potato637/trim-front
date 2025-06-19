@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookieValue } from "../utils";
 
 const profileAPI = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -6,7 +7,7 @@ const profileAPI = axios.create({
 
 export const getMouth = async () => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatar/mouth-parts");
+    const { data } = await profileAPI.get("/api/access/avatars/mouth-parts");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -18,7 +19,7 @@ export const getMouth = async () => {
 
 export const getEyes = async () => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatar/eyes-parts");
+    const { data } = await profileAPI.get("/api/access/avatars/eyes-parts");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -30,7 +31,7 @@ export const getEyes = async () => {
 
 export const getCloth = async ({ color }) => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatar/cloth-parts", {
+    const { data } = await profileAPI.get("/api/access/avatars/cloth-parts", {
       params: { color },
     });
     return data;
@@ -44,7 +45,7 @@ export const getCloth = async ({ color }) => {
 
 export const getHair = async ({ color }) => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatar/hair-parts", {
+    const { data } = await profileAPI.get("/api/access/avatars/hair-parts", {
       params: { color },
     });
     return data;
@@ -58,7 +59,43 @@ export const getHair = async ({ color }) => {
 
 export const getProfile = async () => {
   try {
-    const { data } = await profileAPI.get("/api/access/profile");
+    const { data } = await profileAPI.get("/api/members", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const updateProfile = async ({
+  name,
+  nickname,
+  description,
+  university,
+  major,
+}) => {
+  try {
+    const { data } = await profileAPI.patch(
+      "/api/members",
+      {
+        name,
+        nickname,
+        description,
+        university,
+        major,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

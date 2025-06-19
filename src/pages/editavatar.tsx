@@ -83,7 +83,7 @@ const AvatarPreview = styled.div`
   height: 120px;
   margin-bottom: 10px;
   border-radius: 50%;
-  background-color: var(--color-purple);
+  background-color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +154,7 @@ const AvatarNow = styled.div`
     }
   }
 `;
-const AvatarPreset = styled.div`
+const AvatarItems = styled.div`
   position: relative;
   width: 270px;
   height: 270px;
@@ -169,11 +169,11 @@ const AvatarPreset = styled.div`
     height: 80%;
   }
 `;
-const SaveAvatarPreset = styled.div<{ bgColor: string }>`
+const AvatarPreset = styled.div`
   position: relative;
-  width: 100px;
-  height: 100px;
-  background-color: ${({ bgColor }) => bgColor};
+  width: 270px;
+  height: 270px;
+  background-color: var(--color-purple);
   border-radius: 50%;
   > img {
     position: absolute;
@@ -372,15 +372,6 @@ export default function Editavatar() {
     }
   };
 
-  const getImageUrl = (imageUrl: string) => {
-    // API에서 받은 이미지 URL이 상대 경로인 경우 base URL을 추가
-    if (imageUrl.startsWith("/")) {
-      const fullUrl = `${process.env.REACT_APP_BASE_URL || ""}${imageUrl}`;
-      return fullUrl;
-    }
-    return imageUrl;
-  };
-
   return (
     <Container>
       <ControllerContainer>
@@ -424,10 +415,7 @@ export default function Editavatar() {
                   {selectedData.map((item: any, index: number) => (
                     <AvatarItem key={index}>
                       <AvatarPreview>
-                        <img
-                          src={getImageUrl(item.imageUrl)}
-                          alt={getItemName(item)}
-                        />
+                        <img src={item.imageUrl} alt={getItemName(item)} />
                       </AvatarPreview>
                       <ItemName>{getItemName(item)}</ItemName>
                       <PriceTag>{item.price} 포인트</PriceTag>
@@ -458,109 +446,6 @@ export default function Editavatar() {
                 <button>프리셋 저장하기</button>
               </div>
             </AvatarNow>
-            <AvatarPresetContainer>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  width: "100%",
-                }}
-              >
-                <span>저장된 아바타</span>
-              </div>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <SaveAvatarPreset bgColor="#EBA0AA" />
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "5px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ fontSize: "var(--font-size-small)" }}>
-                      프리셋 1
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "var(--font-size-small)",
-                        color: "var(--color-gray)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      X
-                    </span>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <SaveAvatarPreset bgColor="#9CE3CF" />
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "5px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ fontSize: "var(--font-size-small)" }}>
-                      프리셋 2
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "var(--font-size-small)",
-                        color: "var(--color-gray)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      X
-                    </span>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <SaveAvatarPreset bgColor="#FFDE6C" />
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "5px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ fontSize: "var(--font-size-small)" }}>
-                      프리셋 3
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "var(--font-size-small)",
-                        color: "var(--color-gray)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      X
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </AvatarPresetContainer>
           </MyAvatarContainer>
         </MyAvatar>
       </EditAvatar>
