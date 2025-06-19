@@ -79,7 +79,7 @@ const Text = styled.p`
   width: 350px;
 `;
 const TabBar = styled.div`
-  min-height: 45px;
+  max-height: 45px;
   padding: 0 3px;
   display: flex;
   flex: 1;
@@ -125,6 +125,7 @@ const Rank = styled.div`
 `;
 const Content = styled.div`
   margin-top: 20px;
+  max-height: 500px;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
@@ -299,10 +300,6 @@ export default function Home() {
     queryKey: ["home_community"],
     queryFn: () => datasAPI.community({ currentPage: 0, pageSize: 6 }),
   });
-  // const { data: home_survey, isLoading: loading_survey } = useQuery({
-  //   queryKey: ["home_survey"],
-  //   queryFn: () => datasAPI.question({ currentPage: 0, pageSize: 6 }),
-  // });
 
   const CategoryMapping = {
     question: "질문게시판",
@@ -313,7 +310,6 @@ export default function Home() {
     question: home_question,
     knowledge: home_knowledge,
     community: home_community,
-    // survey: home_survey,
   };
   const isLoading = loading_question || loading_knowledge || loading_community;
   const navigate = useNavigate();
@@ -369,12 +365,6 @@ export default function Home() {
           >
             <span>자유게시판</span>
           </TabAnchor>
-          {/* <TabAnchor
-            isSelected={selectedTab === "survey"}
-            onClick={() => handleTabClick("survey")}
-          >
-            <span>설문</span>
-          </TabAnchor> */}
         </Tab>
         <Ranking>
           <RankinigTitle>

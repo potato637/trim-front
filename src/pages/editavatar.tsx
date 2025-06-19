@@ -61,7 +61,7 @@ const ColorButton = styled.button<{ color: string; selected: boolean }>`
     transform: scale(1.1);
   }
 `;
-const AvatarItem = styled.div`
+const AvatarItem = styled.div<{ isSelected?: boolean; isEditting?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,12 +69,18 @@ const AvatarItem = styled.div`
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+  cursor: ${({ isEditting }) => (isEditting ? "pointer" : "default")};
   transition: all 0.2s ease;
+  border: ${({ isSelected, isEditting }) =>
+    isEditting && isSelected ? "2px solid var(--color-primary)" : "none"};
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: ${({ isEditting }) =>
+      isEditting ? "translateY(-2px)" : "none"};
+    box-shadow: ${({ isEditting }) =>
+      isEditting
+        ? "0 4px 12px rgba(0, 0, 0, 0.15)"
+        : "0 2px 8px rgba(0, 0, 0, 0.1)"};
   }
 `;
 const AvatarPreview = styled.div`
@@ -141,13 +147,13 @@ const AvatarNow = styled.div`
   align-items: center;
   & > div {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     > button {
       width: fit-content;
-      margin-top: 20px;
+      margin-top: 30px;
       color: var(--color-white);
       background-color: var(--color-purple-hover);
-      padding: 7px 10px;
+      padding: 10px;
       border: none;
       border-radius: 20px;
       cursor: pointer;
@@ -156,8 +162,8 @@ const AvatarNow = styled.div`
 `;
 const AvatarPreset = styled.div`
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: 400px;
+  height: 400px;
   background-color: var(--color-purple);
   border-radius: 50%;
   > img {
@@ -170,6 +176,7 @@ const AvatarPreset = styled.div`
   }
 `;
 const ItemsGrid = styled.div`
+  min-width: 520px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
@@ -244,6 +251,13 @@ export default function Editavatar() {
   const [selectedHairColor, setSelectedHairColor] = useState<string>("NAVY");
   const [selectedClothColor, setSelectedClothColor] =
     useState<string>("YELLOW_GREEN");
+  const [isEditting, setIsEditting] = useState<boolean>(false);
+
+  // 선택된 아이템들을 저장할 상태들
+  const [selectedHair, setSelectedHair] = useState<any>(null);
+  const [selectedEye, setSelectedEye] = useState<any>(null);
+  const [selectedMouth, setSelectedMouth] = useState<any>(null);
+  const [selectedCostume, setSelectedCostume] = useState<any>(null);
 
   // API 호출
   const { data: mouthData, isLoading: mouthLoading } = useQuery({
@@ -359,6 +373,53 @@ export default function Editavatar() {
     }
   };
 
+  // 아이템 선택 핸들러
+  const handleItemSelect = (item: any) => {
+    if (!isEditting) return;
+
+    switch (selectedBtn) {
+      case "hair":
+        setSelectedHair(item);
+        break;
+      case "eye":
+        setSelectedEye(item);
+        break;
+      case "mouth":
+        setSelectedMouth(item);
+        break;
+      case "costume":
+        setSelectedCostume(item);
+        break;
+    }
+  };
+
+  // 저장 검증 및 처리
+  const handleSave = () => {
+    if (!selectedHair || !selectedEye || !selectedMouth || !selectedCostume) {
+      alert("모든 파츠(헤어, 눈, 입, 의상)를 선택해주세요!");
+      return;
+    }
+
+    // 실제 저장 로직
+
+    setSelectedHair(null);
+    setSelectedEye(null);
+    setSelectedMouth(null);
+    setSelectedCostume(null);
+
+    setIsEditting(false);
+    alert("아바타가 저장되었습니다!");
+  };
+
+  // 편집 모드 토글
+  const toggleEditMode = () => {
+    if (isEditting) {
+      handleSave();
+    } else {
+      setIsEditting(true);
+    }
+  };
+
   return (
     <Container>
       <ControllerContainer>
@@ -393,14 +454,23 @@ export default function Editavatar() {
             </FeatureBtn>
           </div>
           <AvatarContainer>
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : (
-              <>
-                {renderColorPalette()}
-                <ItemsGrid>
-                  {selectedData.map((item: any, index: number) => (
-                    <AvatarItem key={index}>
+            {renderColorPalette()}
+            <ItemsGrid>
+              {!isLoading &&
+                selectedData.map((item: any, index: number) => {
+                  const isSelected =
+                    (selectedBtn === "hair" && selectedHair === item) ||
+                    (selectedBtn === "eye" && selectedEye === item) ||
+                    (selectedBtn === "mouth" && selectedMouth === item) ||
+                    (selectedBtn === "costume" && selectedCostume === item);
+
+                  return (
+                    <AvatarItem
+                      key={index}
+                      isSelected={isSelected}
+                      isEditting={isEditting}
+                      onClick={() => handleItemSelect(item)}
+                    >
                       <AvatarPreview>
                         <img src="/assets/avatar/face.svg" />
                         {/* 기본 베이스 아이템들 렌더링 */}
@@ -422,10 +492,9 @@ export default function Editavatar() {
                       <ItemName>{getItemName(item)}</ItemName>
                       <PriceTag>{item.price} 포인트</PriceTag>
                     </AvatarItem>
-                  ))}
-                </ItemsGrid>
-              </>
-            )}
+                  );
+                })}
+            </ItemsGrid>
           </AvatarContainer>
         </AllAvatar>
         <MyAvatar>
@@ -438,14 +507,34 @@ export default function Editavatar() {
             <AvatarNow>
               <AvatarPreset>
                 <img src="/assets/avatar/face.svg" />
-                <img src="/assets/avatar/hair/hair1.svg" />
-                <img src="/assets/avatar/eye/eye1.svg" />
-                <img src="/assets/avatar/mouth/mouth1.svg" />
-                <img src="/assets/avatar/costume/costume1.svg" />
+                {isEditting ? (
+                  <>
+                    {selectedHair && (
+                      <img src={selectedHair.imageUrl} alt="선택된 헤어" />
+                    )}
+                    {selectedEye && (
+                      <img src={selectedEye.imageUrl} alt="선택된 눈" />
+                    )}
+                    {selectedMouth && (
+                      <img src={selectedMouth.imageUrl} alt="선택된 입" />
+                    )}
+                    {selectedCostume && (
+                      <img src={selectedCostume.imageUrl} alt="선택된 의상" />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <img src="/assets/avatar/hair/hair1.svg" />
+                    <img src="/assets/avatar/eye/eye1.svg" />
+                    <img src="/assets/avatar/mouth/mouth1.svg" />
+                    <img src="/assets/avatar/costume/costume1.svg" />
+                  </>
+                )}
               </AvatarPreset>
               <div>
-                <button>현재 아바타로 저장하기</button>
-                <button>편집하기</button>
+                <button style={{ padding: "15px" }} onClick={toggleEditMode}>
+                  {isEditting ? "저장하기" : "편집하기"}
+                </button>
               </div>
             </AvatarNow>
           </MyAvatarContainer>

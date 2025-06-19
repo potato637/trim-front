@@ -42,9 +42,22 @@ const AllBadges = styled.div`
     font-size: var(--font-size-small);
   }
 `;
+const BadgeContainer = styled.div`
+  position: relative;
+  width: 155px;
+  height: 195px;
+`;
 const Badge = styled.img`
   width: 155px;
   height: 195px;
+`;
+const DeleteBadge = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--color-gray-text);
+  font-size: var(--font-size-small);
+  cursor: pointer;
 `;
 const NoBadge = styled.div`
   width: 145px;
@@ -69,10 +82,14 @@ export default function Badges() {
               display: "flex",
               gap: "10px",
               flexDirection: "column",
-              marginTop: "10px",
+              marginTop: "30px",
+              alignItems: "center",
             }}
           >
-            <Badge src="/assets/badge.svg" />
+            <BadgeContainer>
+              <Badge src="/assets/badge.svg" />
+              <DeleteBadge>✖️</DeleteBadge>
+            </BadgeContainer>
             <NoBadge>+</NoBadge>
             <NoBadge>+</NoBadge>
           </div>
@@ -83,7 +100,7 @@ export default function Badges() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
-              marginTop: "10px",
+              marginTop: "30px",
               gap: "10px",
             }}
           >
