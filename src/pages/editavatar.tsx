@@ -154,21 +154,6 @@ const AvatarNow = styled.div`
     }
   }
 `;
-const AvatarItems = styled.div`
-  position: relative;
-  width: 270px;
-  height: 270px;
-  background-color: var(--color-purple);
-  border-radius: 50%;
-  > img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-  }
-`;
 const AvatarPreset = styled.div`
   position: relative;
   width: 270px;
@@ -183,12 +168,6 @@ const AvatarPreset = styled.div`
     width: 80%;
     height: 80%;
   }
-`;
-const AvatarPresetContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `;
 const ItemsGrid = styled.div`
   display: grid;
@@ -289,7 +268,15 @@ export default function Editavatar() {
 
   useEffect(() => {
     setSelectedData(getCurrentData());
-  }, [selectedBtn, mouthLoading, eyesLoading, clothLoading, hairLoading]);
+  }, [
+    selectedBtn,
+    mouthLoading,
+    eyesLoading,
+    clothLoading,
+    hairLoading,
+    hairData,
+    clothData,
+  ]);
 
   const isLoading = mouthLoading || eyesLoading || clothLoading || hairLoading;
 
@@ -415,6 +402,21 @@ export default function Editavatar() {
                   {selectedData.map((item: any, index: number) => (
                     <AvatarItem key={index}>
                       <AvatarPreview>
+                        <img src="/assets/avatar/face.svg" />
+                        {/* 기본 베이스 아이템들 렌더링 */}
+                        {selectedBtn !== "hair" && (
+                          <img src="/assets/avatar/hair/hair1.svg" />
+                        )}
+                        {selectedBtn !== "eye" && (
+                          <img src="/assets/avatar/eye/eye1.svg" />
+                        )}
+                        {selectedBtn !== "mouth" && (
+                          <img src="/assets/avatar/mouth/mouth1.svg" />
+                        )}
+                        {selectedBtn !== "costume" && (
+                          <img src="/assets/avatar/costume/costume1.svg" />
+                        )}
+                        {/* 선택된 타입의 아이템 렌더링 */}
                         <img src={item.imageUrl} alt={getItemName(item)} />
                       </AvatarPreview>
                       <ItemName>{getItemName(item)}</ItemName>
@@ -443,7 +445,7 @@ export default function Editavatar() {
               </AvatarPreset>
               <div>
                 <button>현재 아바타로 저장하기</button>
-                <button>프리셋 저장하기</button>
+                <button>편집하기</button>
               </div>
             </AvatarNow>
           </MyAvatarContainer>
