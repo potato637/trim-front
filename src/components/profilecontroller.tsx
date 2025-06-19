@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -23,6 +23,18 @@ const Top = styled.div`
     cursor: pointer;
   }
 `;
+const MenuItem = styled.span<{ isActive: boolean }>`
+  cursor: pointer;
+  color: ${({ isActive }) =>
+    isActive ? "var(--color-primary)" : "var(--color-date)"};
+  font-weight: ${({ isActive }) => (isActive ? "600" : "400")};
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--color-primary);
+    transform: translateX(2px);
+  }
+`;
 const Line = styled.hr`
   width: 80%;
   margin: 0 auto;
@@ -38,12 +50,23 @@ const Bottom = styled.div`
 
 export default function Profilecontroller() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Container>
       <Top>
-        <span onClick={() => navigate("/profile")}>프로필 설정</span>
-        <span onClick={() => navigate("/badges")}>뱃지 전체 보기</span>
+        <MenuItem
+          isActive={location.pathname === "/profile"}
+          onClick={() => navigate("/profile")}
+        >
+          프로필 설정
+        </MenuItem>
+        <MenuItem
+          isActive={location.pathname === "/badges"}
+          onClick={() => navigate("/badges")}
+        >
+          뱃지 전체 보기
+        </MenuItem>
       </Top>
       <Line />
       <Bottom>

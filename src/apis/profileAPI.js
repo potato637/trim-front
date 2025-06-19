@@ -7,7 +7,34 @@ const profileAPI = axios.create({
 
 export const getMouth = async () => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatars/mouth-parts");
+    const { data } = await profileAPI.get(
+      "/api/avatars/mouth-parts/possessed",
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const purchaseMouth = async ({ id }) => {
+  try {
+    const { data } = await profileAPI.post(
+      `/api/avatars/mouths/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -19,7 +46,31 @@ export const getMouth = async () => {
 
 export const getEyes = async () => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatars/eyes-parts");
+    const { data } = await profileAPI.get("/api/avatars/eyes-parts/possessed", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const purchaseEyes = async ({ id }) => {
+  try {
+    const { data } = await profileAPI.post(
+      `/api/avatars/eyes/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -31,9 +82,35 @@ export const getEyes = async () => {
 
 export const getCloth = async ({ color }) => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatars/cloth-parts", {
-      params: { color },
-    });
+    const { data } = await profileAPI.get(
+      "/api/avatars/cloth-parts/possessed",
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+        params: { color },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const purchaseCloth = async ({ id }) => {
+  try {
+    const { data } = await profileAPI.post(
+      `/api/avatars/cloths/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -45,9 +122,32 @@ export const getCloth = async ({ color }) => {
 
 export const getHair = async ({ color }) => {
   try {
-    const { data } = await profileAPI.get("/api/access/avatars/hair-parts", {
+    const { data } = await profileAPI.get("/api/avatars/hair-parts/possessed", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
       params: { color },
     });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const purchaseHair = async ({ id }) => {
+  try {
+    const { data } = await profileAPI.post(
+      `/api/avatars/hairs/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

@@ -1,8 +1,17 @@
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getMouth, getEyes, getCloth, getHair } from "../apis/profileAPI";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getMouth,
+  getEyes,
+  getCloth,
+  getHair,
+  purchaseMouth,
+  purchaseEyes,
+  purchaseCloth,
+  purchaseHair,
+} from "../apis/profileAPI";
 
 const Container = styled.div`
   position: relative;
@@ -75,12 +84,8 @@ const AvatarItem = styled.div<{ isSelected?: boolean; isEditting?: boolean }>`
     isEditting && isSelected ? "2px solid var(--color-primary)" : "none"};
 
   &:hover {
-    transform: ${({ isEditting }) =>
-      isEditting ? "translateY(-2px)" : "none"};
-    box-shadow: ${({ isEditting }) =>
-      isEditting
-        ? "0 4px 12px rgba(0, 0, 0, 0.15)"
-        : "0 2px 8px rgba(0, 0, 0, 0.1)"};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 `;
 const AvatarPreview = styled.div`
@@ -108,6 +113,7 @@ const ItemName = styled.div`
   text-align: center;
 `;
 const PriceTag = styled.div`
+  cursor: pointer;
   font-size: var(--font-size-small);
   color: var(--color-primary);
   font-weight: bold;
@@ -191,7 +197,6 @@ const ItemsGrid = styled.div`
   scrollbar-width: none;
   -ms-overflow-style: none; /* IE and Edge */
 `;
-
 // 색상 매핑
 const hairColors = {
   NAVY: "#000080",
@@ -207,7 +212,6 @@ const hairColors = {
   BLONDE: "#F4A460",
   BLACK: "#000000",
 };
-
 const clothColors = {
   RED: "#FF0000",
   PINK: "#FFC0CB",
@@ -222,7 +226,6 @@ const clothColors = {
   GRAY: "#808080",
   BLACK: "#000000",
 };
-
 // API 응답 타입 정의
 interface AvatarItem {
   price: number;
@@ -258,6 +261,8 @@ export default function Editavatar() {
   const [selectedEye, setSelectedEye] = useState<any>(null);
   const [selectedMouth, setSelectedMouth] = useState<any>(null);
   const [selectedCostume, setSelectedCostume] = useState<any>(null);
+
+  const queryClient = useQueryClient();
 
   // API 호출
   const { data: mouthData, isLoading: mouthLoading } = useQuery({
@@ -420,6 +425,55 @@ export default function Editavatar() {
     }
   };
 
+  const handlePurchase = async (item: any) => {
+    try {
+      let purchaseResult;
+
+      switch (selectedBtn) {
+        case "hair":
+          purchaseResult = await purchaseHair({ id: item.hairId });
+          break;
+        case "eye":
+          purchaseResult = await purchaseEyes({ id: item.eyesId });
+          break;
+        case "mouth":
+          purchaseResult = await purchaseMouth({ id: item.mouthId });
+          break;
+        case "costume":
+          purchaseResult = await purchaseCloth({ id: item.clothId });
+          break;
+        default:
+          throw new Error("알 수 없는 아이템 타입입니다.");
+      }
+
+      // 구매 성공 시 해당 쿼리 무효화하여 데이터 새로고침
+      if (purchaseResult) {
+        switch (selectedBtn) {
+          case "hair":
+            await queryClient.invalidateQueries({
+              queryKey: ["hair", selectedHairColor],
+            });
+            break;
+          case "eye":
+            await queryClient.invalidateQueries({ queryKey: ["eyes"] });
+            break;
+          case "mouth":
+            await queryClient.invalidateQueries({ queryKey: ["mouth"] });
+            break;
+          case "costume":
+            await queryClient.invalidateQueries({
+              queryKey: ["cloth", selectedClothColor],
+            });
+            break;
+        }
+        alert("구매가 완료되었습니다!");
+      }
+    } catch (error) {
+      console.error("구매 중 오류 발생:", error);
+      alert("구매 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <Container>
       <ControllerContainer>
@@ -473,6 +527,8 @@ export default function Editavatar() {
                     >
                       <AvatarPreview>
                         <img src="/assets/avatar/face.svg" />
+                        {/* 선택된 타입의 아이템 렌더링 */}
+                        <img src={item.imageUrl} alt={getItemName(item)} />
                         {/* 기본 베이스 아이템들 렌더링 */}
                         {selectedBtn !== "hair" && (
                           <img src="/assets/avatar/hair/hair1.svg" />
@@ -486,11 +542,15 @@ export default function Editavatar() {
                         {selectedBtn !== "costume" && (
                           <img src="/assets/avatar/costume/costume1.svg" />
                         )}
-                        {/* 선택된 타입의 아이템 렌더링 */}
-                        <img src={item.imageUrl} alt={getItemName(item)} />
                       </AvatarPreview>
                       <ItemName>{getItemName(item)}</ItemName>
-                      <PriceTag>{item.price} 포인트</PriceTag>
+                      {item.purchased ? (
+                        <PriceTag>보유 중</PriceTag>
+                      ) : (
+                        <PriceTag onClick={() => handlePurchase(item)}>
+                          {item.price}p / 구입하기
+                        </PriceTag>
+                      )}
                     </AvatarItem>
                   );
                 })}
