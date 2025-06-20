@@ -157,6 +157,56 @@ export const purchaseHair = async ({ id }) => {
   }
 };
 
+export const getAvatar = async () => {
+  try {
+    console.log("getAvatar");
+    const { data } = await profileAPI.get("/api/avatars/stored", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const saveAvatar = async ({
+  backgroundColor,
+  mouthForURL,
+  eyesForURL,
+  clothForURL,
+  hairForURL,
+}) => {
+  try {
+    const { data } = await profileAPI.patch(
+      "/api/avatars/stored",
+      {
+        backgroundColor: "RED",
+        mouthForURL,
+        eyesForURL,
+        clothForURL,
+        hairForURL,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export const getProfile = async () => {
   try {
     const { data } = await profileAPI.get("/api/members", {
@@ -207,6 +257,36 @@ export const updateProfile = async ({
 export const getBadge = async () => {
   try {
     const { data } = await profileAPI.get("/api/access/badge");
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const getBadgeList = async () => {
+  try {
+    const { data } = await profileAPI.get("/api/badges", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const getMyBadge = async () => {
+  try {
+    const { data } = await profileAPI.get("/api/badges/selected", {
+      headers: {
+        Authorization: `Bearer ${getCookieValue("accessToken")}`,
+      },
+    });
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

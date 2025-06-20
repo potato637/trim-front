@@ -11,7 +11,10 @@ import {
   purchaseEyes,
   purchaseCloth,
   purchaseHair,
+  saveAvatar,
+  getAvatar,
 } from "../apis/profileAPI";
+import { FaLock } from "react-icons/fa";
 
 const Container = styled.div`
   position: relative;
@@ -70,7 +73,11 @@ const ColorButton = styled.button<{ color: string; selected: boolean }>`
     transform: scale(1.1);
   }
 `;
-const AvatarItem = styled.div<{ isSelected?: boolean; isEditting?: boolean }>`
+const AvatarItem = styled.div<{
+  isSelected?: boolean;
+  isEditting?: boolean;
+  purchased?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +85,12 @@ const AvatarItem = styled.div<{ isSelected?: boolean; isEditting?: boolean }>`
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  cursor: ${({ isEditting }) => (isEditting ? "pointer" : "default")};
+  cursor: ${({ isEditting, purchased }) =>
+    isEditting && !purchased
+      ? "not-allowed"
+      : isEditting
+      ? "pointer"
+      : "default"};
   transition: all 0.2s ease;
   border: ${({ isSelected, isEditting }) =>
     isEditting && isSelected ? "2px solid var(--color-primary)" : "none"};
@@ -88,7 +100,7 @@ const AvatarItem = styled.div<{ isSelected?: boolean; isEditting?: boolean }>`
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 `;
-const AvatarPreview = styled.div`
+const AvatarPreview = styled.div<{ purchased?: boolean }>`
   position: relative;
   width: 120px;
   height: 120px;
@@ -105,6 +117,7 @@ const AvatarPreview = styled.div`
     width: 80%;
     height: 80%;
     object-fit: contain;
+    filter: ${({ purchased }) => (purchased === false ? "blur(2px)" : "none")};
   }
 `;
 const ItemName = styled.div`
@@ -197,6 +210,16 @@ const ItemsGrid = styled.div`
   scrollbar-width: none;
   -ms-overflow-style: none; /* IE and Edge */
 `;
+const LockOverlay = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  color: var(--color-purple-hover);
+  font-size: 24px;
+  pointer-events: none;
+`;
 // 색상 매핑
 const hairColors = {
   NAVY: "#000080",
@@ -285,6 +308,16 @@ export default function Editavatar() {
     queryFn: () => getHair({ color: selectedHairColor }),
   });
 
+  const { data: myAvatar, isLoading: myAvatarLoading } = useQuery({
+    queryKey: ["myAvatar"],
+    queryFn: getAvatar,
+  });
+
+  // myAvatar 데이터 디버깅
+  useEffect(() => {
+    console.log("myAvatar data:", myAvatar);
+  }, [myAvatar]);
+
   useEffect(() => {
     setSelectedData(getCurrentData());
   }, [
@@ -295,9 +328,16 @@ export default function Editavatar() {
     hairLoading,
     hairData,
     clothData,
+    mouthData,
+    eyesData,
   ]);
 
-  const isLoading = mouthLoading || eyesLoading || clothLoading || hairLoading;
+  const isLoading =
+    mouthLoading ||
+    eyesLoading ||
+    clothLoading ||
+    hairLoading ||
+    myAvatarLoading;
 
   const getCurrentData = () => {
     switch (selectedBtn) {
@@ -382,6 +422,9 @@ export default function Editavatar() {
   const handleItemSelect = (item: any) => {
     if (!isEditting) return;
 
+    // 구매하지 않은 아이템은 선택 불가
+    if (!item.purchased) return;
+
     switch (selectedBtn) {
       case "hair":
         setSelectedHair(item);
@@ -399,27 +442,42 @@ export default function Editavatar() {
   };
 
   // 저장 검증 및 처리
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!selectedHair || !selectedEye || !selectedMouth || !selectedCostume) {
       alert("모든 파츠(헤어, 눈, 입, 의상)를 선택해주세요!");
       return;
     }
 
-    // 실제 저장 로직
+    try {
+      // 실제 저장 로직
+      await saveAvatar({
+        backgroundColor: "RED",
+        mouthForURL: selectedMouth.imageUrl,
+        eyesForURL: selectedEye.imageUrl,
+        clothForURL: selectedCostume.imageUrl,
+        hairForURL: selectedHair.imageUrl,
+      });
 
-    setSelectedHair(null);
-    setSelectedEye(null);
-    setSelectedMouth(null);
-    setSelectedCostume(null);
+      // myAvatar 쿼리 무효화하여 새로운 데이터 가져오기
+      await queryClient.invalidateQueries({ queryKey: ["myAvatar"] });
 
-    setIsEditting(false);
-    alert("아바타가 저장되었습니다!");
+      setSelectedHair(null);
+      setSelectedEye(null);
+      setSelectedMouth(null);
+      setSelectedCostume(null);
+
+      setIsEditting(false);
+      alert("아바타가 저장되었습니다!");
+    } catch (error) {
+      console.error("아바타 저장 중 오류 발생:", error);
+      alert("아바타 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   // 편집 모드 토글
-  const toggleEditMode = () => {
+  const toggleEditMode = async () => {
     if (isEditting) {
-      handleSave();
+      await handleSave();
     } else {
       setIsEditting(true);
     }
@@ -523,9 +581,10 @@ export default function Editavatar() {
                       key={index}
                       isSelected={isSelected}
                       isEditting={isEditting}
+                      purchased={item.purchased}
                       onClick={() => handleItemSelect(item)}
                     >
-                      <AvatarPreview>
+                      <AvatarPreview purchased={item.purchased}>
                         <img src="/assets/avatar/face.svg" />
                         {/* 선택된 타입의 아이템 렌더링 */}
                         <img src={item.imageUrl} alt={getItemName(item)} />
@@ -541,6 +600,11 @@ export default function Editavatar() {
                         )}
                         {selectedBtn !== "costume" && (
                           <img src="/assets/avatar/costume/costume1.svg" />
+                        )}
+                        {!item.purchased && (
+                          <LockOverlay>
+                            <FaLock />
+                          </LockOverlay>
                         )}
                       </AvatarPreview>
                       <ItemName>{getItemName(item)}</ItemName>
@@ -567,7 +631,7 @@ export default function Editavatar() {
             <AvatarNow>
               <AvatarPreset>
                 <img src="/assets/avatar/face.svg" />
-                {isEditting ? (
+                {isEditting && !myAvatarLoading ? (
                   <>
                     {selectedHair && (
                       <img src={selectedHair.imageUrl} alt="선택된 헤어" />
@@ -584,10 +648,38 @@ export default function Editavatar() {
                   </>
                 ) : (
                   <>
-                    <img src="/assets/avatar/hair/hair1.svg" />
-                    <img src="/assets/avatar/eye/eye1.svg" />
-                    <img src="/assets/avatar/mouth/mouth1.svg" />
-                    <img src="/assets/avatar/costume/costume1.svg" />
+                    <img
+                      src={
+                        myAvatar?.result.hairForURL
+                          ? myAvatar.result.hairForURL
+                          : "/assets/avatar/hair/hair1.svg"
+                      }
+                      alt="헤어"
+                    />
+                    <img
+                      src={
+                        myAvatar?.result.eyesForURL
+                          ? myAvatar.result.eyesForURL
+                          : "/assets/avatar/eye/eye1.svg"
+                      }
+                      alt="눈"
+                    />
+                    <img
+                      src={
+                        myAvatar?.result.mouthForURL
+                          ? myAvatar.result.mouthForURL
+                          : "/assets/avatar/mouth/mouth1.svg"
+                      }
+                      alt="입"
+                    />
+                    <img
+                      src={
+                        myAvatar?.result.clothForURL
+                          ? myAvatar.result.clothForURL
+                          : "/assets/avatar/costume/costume1.svg"
+                      }
+                      alt="의상"
+                    />
                   </>
                 )}
               </AvatarPreset>

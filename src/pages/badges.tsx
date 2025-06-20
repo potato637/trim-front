@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
+import { getBadgeList, getMyBadge } from "../apis/profileAPI";
+import { useQuery } from "@tanstack/react-query";
+import { BadgeList, MyBadge } from "../types/badgeType";
+import { FaLock } from "react-icons/fa";
 
 const Container = styled.div`
   position: relative;
@@ -37,12 +41,26 @@ const AllBadges = styled.div`
   background-color: var(--color-white-gray);
   border-radius: 6px;
   box-shadow: 0px 4px 14px 0px rgba(97, 96, 96, 0.15);
+  min-width: 600px;
+  height: 663px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   & > span {
     color: var(--color-purple-hover);
     font-size: var(--font-size-small);
   }
 `;
 const BadgeContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 155px;
   height: 195px;
@@ -68,7 +86,25 @@ const NoBadge = styled.div`
   color: var(--color-purple-hover);
 `;
 
+const BadgeTitle = styled.span`
+  color: var(--color-purple-hover);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.2;
+`;
+
 export default function Badges() {
+  const { data: badgeList } = useQuery<BadgeList>({
+    queryKey: ["badgeList"],
+    queryFn: getBadgeList,
+  });
+  const { data: myBadge } = useQuery<MyBadge>({
+    queryKey: ["myBadge"],
+    queryFn: getMyBadge,
+  });
+
   return (
     <Container>
       <ControllerContainer>
@@ -99,23 +135,17 @@ export default function Badges() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateColumns: "repeat(3, 1fr)",
               marginTop: "30px",
-              gap: "10px",
+              gap: "50px",
             }}
           >
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
-            <Badge src="/assets/badge.svg" />
+            {badgeList?.result.map((badge) => (
+              <BadgeContainer>
+                <Badge src="/assets/badge.svg" />
+                <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
+              </BadgeContainer>
+            ))}
           </div>
         </AllBadges>
       </EditBadges>
