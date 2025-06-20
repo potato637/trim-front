@@ -254,17 +254,6 @@ export const updateProfile = async ({
   }
 };
 
-export const getBadge = async () => {
-  try {
-    const { data } = await profileAPI.get("/api/access/badge");
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(`HTTP error! Status: ${error.response.status}`);
-    }
-  }
-};
-
 export const getBadgeList = async () => {
   try {
     const { data } = await profileAPI.get("/api/badges", {
@@ -287,6 +276,88 @@ export const getMyBadge = async () => {
         Authorization: `Bearer ${getCookieValue("accessToken")}`,
       },
     });
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const countMission = async ({ mission }) => {
+  try {
+    const { data } = await profileAPI.patch(
+      `/api/badges?badgeContent=${mission}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("countMission error details:", {
+        status: error.response.status,
+        data: error.response.data,
+        mission: mission,
+      });
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+    return null;
+  }
+};
+
+export const takeBadge = async ({ badgeId }) => {
+  try {
+    const { data } = await profileAPI.patch(
+      `/api/badges/${badgeId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const cancelBadge = async ({ badgeId }) => {
+  try {
+    const { data } = await profileAPI.patch(
+      `/api/badges/${badgeId}/unselect`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
+  }
+};
+
+export const selectBadge = async ({ badgeId }) => {
+  try {
+    const { data } = await profileAPI.patch(
+      `/api/badges/selected/${badgeId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookieValue("accessToken")}`,
+        },
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

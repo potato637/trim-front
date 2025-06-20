@@ -8,7 +8,7 @@ export interface BadgeResponse {
 
 export interface BadgeListResponse {
   badgeResponse: BadgeResponse;
-  missionStatus: "IN_PROGRESS" | "LOCK" | "SUCCESS";
+  missionStatus: "IN_PROGRESS" | "LOCKED" | "SUCCESS" | "GETTO";
 }
 
 export interface BadgeList {
@@ -24,3 +24,10 @@ export interface MyBadge {
   message: string;
   result: BadgeListResponse[];
 }
+
+export type MissionType =
+  | "WRITE_QUESTION"
+  | "WRITE_ANSWER"
+  | "WRITE_KNOWLEDGE"
+  | "WRITE_FREE_TALK"
+  | "WRITE_COMMENT";

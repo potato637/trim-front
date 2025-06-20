@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postAPI, singleAPI } from "../apis/api";
+import { countMission } from "../apis/profileAPI";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuestionI } from "../types/questionType";
 import { formatDate } from "../utils";
@@ -185,6 +186,7 @@ export default function Question() {
       queryClient.invalidateQueries({
         queryKey: ["question", location.pathname.split("/")[2]],
       });
+      countMission({ mission: "WRITE_ANSWER" });
     },
   });
   const handleAnswerSubmit = () => {
@@ -325,7 +327,6 @@ export default function Question() {
               <Answer>
                 <AnswerWriter>
                   <WriterSVG />
-                  {/* {`${answer.memberResponse.nickname} · ${answer.memberResponse.scholar} · ${formatDate(answer.answerResponse.createdAt)}`} */}
                   {`${answer.memberResponse.nickname} · ${formatDate(
                     answer.answerResponse.createdAt
                   )}`}

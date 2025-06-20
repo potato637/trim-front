@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
-import { getBadgeList, getMyBadge } from "../apis/profileAPI";
-import { useQuery } from "@tanstack/react-query";
+import {
+  getBadgeList,
+  getMyBadge,
+  takeBadge,
+  cancelBadge,
+  selectBadge,
+} from "../apis/profileAPI";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeList, MyBadge } from "../types/badgeType";
 import { FaLock } from "react-icons/fa";
 
@@ -55,7 +61,7 @@ const AllBadges = styled.div`
     font-size: var(--font-size-small);
   }
 `;
-const BadgeContainer = styled.div`
+const BadgeContainer = styled.div<{ locked?: boolean }>`
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -64,6 +70,10 @@ const BadgeContainer = styled.div`
   position: relative;
   width: 155px;
   height: 195px;
+
+  img {
+    filter: ${({ locked }) => (locked ? "blur(2px)" : "none")};
+  }
 `;
 const Badge = styled.img`
   width: 155px;
@@ -95,7 +105,47 @@ const BadgeTitle = styled.span`
   line-height: 1.2;
 `;
 
+const BadgeLockOverlay = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  color: var(--color-purple-hover);
+  font-size: 24px;
+  pointer-events: none;
+`;
+
+const AcquireButton = styled.button`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  background-color: var(--color-purple-hover);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: var(--font-size-small);
+  cursor: pointer;
+  font-weight: 600;
+`;
+
+const AcquireText = styled.div`
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  color: var(--color-purple-hover);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-align: center;
+`;
+
 export default function Badges() {
+  const queryClient = useQueryClient();
   const { data: badgeList } = useQuery<BadgeList>({
     queryKey: ["badgeList"],
     queryFn: getBadgeList,
@@ -103,6 +153,24 @@ export default function Badges() {
   const { data: myBadge } = useQuery<MyBadge>({
     queryKey: ["myBadge"],
     queryFn: getMyBadge,
+  });
+  const { mutate: takeBadgeMutation } = useMutation({
+    mutationFn: takeBadge,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+    },
+  });
+  const { mutate: cancelBadgeMutation } = useMutation({
+    mutationFn: cancelBadge,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+    },
+  });
+  const { mutate: selectBadgeMutation } = useMutation({
+    mutationFn: selectBadge,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+    },
   });
 
   return (
@@ -122,12 +190,36 @@ export default function Badges() {
               alignItems: "center",
             }}
           >
-            <BadgeContainer>
-              <Badge src="/assets/badge.svg" />
-              <DeleteBadge>✖️</DeleteBadge>
-            </BadgeContainer>
-            <NoBadge>+</NoBadge>
-            <NoBadge>+</NoBadge>
+            {(() => {
+              const myBadgeCount = myBadge?.result?.length || 0;
+              const noBadgeCount = 3 - myBadgeCount;
+
+              return (
+                <>
+                  {/* 기존 myBadge 뱃지들 */}
+                  {myBadge?.result?.map((badge, index) => (
+                    <BadgeContainer key={`badge-${index}`}>
+                      <Badge src="/assets/badge.svg" />
+                      <DeleteBadge
+                        onClick={() =>
+                          cancelBadgeMutation({
+                            badgeId: badge.badgeResponse.badgeId,
+                          })
+                        }
+                      >
+                        ✖️
+                      </DeleteBadge>
+                      <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
+                    </BadgeContainer>
+                  ))}
+
+                  {/* NoBadge로 남은 자리 채우기 */}
+                  {Array.from({ length: noBadgeCount }, (_, index) => (
+                    <NoBadge key={`no-badge-${index}`}>+</NoBadge>
+                  ))}
+                </>
+              );
+            })()}
           </div>
         </SelectedBadges>
         <AllBadges>
@@ -141,9 +233,36 @@ export default function Badges() {
             }}
           >
             {badgeList?.result.map((badge) => (
-              <BadgeContainer>
+              <BadgeContainer
+                key={badge.badgeResponse.badgeId}
+                locked={
+                  badge.missionStatus === "LOCKED" ||
+                  badge.missionStatus === "IN_PROGRESS" ||
+                  badge.missionStatus === "SUCCESS"
+                }
+              >
                 <Badge src="/assets/badge.svg" />
                 <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
+                {(badge.missionStatus === "LOCKED" ||
+                  badge.missionStatus === "IN_PROGRESS") && (
+                  <BadgeLockOverlay>
+                    <FaLock size={36} />
+                  </BadgeLockOverlay>
+                )}
+                {badge.missionStatus === "SUCCESS" && (
+                  <>
+                    <AcquireButton
+                      onClick={() =>
+                        takeBadgeMutation({
+                          badgeId: badge.badgeResponse.badgeId,
+                        })
+                      }
+                    >
+                      획득하기
+                    </AcquireButton>
+                    <AcquireText>500P 획득</AcquireText>
+                  </>
+                )}
               </BadgeContainer>
             ))}
           </div>

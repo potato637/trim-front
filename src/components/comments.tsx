@@ -8,6 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { postAPI, singleAPI } from "../apis/api";
+import { countMission } from "../apis/profileAPI";
 import { useLocation } from "react-router-dom";
 import { CommentI, ReCommentI, ReResultI } from "../types/commentType";
 import { formatDate } from "../utils";
@@ -227,6 +228,7 @@ export default function Comments({
       queryClient.invalidateQueries({
         queryKey: ["comments", String(location.state.id)],
       });
+      countMission({ mission: "WRITE_COMMENT" });
     },
   });
 
@@ -281,6 +283,8 @@ export default function Comments({
       queryClient.invalidateQueries({
         queryKey: ["reComments"], // 나중에 해당 reComments만 수정되도록 변경
       });
+      // 미션 카운트 증가 (대댓글도 댓글로 카운트)
+      countMission({ mission: "WRITE_COMMENT" });
     },
   });
   const handleReSubmit = (

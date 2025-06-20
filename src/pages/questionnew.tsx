@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Addtag from "../components/addtag";
 import Mde from "../components/mde";
 import { postAPI } from "../apis/api";
+import { countMission } from "../apis/profileAPI";
 import { useNavigate, useBlocker } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -166,6 +167,7 @@ export default function Questionnew() {
         blocker.proceed();
       }
       queryClient.invalidateQueries({ queryKey: ["questions"] });
+      countMission({ mission: "WRITE_QUESTION" });
       setTitle("");
       setMarkdown("");
       setClearMDE((prev) => !prev);

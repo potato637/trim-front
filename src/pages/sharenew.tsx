@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Addtag from "../components/addtag";
 import Mde from "../components/mde";
 import { postAPI } from "../apis/api";
+import { countMission } from "../apis/profileAPI";
 import { useBlocker, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -166,6 +167,7 @@ export default function Sharenew() {
         blocker.proceed();
       }
       queryClient.invalidateQueries({ queryKey: ["knowledges"] });
+      countMission({ mission: "WRITE_KNOWLEDGE" });
       setTitle("");
       setMarkdown("");
       setClearMDE((prev) => !prev);

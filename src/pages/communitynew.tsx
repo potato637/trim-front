@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Mde from "../components/mde";
 import { postAPI } from "../apis/api";
+import { countMission } from "../apis/profileAPI";
 import { useEffect, useRef, useState } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -167,6 +168,7 @@ export default function Communitynew() {
         blocker.proceed();
       }
       queryClient.invalidateQueries({ queryKey: ["communities"] });
+      countMission({ mission: "WRITE_FREE_TALK" });
       setTitle("");
       setMarkdown("");
       setClearMDE((prev) => !prev);
