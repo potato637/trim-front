@@ -9,6 +9,7 @@ export interface BadgeResponse {
 export interface BadgeListResponse {
   badgeResponse: BadgeResponse;
   missionStatus: "IN_PROGRESS" | "LOCKED" | "SUCCESS" | "GETTO";
+  description: string;
 }
 
 export interface BadgeList {

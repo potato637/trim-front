@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Comments from "../components/comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { postAPI, singleAPI } from "../apis/api";
 import { FreeTalkI } from "../types/communityType";
 import { formatDate } from "../utils";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 
 const MainContent = styled.div`
@@ -28,11 +28,6 @@ const WriterContainer = styled.div`
   display: flex;
   gap: 7px;
   align-items: center;
-`;
-const WriterSVG = styled.div`
-  width: var(--font-size-user);
-  height: var(--font-size-user);
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const Avatar = styled.div`
   position: relative;
@@ -129,29 +124,25 @@ export default function Community() {
       <MainContent>
         <TitleContainer>{communityData?.freeTalkResponse.title}</TitleContainer>
         <WriterContainer>
-          {communityData?.storedAvatarResponse ? (
-            <Avatar>
-              <img src="/assets/avatar/face.svg" alt="Face" />
-              <img
-                src={communityData.storedAvatarResponse.hairForURL}
-                alt="Hair"
-              />
-              <img
-                src={communityData.storedAvatarResponse.eyesForURL}
-                alt="Eyes"
-              />
-              <img
-                src={communityData.storedAvatarResponse.mouthForURL}
-                alt="Mouth"
-              />
-              <img
-                src={communityData.storedAvatarResponse.clothForURL}
-                alt="Cloth"
-              />
-            </Avatar>
-          ) : (
-            <WriterSVG />
-          )}
+          <Avatar>
+            <img src="/assets/avatar/face.svg" alt="Face" />
+            <img
+              src={communityData?.storedAvatarResponse.hairForURL}
+              alt="Hair"
+            />
+            <img
+              src={communityData?.storedAvatarResponse.eyesForURL}
+              alt="Eyes"
+            />
+            <img
+              src={communityData?.storedAvatarResponse.mouthForURL}
+              alt="Mouth"
+            />
+            <img
+              src={communityData?.storedAvatarResponse.clothForURL}
+              alt="Cloth"
+            />
+          </Avatar>
           {`${communityData?.memberResponse.nickname} · ${formatDate(
             communityData?.freeTalkResponse.createdAt as number
           )}`}

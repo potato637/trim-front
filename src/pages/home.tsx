@@ -79,7 +79,7 @@ const Text = styled.p`
   width: 350px;
 `;
 const TabBar = styled.div`
-  max-height: 45px;
+  min-height: 50px;
   padding: 0 3px;
   display: flex;
   flex: 1;

@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Profilecontroller from "../components/profilecontroller";
 import { useEffect, useState } from "react";
@@ -253,6 +254,7 @@ const clothColors = {
 interface AvatarItem {
   price: number;
   imageUrl: string;
+  purchased: boolean;
 }
 
 interface HairItem extends AvatarItem {
@@ -271,19 +273,23 @@ interface MouthItem extends AvatarItem {
   mouthId: number;
 }
 
+type AvatarItemType = HairItem | ClothItem | EyesItem | MouthItem;
+
 export default function Editavatar() {
   const [selectedBtn, setSelectedBtn] = useState<string>("hair");
-  const [selectedData, setSelectedData] = useState<any[]>([]);
+  const [selectedData, setSelectedData] = useState<AvatarItemType[]>([]);
   const [selectedHairColor, setSelectedHairColor] = useState<string>("NAVY");
   const [selectedClothColor, setSelectedClothColor] =
     useState<string>("YELLOW_GREEN");
   const [isEditting, setIsEditting] = useState<boolean>(false);
 
   // 선택된 아이템들을 저장할 상태들
-  const [selectedHair, setSelectedHair] = useState<any>(null);
-  const [selectedEye, setSelectedEye] = useState<any>(null);
-  const [selectedMouth, setSelectedMouth] = useState<any>(null);
-  const [selectedCostume, setSelectedCostume] = useState<any>(null);
+  const [selectedHair, setSelectedHair] = useState<HairItem | null>(null);
+  const [selectedEye, setSelectedEye] = useState<EyesItem | null>(null);
+  const [selectedMouth, setSelectedMouth] = useState<MouthItem | null>(null);
+  const [selectedCostume, setSelectedCostume] = useState<ClothItem | null>(
+    null
+  );
 
   const queryClient = useQueryClient();
 
@@ -339,16 +345,16 @@ export default function Editavatar() {
     hairLoading ||
     myAvatarLoading;
 
-  const getCurrentData = () => {
+  const getCurrentData = (): AvatarItemType[] => {
     switch (selectedBtn) {
       case "hair":
-        return hairData?.result || [];
+        return (hairData?.result || []) as HairItem[];
       case "eye":
-        return eyesData?.result || [];
+        return (eyesData?.result || []) as EyesItem[];
       case "mouth":
-        return mouthData?.result || [];
+        return (mouthData?.result || []) as MouthItem[];
       case "costume":
-        return clothData?.result || [];
+        return (clothData?.result || []) as ClothItem[];
       default:
         return [];
     }
@@ -387,7 +393,7 @@ export default function Editavatar() {
     return null;
   };
 
-  const getItemId = (item: any) => {
+  const getItemId = (item: AvatarItemType) => {
     switch (selectedBtn) {
       case "hair":
         return (item as HairItem).hairId;
@@ -402,7 +408,7 @@ export default function Editavatar() {
     }
   };
 
-  const getItemName = (item: any) => {
+  const getItemName = (item: AvatarItemType) => {
     const id = getItemId(item);
     switch (selectedBtn) {
       case "hair":
@@ -419,7 +425,7 @@ export default function Editavatar() {
   };
 
   // 아이템 선택 핸들러
-  const handleItemSelect = (item: any) => {
+  const handleItemSelect = (item: AvatarItemType) => {
     if (!isEditting) return;
 
     // 구매하지 않은 아이템은 선택 불가
@@ -427,16 +433,16 @@ export default function Editavatar() {
 
     switch (selectedBtn) {
       case "hair":
-        setSelectedHair(item);
+        setSelectedHair(item as HairItem);
         break;
       case "eye":
-        setSelectedEye(item);
+        setSelectedEye(item as EyesItem);
         break;
       case "mouth":
-        setSelectedMouth(item);
+        setSelectedMouth(item as MouthItem);
         break;
       case "costume":
-        setSelectedCostume(item);
+        setSelectedCostume(item as ClothItem);
         break;
     }
   };
@@ -483,22 +489,30 @@ export default function Editavatar() {
     }
   };
 
-  const handlePurchase = async (item: any) => {
+  const handlePurchase = async (item: AvatarItemType) => {
     try {
       let purchaseResult;
 
       switch (selectedBtn) {
         case "hair":
-          purchaseResult = await purchaseHair({ id: item.hairId });
+          purchaseResult = await purchaseHair({
+            id: (item as HairItem).hairId,
+          });
           break;
         case "eye":
-          purchaseResult = await purchaseEyes({ id: item.eyesId });
+          purchaseResult = await purchaseEyes({
+            id: (item as EyesItem).eyesId,
+          });
           break;
         case "mouth":
-          purchaseResult = await purchaseMouth({ id: item.mouthId });
+          purchaseResult = await purchaseMouth({
+            id: (item as MouthItem).mouthId,
+          });
           break;
         case "costume":
-          purchaseResult = await purchaseCloth({ id: item.clothId });
+          purchaseResult = await purchaseCloth({
+            id: (item as ClothItem).clothId,
+          });
           break;
         default:
           throw new Error("알 수 없는 아이템 타입입니다.");
@@ -569,7 +583,7 @@ export default function Editavatar() {
             {renderColorPalette()}
             <ItemsGrid>
               {!isLoading &&
-                selectedData.map((item: any, index: number) => {
+                selectedData.map((item: AvatarItemType, index: number) => {
                   const isSelected =
                     (selectedBtn === "hair" && selectedHair === item) ||
                     (selectedBtn === "eye" && selectedEye === item) ||
@@ -585,7 +599,7 @@ export default function Editavatar() {
                       onClick={() => handleItemSelect(item)}
                     >
                       <AvatarPreview purchased={item.purchased}>
-                        <img src="/assets/avatar/face.svg" />
+                        <img src="/assets/avatar/face.svg" alt="Face" />
                         {/* 선택된 타입의 아이템 렌더링 */}
                         <img src={item.imageUrl} alt={getItemName(item)} />
                         {/* 기본 베이스 아이템들 렌더링 */}
@@ -648,38 +662,10 @@ export default function Editavatar() {
                   </>
                 ) : (
                   <>
-                    <img
-                      src={
-                        myAvatar?.result.hairForURL
-                          ? myAvatar.result.hairForURL
-                          : "/assets/avatar/hair/hair1.svg"
-                      }
-                      alt="헤어"
-                    />
-                    <img
-                      src={
-                        myAvatar?.result.eyesForURL
-                          ? myAvatar.result.eyesForURL
-                          : "/assets/avatar/eye/eye1.svg"
-                      }
-                      alt="눈"
-                    />
-                    <img
-                      src={
-                        myAvatar?.result.mouthForURL
-                          ? myAvatar.result.mouthForURL
-                          : "/assets/avatar/mouth/mouth1.svg"
-                      }
-                      alt="입"
-                    />
-                    <img
-                      src={
-                        myAvatar?.result.clothForURL
-                          ? myAvatar.result.clothForURL
-                          : "/assets/avatar/costume/costume1.svg"
-                      }
-                      alt="의상"
-                    />
+                    <img src={myAvatar?.result?.hairForURL} alt="헤어" />
+                    <img src={myAvatar?.result?.eyesForURL} alt="눈" />
+                    <img src={myAvatar?.result?.mouthForURL} alt="입" />
+                    <img src={myAvatar?.result?.clothForURL} alt="의상" />
                   </>
                 )}
               </AvatarPreset>

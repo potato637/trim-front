@@ -63,7 +63,7 @@ const AllBadges = styled.div`
 `;
 const BadgeContainer = styled.div<{ locked?: boolean }>`
   display: flex;
-  gap: 10px;
+  gap: 5px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -144,6 +144,11 @@ const AcquireText = styled.div`
   text-align: center;
 `;
 
+const BadgeDescription = styled.div`
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+`;
+
 export default function Badges() {
   const queryClient = useQueryClient();
   const { data: badgeList } = useQuery<BadgeList>({
@@ -154,24 +159,36 @@ export default function Badges() {
     queryKey: ["myBadge"],
     queryFn: getMyBadge,
   });
-  const { mutate: takeBadgeMutation } = useMutation({
+  const { mutate: takeBadgeMutation, isPending: isTakingBadge } = useMutation({
     mutationFn: takeBadge,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+      queryClient.invalidateQueries({ queryKey: ["badgeList"] });
+    },
+    onError: (error) => {
+      console.error("뱃지 획득 중 오류 발생:", error);
+      alert("뱃지 획득 중 오류가 발생했습니다. 다시 시도해주세요.");
     },
   });
   const { mutate: cancelBadgeMutation } = useMutation({
     mutationFn: cancelBadge,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+      queryClient.invalidateQueries({ queryKey: ["badgeList"] });
     },
   });
-  const { mutate: selectBadgeMutation } = useMutation({
-    mutationFn: selectBadge,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myBadge"] });
-    },
-  });
+  const { mutate: selectBadgeMutation, isPending: isSelectingBadge } =
+    useMutation({
+      mutationFn: selectBadge,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["myBadge"] });
+        queryClient.invalidateQueries({ queryKey: ["badgeList"] });
+      },
+      onError: (error) => {
+        console.error("뱃지 선택 중 오류 발생:", error);
+        alert("뱃지 선택 중 오류가 발생했습니다. 다시 시도해주세요.");
+      },
+    });
 
   return (
     <Container>
@@ -209,7 +226,6 @@ export default function Badges() {
                       >
                         ✖️
                       </DeleteBadge>
-                      <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
                     </BadgeContainer>
                   ))}
 
@@ -232,39 +248,100 @@ export default function Badges() {
               gap: "50px",
             }}
           >
-            {badgeList?.result.map((badge) => (
-              <BadgeContainer
-                key={badge.badgeResponse.badgeId}
-                locked={
-                  badge.missionStatus === "LOCKED" ||
-                  badge.missionStatus === "IN_PROGRESS" ||
-                  badge.missionStatus === "SUCCESS"
-                }
-              >
-                <Badge src="/assets/badge.svg" />
-                <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
-                {(badge.missionStatus === "LOCKED" ||
-                  badge.missionStatus === "IN_PROGRESS") && (
-                  <BadgeLockOverlay>
-                    <FaLock size={36} />
-                  </BadgeLockOverlay>
-                )}
-                {badge.missionStatus === "SUCCESS" && (
-                  <>
-                    <AcquireButton
-                      onClick={() =>
-                        takeBadgeMutation({
-                          badgeId: badge.badgeResponse.badgeId,
-                        })
-                      }
+            {badgeList?.result.map((badge) => {
+              // 현재 뱃지가 선택된 뱃지인지 확인
+              const isSelected = myBadge?.result?.some(
+                (myBadge) =>
+                  myBadge.badgeResponse.badgeId === badge.badgeResponse.badgeId
+              );
+
+              return (
+                <BadgeContainer
+                  key={badge.badgeResponse.badgeId}
+                  locked={
+                    badge.missionStatus === "LOCKED" ||
+                    badge.missionStatus === "IN_PROGRESS" ||
+                    badge.missionStatus === "SUCCESS"
+                  }
+                  style={{
+                    cursor:
+                      badge.missionStatus === "GETTO" ? "pointer" : "default",
+                  }}
+                  onClick={() => {
+                    if (badge.missionStatus === "GETTO" && !isSelectingBadge) {
+                      selectBadgeMutation({
+                        badgeId: badge.badgeResponse.badgeId,
+                      });
+                    }
+                  }}
+                >
+                  <Badge src="/assets/badge.svg" />
+                  <BadgeTitle>{badge.badgeResponse.badgeTitle}</BadgeTitle>
+                  <BadgeDescription>{badge.description}</BadgeDescription>
+                  {isSelected && (
+                    <>
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "40%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          zIndex: 100,
+                          backgroundColor: "var(--color-purple-hover)",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "20px",
+                          padding: "8px 16px",
+                          fontSize: "var(--font-size-small)",
+                          fontWeight: 600,
+                          pointerEvents: "none",
+                        }}
+                      >
+                        선택됨
+                      </div>
+                    </>
+                  )}
+                  {(badge.missionStatus === "LOCKED" ||
+                    badge.missionStatus === "IN_PROGRESS") && (
+                    <BadgeLockOverlay>
+                      <FaLock size={36} />
+                    </BadgeLockOverlay>
+                  )}
+                  {badge.missionStatus === "SUCCESS" && (
+                    <>
+                      <AcquireButton
+                        onClick={(e) => {
+                          e.stopPropagation(); // 부모 클릭 이벤트 방지
+                          takeBadgeMutation({
+                            badgeId: badge.badgeResponse.badgeId,
+                          });
+                        }}
+                        disabled={isTakingBadge}
+                      >
+                        획득하기
+                      </AcquireButton>
+                      <AcquireText>500P 획득</AcquireText>
+                    </>
+                  )}
+                  {badge.missionStatus === "GETTO" && isSelectingBadge && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 100,
+                        color: "var(--color-purple-hover)",
+                        fontSize: "var(--font-size-small)",
+                        fontWeight: 600,
+                      }}
                     >
-                      획득하기
-                    </AcquireButton>
-                    <AcquireText>500P 획득</AcquireText>
-                  </>
-                )}
-              </BadgeContainer>
-            ))}
+                      선택 중...
+                    </div>
+                  )}
+                </BadgeContainer>
+              );
+            })}
           </div>
         </AllBadges>
       </EditBadges>

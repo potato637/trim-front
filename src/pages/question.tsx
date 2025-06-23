@@ -40,11 +40,6 @@ const WriterContainer = styled.div`
   gap: 15px;
   align-items: center;
 `;
-const WriterSVG = styled.div`
-  width: var(--font-size-user);
-  height: var(--font-size-user);
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
-`;
 const Avatar = styled.div`
   position: relative;
   width: var(--font-size-user);
@@ -287,29 +282,25 @@ export default function Question() {
       <MainContent>
         <TitleContainer>{questionData?.questionResponse.title}</TitleContainer>
         <WriterContainer>
-          {questionData?.storedAvatarResponse ? (
-            <Avatar>
-              <img src="/assets/avatar/face.svg" alt="Face" />
-              <img
-                src={questionData.storedAvatarResponse.hairForURL}
-                alt="Hair"
-              />
-              <img
-                src={questionData.storedAvatarResponse.eyesForURL}
-                alt="Eyes"
-              />
-              <img
-                src={questionData.storedAvatarResponse.mouthForURL}
-                alt="Mouth"
-              />
-              <img
-                src={questionData.storedAvatarResponse.clothForURL}
-                alt="Cloth"
-              />
-            </Avatar>
-          ) : (
-            <WriterSVG />
-          )}
+          <Avatar>
+            <img src="/assets/avatar/face.svg" alt="Face" />
+            <img
+              src={questionData?.storedAvatarResponse.hairForURL}
+              alt="Hair"
+            />
+            <img
+              src={questionData?.storedAvatarResponse.eyesForURL}
+              alt="Eyes"
+            />
+            <img
+              src={questionData?.storedAvatarResponse.mouthForURL}
+              alt="Mouth"
+            />
+            <img
+              src={questionData?.storedAvatarResponse.clothForURL}
+              alt="Cloth"
+            />
+          </Avatar>
           {`${questionData?.memberResponse.nickname} · ${
             major[
               questionData?.questionResponse.majorType as keyof typeof major
@@ -366,29 +357,25 @@ export default function Question() {
             <React.Fragment key={index}>
               <Answer>
                 <AnswerWriter>
-                  {answer.storedAvatarResponse ? (
-                    <Avatar>
-                      <img src="/assets/avatar/face.svg" alt="Face" />
-                      <img
-                        src={answer.storedAvatarResponse.hairForURL}
-                        alt="Hair"
-                      />
-                      <img
-                        src={answer.storedAvatarResponse.eyesForURL}
-                        alt="Eyes"
-                      />
-                      <img
-                        src={answer.storedAvatarResponse.mouthForURL}
-                        alt="Mouth"
-                      />
-                      <img
-                        src={answer.storedAvatarResponse.clothForURL}
-                        alt="Cloth"
-                      />
-                    </Avatar>
-                  ) : (
-                    <WriterSVG />
-                  )}
+                  <Avatar>
+                    <img src="/assets/avatar/face.svg" alt="Face" />
+                    <img
+                      src={answer.storedAvatarResponse.hairForURL}
+                      alt="Hair"
+                    />
+                    <img
+                      src={answer.storedAvatarResponse.eyesForURL}
+                      alt="Eyes"
+                    />
+                    <img
+                      src={answer.storedAvatarResponse.mouthForURL}
+                      alt="Mouth"
+                    />
+                    <img
+                      src={answer.storedAvatarResponse.clothForURL}
+                      alt="Cloth"
+                    />
+                  </Avatar>
                   {`${answer.memberResponse.nickname} · ${formatDate(
                     answer.answerResponse.createdAt
                   )}`}

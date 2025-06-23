@@ -24,12 +24,6 @@ const ItemBox = styled.div`
     display: flex;
   }
 `;
-const WriterSVG = styled.div`
-  width: var(--font-size-extra-medium);
-  height: var(--font-size-extra-medium);
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
-`;
-
 const Avatar = styled.div`
   position: relative;
   width: var(--font-size-extra-medium);
@@ -138,17 +132,13 @@ export default function Questionitem({ data }: { data: QuestionItemI }) {
       }
     >
       <MetaData>
-        {data.storedAvatarResponse ? (
-          <Avatar>
-            <img src="/assets/avatar/face.svg" alt="Face" />
-            <img src={data.storedAvatarResponse.hairForURL} alt="Hair" />
-            <img src={data.storedAvatarResponse.eyesForURL} alt="Eyes" />
-            <img src={data.storedAvatarResponse.mouthForURL} alt="Mouth" />
-            <img src={data.storedAvatarResponse.clothForURL} alt="Cloth" />
-          </Avatar>
-        ) : (
-          <WriterSVG />
-        )}
+        <Avatar>
+          <img src="/assets/avatar/face.svg" alt="Face" />
+          <img src={data.storedAvatarResponse.hairForURL} alt="Hair" />
+          <img src={data.storedAvatarResponse.eyesForURL} alt="Eyes" />
+          <img src={data.storedAvatarResponse.mouthForURL} alt="Mouth" />
+          <img src={data.storedAvatarResponse.clothForURL} alt="Cloth" />
+        </Avatar>
         <Name>{data.memberResponse.nickname}</Name>
         <Dot />
         <Major>

@@ -132,14 +132,6 @@ const User = styled.div`
   position: relative;
   width: 5%;
 `;
-const UserImg = styled.div`
-  width: var(--font-size-user);
-  height: var(--font-size-user);
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: url(/assets/userSVG.svg) center/cover no-repeat;
-`;
 const Avatar = styled.div`
   position: relative;
   width: var(--font-size-user);
@@ -212,14 +204,6 @@ const ReContent = styled.div`
 const ReUser = styled.div`
   position: relative;
   flex: 1;
-`;
-const ReUserImg = styled.div`
-  position: absolute;
-  width: var(--font-size-user);
-  height: var(--font-size-user);
-  top: 0;
-  right: 0;
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const ReAvatar = styled.div`
   position: absolute;
@@ -364,29 +348,25 @@ export default function Comments({
             <React.Fragment key={index}>
               <Comment>
                 <User>
-                  {comment.storedAvatarResponse ? (
-                    <Avatar>
-                      <img src="/assets/avatar/face.svg" alt="Face" />
-                      <img
-                        src={comment.storedAvatarResponse.hairForURL}
-                        alt="Hair"
-                      />
-                      <img
-                        src={comment.storedAvatarResponse.eyesForURL}
-                        alt="Eyes"
-                      />
-                      <img
-                        src={comment.storedAvatarResponse.mouthForURL}
-                        alt="Mouth"
-                      />
-                      <img
-                        src={comment.storedAvatarResponse.clothForURL}
-                        alt="Cloth"
-                      />
-                    </Avatar>
-                  ) : (
-                    <UserImg />
-                  )}
+                  <Avatar>
+                    <img src="/assets/avatar/face.svg" alt="Face" />
+                    <img
+                      src={comment.storedAvatarResponse.hairForURL}
+                      alt="Hair"
+                    />
+                    <img
+                      src={comment.storedAvatarResponse.eyesForURL}
+                      alt="Eyes"
+                    />
+                    <img
+                      src={comment.storedAvatarResponse.mouthForURL}
+                      alt="Mouth"
+                    />
+                    <img
+                      src={comment.storedAvatarResponse.clothForURL}
+                      alt="Cloth"
+                    />
+                  </Avatar>
                 </User>
                 <Content>
                   {/* createdAt 넣어야함 */}
@@ -430,29 +410,25 @@ export default function Comments({
                         </CommentMain>
                       </ReContent>
                       <ReUser>
-                        {reComment.storedAvatarResponse ? (
-                          <ReAvatar>
-                            <img src="/assets/avatar/face.svg" alt="Face" />
-                            <img
-                              src={reComment.storedAvatarResponse.hairForURL}
-                              alt="Hair"
-                            />
-                            <img
-                              src={reComment.storedAvatarResponse.eyesForURL}
-                              alt="Eyes"
-                            />
-                            <img
-                              src={reComment.storedAvatarResponse.mouthForURL}
-                              alt="Mouth"
-                            />
-                            <img
-                              src={reComment.storedAvatarResponse.clothForURL}
-                              alt="Cloth"
-                            />
-                          </ReAvatar>
-                        ) : (
-                          <ReUserImg />
-                        )}
+                        <ReAvatar>
+                          <img src="/assets/avatar/face.svg" alt="Face" />
+                          <img
+                            src={reComment.storedAvatarResponse.hairForURL}
+                            alt="Hair"
+                          />
+                          <img
+                            src={reComment.storedAvatarResponse.eyesForURL}
+                            alt="Eyes"
+                          />
+                          <img
+                            src={reComment.storedAvatarResponse.mouthForURL}
+                            alt="Mouth"
+                          />
+                          <img
+                            src={reComment.storedAvatarResponse.clothForURL}
+                            alt="Cloth"
+                          />
+                        </ReAvatar>
                       </ReUser>
                     </ReComment>
                   )

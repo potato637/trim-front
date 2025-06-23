@@ -57,11 +57,6 @@ const WriterContainer = styled.div`
   gap: 10px;
   align-items: center;
 `;
-const WriterSVG = styled.div`
-  width: var(--font-size-user);
-  height: var(--font-size-user);
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
-`;
 const Avatar = styled.div`
   position: relative;
   width: var(--font-size-user);
@@ -114,11 +109,6 @@ const UserAvatar = styled.div`
     height: 80%;
     object-fit: contain;
   }
-`;
-const UserImg = styled.div`
-  width: var(--font-size-knowledge-user);
-  height: var(--font-size-knowledge-user);
-  background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
 const UserInfo = styled.div`
   display: flex;
@@ -263,29 +253,25 @@ export default function Share() {
             ))}
         </Infos>
         <WriterContainer>
-          {knowledgeData?.storedAvatarResponse ? (
-            <Avatar>
-              <img src="/assets/avatar/face.svg" alt="Face" />
-              <img
-                src={knowledgeData.storedAvatarResponse.hairForURL}
-                alt="Hair"
-              />
-              <img
-                src={knowledgeData.storedAvatarResponse.eyesForURL}
-                alt="Eyes"
-              />
-              <img
-                src={knowledgeData.storedAvatarResponse.mouthForURL}
-                alt="Mouth"
-              />
-              <img
-                src={knowledgeData.storedAvatarResponse.clothForURL}
-                alt="Cloth"
-              />
-            </Avatar>
-          ) : (
-            <WriterSVG />
-          )}
+          <Avatar>
+            <img src="/assets/avatar/face.svg" alt="Face" />
+            <img
+              src={knowledgeData?.storedAvatarResponse.hairForURL}
+              alt="Hair"
+            />
+            <img
+              src={knowledgeData?.storedAvatarResponse.eyesForURL}
+              alt="Eyes"
+            />
+            <img
+              src={knowledgeData?.storedAvatarResponse.mouthForURL}
+              alt="Mouth"
+            />
+            <img
+              src={knowledgeData?.storedAvatarResponse.clothForURL}
+              alt="Cloth"
+            />
+          </Avatar>
           {`${knowledgeData?.memberResponse.nickname} · ${
             major[
               knowledgeData?.knowledgeResponse.majorType as keyof typeof major
@@ -301,29 +287,25 @@ export default function Share() {
         </ContentContainer>
         <About>
           <User>
-            {knowledgeData?.storedAvatarResponse ? (
-              <UserAvatar>
-                <img src="/assets/avatar/face.svg" alt="Face" />
-                <img
-                  src={knowledgeData.storedAvatarResponse.hairForURL}
-                  alt="Hair"
-                />
-                <img
-                  src={knowledgeData.storedAvatarResponse.eyesForURL}
-                  alt="Eyes"
-                />
-                <img
-                  src={knowledgeData.storedAvatarResponse.mouthForURL}
-                  alt="Mouth"
-                />
-                <img
-                  src={knowledgeData.storedAvatarResponse.clothForURL}
-                  alt="Cloth"
-                />
-              </UserAvatar>
-            ) : (
-              <UserImg />
-            )}
+            <UserAvatar>
+              <img src="/assets/avatar/face.svg" alt="Face" />
+              <img
+                src={knowledgeData?.storedAvatarResponse.hairForURL}
+                alt="Hair"
+              />
+              <img
+                src={knowledgeData?.storedAvatarResponse.eyesForURL}
+                alt="Eyes"
+              />
+              <img
+                src={knowledgeData?.storedAvatarResponse.mouthForURL}
+                alt="Mouth"
+              />
+              <img
+                src={knowledgeData?.storedAvatarResponse.clothForURL}
+                alt="Cloth"
+              />
+            </UserAvatar>
             <UserInfo>
               <UserName>{knowledgeData?.memberResponse.nickname}</UserName>
               <UserEmail>
