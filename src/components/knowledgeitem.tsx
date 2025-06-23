@@ -30,6 +30,25 @@ const WriterSVG = styled.div`
   height: var(--font-size-extra-medium);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
+
+const Avatar = styled.div`
+  position: relative;
+  width: var(--font-size-extra-medium);
+  height: var(--font-size-extra-medium);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+`;
 const Dot = styled(GoDotFill)``;
 const MetaData = styled.div`
   align-items: center;
@@ -93,7 +112,7 @@ const Comment = styled.div`
 `;
 
 export default function Knowledgeitem({ data }: { data: KnowledgeItemI }) {
-  const createdAt = formatDate(Object.values(data)[0].createdAt);
+  const createdAt = formatDate(data.knowledgeResponse.createdAt);
   const navigate = useNavigate();
 
   const major = {
@@ -118,34 +137,44 @@ export default function Knowledgeitem({ data }: { data: KnowledgeItemI }) {
       }
     >
       <MetaData>
-        <WriterSVG />
-        <Name>{Object.values(data)[1].role}</Name>
+        {data.storedAvatarResponse ? (
+          <Avatar>
+            <img src="/assets/avatar/face.svg" alt="Face" />
+            <img src={data.storedAvatarResponse.hairForURL} alt="Hair" />
+            <img src={data.storedAvatarResponse.eyesForURL} alt="Eyes" />
+            <img src={data.storedAvatarResponse.mouthForURL} alt="Mouth" />
+            <img src={data.storedAvatarResponse.clothForURL} alt="Cloth" />
+          </Avatar>
+        ) : (
+          <WriterSVG />
+        )}
+        <Name>{data.memberResponse.nickname}</Name>
         <Dot />
         <Major>
-          {major[Object.values(data)[0].majorType as keyof typeof major]}
+          {major[data.knowledgeResponse.majorType as keyof typeof major]}
         </Major>
         <Dot />
         <CreatedAt>{createdAt}</CreatedAt>
       </MetaData>
-      <Title>{Object.values(data)[0].title}</Title>
+      <Title>{data.knowledgeResponse.title}</Title>
       <Content>
         <Markdown
           components={{ img: () => null, a: () => null, code: () => null }}
         >
-          {Object.values(data)[0].content}
+          {data.knowledgeResponse.content}
         </Markdown>
       </Content>
       <Types>
         <HashTags>
-          {Object.values(data)[4].map((hash: string) => (
+          {data.tagList.map((hash: string) => (
             <Hash># {hash}</Hash>
           ))}
         </HashTags>
         <LikeAndComment>
           <LikeIcon />
-          <Like>{Object.values(data)[2]}</Like>
+          <Like>{data.likeCount}</Like>
           <CommentIcon />
-          <Comment>{Object.values(data)[3]}</Comment>
+          <Comment>{data.commentCount}</Comment>
         </LikeAndComment>
       </Types>
     </ItemBox>

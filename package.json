@@ -31,8 +31,6 @@
     "react-select": "^5.10.0",
     "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.13",
-    "survey-core": "^1.12.23",
-    "survey-react-ui": "^1.12.23",
     "swiper": "^11.1.15",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"

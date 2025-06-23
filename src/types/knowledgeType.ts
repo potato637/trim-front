@@ -18,9 +18,18 @@ export interface MemberResponseI {
   nickname: string;
 }
 
+export interface AvatarResponseI {
+  backgroundColor: string;
+  mouthForURL: string;
+  eyesForURL: string;
+  clothForURL: string;
+  hairForURL: string;
+}
+
 export interface KnowledgeItemI {
   knowledgeResponse: KnowledgeResponseI;
   memberResponse: MemberResponseI;
+  storedAvatarResponse: AvatarResponseI;
   likeCount: number;
   commentCount: number;
   tagList: string[];
@@ -46,6 +55,7 @@ export interface KnowledgeI {
   result: {
     knowledgeResponse: KnowledgeResponseI;
     memberResponse: MemberResponseI;
+    storedAvatarResponse: AvatarResponseI;
     commentResponses: [];
     tags: string[];
   };

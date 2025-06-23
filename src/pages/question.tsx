@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { postAPI, singleAPI } from "../apis/api";
 import { countMission } from "../apis/profileAPI";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { QuestionI } from "../types/questionType";
+import { QuestionI, AvatarResponseI } from "../types/questionType";
 import { formatDate } from "../utils";
 import { BiLike } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
@@ -44,6 +44,24 @@ const WriterSVG = styled.div`
   width: var(--font-size-user);
   height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
+`;
+const Avatar = styled.div`
+  position: relative;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
 `;
 const ContentContainer = styled.div`
   width: 100%;
@@ -269,7 +287,29 @@ export default function Question() {
       <MainContent>
         <TitleContainer>{questionData?.questionResponse.title}</TitleContainer>
         <WriterContainer>
-          <WriterSVG></WriterSVG>
+          {questionData?.storedAvatarResponse ? (
+            <Avatar>
+              <img src="/assets/avatar/face.svg" alt="Face" />
+              <img
+                src={questionData.storedAvatarResponse.hairForURL}
+                alt="Hair"
+              />
+              <img
+                src={questionData.storedAvatarResponse.eyesForURL}
+                alt="Eyes"
+              />
+              <img
+                src={questionData.storedAvatarResponse.mouthForURL}
+                alt="Mouth"
+              />
+              <img
+                src={questionData.storedAvatarResponse.clothForURL}
+                alt="Cloth"
+              />
+            </Avatar>
+          ) : (
+            <WriterSVG />
+          )}
           {`${questionData?.memberResponse.nickname} · ${
             major[
               questionData?.questionResponse.majorType as keyof typeof major
@@ -326,7 +366,29 @@ export default function Question() {
             <React.Fragment key={index}>
               <Answer>
                 <AnswerWriter>
-                  <WriterSVG />
+                  {answer.storedAvatarResponse ? (
+                    <Avatar>
+                      <img src="/assets/avatar/face.svg" alt="Face" />
+                      <img
+                        src={answer.storedAvatarResponse.hairForURL}
+                        alt="Hair"
+                      />
+                      <img
+                        src={answer.storedAvatarResponse.eyesForURL}
+                        alt="Eyes"
+                      />
+                      <img
+                        src={answer.storedAvatarResponse.mouthForURL}
+                        alt="Mouth"
+                      />
+                      <img
+                        src={answer.storedAvatarResponse.clothForURL}
+                        alt="Cloth"
+                      />
+                    </Avatar>
+                  ) : (
+                    <WriterSVG />
+                  )}
                   {`${answer.memberResponse.nickname} · ${formatDate(
                     answer.answerResponse.createdAt
                   )}`}

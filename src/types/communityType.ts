@@ -39,5 +39,15 @@ export interface FreeTalkI {
   result: {
     freeTalkResponse: FreeTalkResponseI;
     memberResponse: MemberResponseI;
+    storedAvatarResponse: AvatarResponseI;
+    commentDetailResponseList: [];
   };
+}
+
+export interface AvatarResponseI {
+  backgroundColor: string;
+  mouthForURL: string;
+  eyesForURL: string;
+  clothForURL: string;
+  hairForURL: string;
 }

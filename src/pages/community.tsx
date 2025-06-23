@@ -34,6 +34,24 @@ const WriterSVG = styled.div`
   height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
+const Avatar = styled.div`
+  position: relative;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+`;
 const CommunityText = styled.p`
   font-size: var(--font-size-medium);
   line-height: 1.6;
@@ -111,7 +129,29 @@ export default function Community() {
       <MainContent>
         <TitleContainer>{communityData?.freeTalkResponse.title}</TitleContainer>
         <WriterContainer>
-          <WriterSVG />
+          {communityData?.storedAvatarResponse ? (
+            <Avatar>
+              <img src="/assets/avatar/face.svg" alt="Face" />
+              <img
+                src={communityData.storedAvatarResponse.hairForURL}
+                alt="Hair"
+              />
+              <img
+                src={communityData.storedAvatarResponse.eyesForURL}
+                alt="Eyes"
+              />
+              <img
+                src={communityData.storedAvatarResponse.mouthForURL}
+                alt="Mouth"
+              />
+              <img
+                src={communityData.storedAvatarResponse.clothForURL}
+                alt="Cloth"
+              />
+            </Avatar>
+          ) : (
+            <WriterSVG />
+          )}
           {`${communityData?.memberResponse.nickname} · ${formatDate(
             communityData?.freeTalkResponse.createdAt as number
           )}`}

@@ -18,6 +18,7 @@ export interface CommentI {
     socialType: string;
     nickname: string;
   };
+  storedAvatarResponse: AvatarResponseI;
 }
 
 export interface ReResultI {
@@ -33,6 +34,15 @@ export interface ReResultI {
     socialType: string;
     nickname: string;
   };
+  storedAvatarResponse: AvatarResponseI;
+}
+
+export interface AvatarResponseI {
+  backgroundColor: string;
+  mouthForURL: string;
+  eyesForURL: string;
+  clothForURL: string;
+  hairForURL: string;
 }
 
 export interface ReCommentI {

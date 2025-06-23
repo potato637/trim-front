@@ -20,11 +20,21 @@ export interface AnswerResponseI {
     createdAt: number;
   };
   memberResponse: MemberResponseI;
+  storedAvatarResponse: AvatarResponseI;
+}
+
+export interface AvatarResponseI {
+  backgroundColor: string;
+  mouthForURL: string;
+  eyesForURL: string;
+  clothForURL: string;
+  hairForURL: string;
 }
 
 export interface QuestionItemI {
   questionResponse: QuestionResponseI;
   memberResponse: MemberResponseI;
+  storedAvatarResponse: AvatarResponseI;
   likeCount: number;
   answerCount: number;
   tagList: string[];
@@ -51,6 +61,7 @@ export interface QuestionI {
     questionResponse: QuestionResponseI;
     memberResponse: MemberResponseI;
     answerDetailResponseList: AnswerResponseI[];
+    storedAvatarResponse: AvatarResponseI;
     tagList: string[];
   };
 }

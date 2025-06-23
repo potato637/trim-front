@@ -10,7 +10,12 @@ import {
 import { postAPI, singleAPI } from "../apis/api";
 import { countMission } from "../apis/profileAPI";
 import { useLocation } from "react-router-dom";
-import { CommentI, ReCommentI, ReResultI } from "../types/commentType";
+import {
+  CommentI,
+  ReCommentI,
+  ReResultI,
+  AvatarResponseI,
+} from "../types/commentType";
 import { formatDate } from "../utils";
 
 const CommentSection = styled.div`
@@ -135,6 +140,24 @@ const UserImg = styled.div`
   left: 0;
   background: url(/assets/userSVG.svg) center/cover no-repeat;
 `;
+const Avatar = styled.div`
+  position: relative;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+`;
 const Content = styled.div`
   width: 95%;
   background-color: var(--color-light-purple);
@@ -197,6 +220,26 @@ const ReUserImg = styled.div`
   top: 0;
   right: 0;
   background: url("/assets/userSVG.svg") center/cover no-repeat;
+`;
+const ReAvatar = styled.div`
+  position: absolute;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
+  top: 0;
+  right: 0;
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
 `;
 const CircleUp = styled(FaChevronCircleUp)`
   color: var(--color-purple-hover);
@@ -321,7 +364,29 @@ export default function Comments({
             <React.Fragment key={index}>
               <Comment>
                 <User>
-                  <UserImg />
+                  {comment.storedAvatarResponse ? (
+                    <Avatar>
+                      <img src="/assets/avatar/face.svg" alt="Face" />
+                      <img
+                        src={comment.storedAvatarResponse.hairForURL}
+                        alt="Hair"
+                      />
+                      <img
+                        src={comment.storedAvatarResponse.eyesForURL}
+                        alt="Eyes"
+                      />
+                      <img
+                        src={comment.storedAvatarResponse.mouthForURL}
+                        alt="Mouth"
+                      />
+                      <img
+                        src={comment.storedAvatarResponse.clothForURL}
+                        alt="Cloth"
+                      />
+                    </Avatar>
+                  ) : (
+                    <UserImg />
+                  )}
                 </User>
                 <Content>
                   {/* createdAt 넣어야함 */}
@@ -365,7 +430,29 @@ export default function Comments({
                         </CommentMain>
                       </ReContent>
                       <ReUser>
-                        <ReUserImg />
+                        {reComment.storedAvatarResponse ? (
+                          <ReAvatar>
+                            <img src="/assets/avatar/face.svg" alt="Face" />
+                            <img
+                              src={reComment.storedAvatarResponse.hairForURL}
+                              alt="Hair"
+                            />
+                            <img
+                              src={reComment.storedAvatarResponse.eyesForURL}
+                              alt="Eyes"
+                            />
+                            <img
+                              src={reComment.storedAvatarResponse.mouthForURL}
+                              alt="Mouth"
+                            />
+                            <img
+                              src={reComment.storedAvatarResponse.clothForURL}
+                              alt="Cloth"
+                            />
+                          </ReAvatar>
+                        ) : (
+                          <ReUserImg />
+                        )}
                       </ReUser>
                     </ReComment>
                   )

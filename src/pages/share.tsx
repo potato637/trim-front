@@ -7,7 +7,7 @@ import { FaChevronCircleUp, FaChevronCircleDown } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postAPI, singleAPI } from "../apis/api";
-import { KnowledgeI } from "../types/knowledgeType";
+import { KnowledgeI, AvatarResponseI } from "../types/knowledgeType";
 import { formatDate } from "../utils";
 import { GoDotFill } from "react-icons/go";
 import { BiLike } from "react-icons/bi";
@@ -62,6 +62,24 @@ const WriterSVG = styled.div`
   height: var(--font-size-user);
   background: url("/assets/userSVG.svg") center/cover no-repeat;
 `;
+const Avatar = styled.div`
+  position: relative;
+  width: var(--font-size-user);
+  height: var(--font-size-user);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+`;
 const ContentContainer = styled.div`
   width: 100%;
   padding: 20px 0;
@@ -78,6 +96,24 @@ const About = styled.div`
 const User = styled.div`
   display: flex;
   gap: 30px;
+`;
+const UserAvatar = styled.div`
+  position: relative;
+  width: var(--font-size-knowledge-user);
+  height: var(--font-size-knowledge-user);
+  background-color: var(--color-purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
 `;
 const UserImg = styled.div`
   width: var(--font-size-knowledge-user);
@@ -227,7 +263,29 @@ export default function Share() {
             ))}
         </Infos>
         <WriterContainer>
-          <WriterSVG />
+          {knowledgeData?.storedAvatarResponse ? (
+            <Avatar>
+              <img src="/assets/avatar/face.svg" alt="Face" />
+              <img
+                src={knowledgeData.storedAvatarResponse.hairForURL}
+                alt="Hair"
+              />
+              <img
+                src={knowledgeData.storedAvatarResponse.eyesForURL}
+                alt="Eyes"
+              />
+              <img
+                src={knowledgeData.storedAvatarResponse.mouthForURL}
+                alt="Mouth"
+              />
+              <img
+                src={knowledgeData.storedAvatarResponse.clothForURL}
+                alt="Cloth"
+              />
+            </Avatar>
+          ) : (
+            <WriterSVG />
+          )}
           {`${knowledgeData?.memberResponse.nickname} · ${
             major[
               knowledgeData?.knowledgeResponse.majorType as keyof typeof major
@@ -243,7 +301,29 @@ export default function Share() {
         </ContentContainer>
         <About>
           <User>
-            <UserImg />
+            {knowledgeData?.storedAvatarResponse ? (
+              <UserAvatar>
+                <img src="/assets/avatar/face.svg" alt="Face" />
+                <img
+                  src={knowledgeData.storedAvatarResponse.hairForURL}
+                  alt="Hair"
+                />
+                <img
+                  src={knowledgeData.storedAvatarResponse.eyesForURL}
+                  alt="Eyes"
+                />
+                <img
+                  src={knowledgeData.storedAvatarResponse.mouthForURL}
+                  alt="Mouth"
+                />
+                <img
+                  src={knowledgeData.storedAvatarResponse.clothForURL}
+                  alt="Cloth"
+                />
+              </UserAvatar>
+            ) : (
+              <UserImg />
+            )}
             <UserInfo>
               <UserName>{knowledgeData?.memberResponse.nickname}</UserName>
               <UserEmail>

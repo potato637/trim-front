@@ -87,7 +87,6 @@ export const hotAPI = {
       throw new Error("An unexpected error occurred");
     }
   },
-  survey_hot: async () => {},
 };
 
 export const datasAPI = {
@@ -147,23 +146,6 @@ export const datasAPI = {
       throw new Error(`An unexpected error occurred`);
     }
   },
-
-  survey: async ({ currentPage, pageSize = 30 }) => {
-    try {
-      const { data } = await api.get("/api/access/survey/page", {
-        params: {
-          currentPage,
-          pageSize,
-        },
-      });
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        throw new Error(`HTTP error: Status: ${error.response.status}`);
-      }
-      throw new Error(`An unexpected error occurred`);
-    }
-  },
 };
 
 export const postAPI = {
@@ -187,7 +169,6 @@ export const postAPI = {
   },
 
   question_answer: async ({ id, content }) => {
-    console.log("api calls");
     const response = await api_secure.post(
       `/api/answers/questions/${id}`,
       {

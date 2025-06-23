@@ -159,12 +159,26 @@ export default function Hot({
         <SwiperContainer>
           <StyledSwiper
             modules={[Navigation]}
-            slidesPerView={3}
+            slidesPerView={Math.min(3, data.length)}
             navigation={{
               prevEl: prevRef.current,
               nextEl: nextRef.current,
             }}
             spaceBetween={15}
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+              768: {
+                slidesPerView: Math.min(2, data.length),
+                spaceBetween: 15,
+              },
+              1024: {
+                slidesPerView: Math.min(3, data.length),
+                spaceBetween: 15,
+              },
+            }}
             onBeforeInit={(swiper: SwiperClass) => {
               if (
                 swiper.params.navigation &&
