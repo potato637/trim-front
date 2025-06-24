@@ -160,9 +160,10 @@ const Answer = styled.div`
   padding: 15px 20px;
 `;
 const AnswerWriter = styled(WriterContainer)``;
-const AnswerText = styled.p`
+const AnswerText = styled.div`
   font-size: var(--font-size-medium);
   line-height: 1.6;
+  width: 100%;
 `;
 const CircleUp = styled(FaChevronCircleUp)`
   color: var(--color-purple-hover);
@@ -310,7 +311,28 @@ export default function Question() {
           )}`}
         </WriterContainer>
         <ContentContainer className="markdown-content">
-          <Markdown remarkPlugins={[remarkGfm]}>
+          <Markdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              img: ({ node, ...props }) => (
+                <img
+                  {...props}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    display: "block",
+                    margin: "10px 0",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                  }}
+                  onError={(e) => {
+                    console.error("Image failed to load:", props.src);
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              ),
+            }}
+          >
             {questionData?.questionResponse.content}
           </Markdown>
         </ContentContainer>
@@ -381,7 +403,28 @@ export default function Question() {
                   )}`}
                 </AnswerWriter>
                 <AnswerText className="markdown-content">
-                  <Markdown remarkPlugins={[remarkGfm]}>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      img: ({ node, ...props }) => (
+                        <img
+                          {...props}
+                          style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                            display: "block",
+                            margin: "10px 0",
+                            borderRadius: "8px",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                          }}
+                          onError={(e) => {
+                            console.error("Image failed to load:", props.src);
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ),
+                    }}
+                  >
                     {answer.answerResponse.content}
                   </Markdown>
                 </AnswerText>
